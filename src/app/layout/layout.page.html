@@ -1,0 +1,13 @@
+<ion-header>
+  <app-header></app-header>
+</ion-header>
+<ion-content>
+  <ion-split-pane contentId="main" when="sm">
+    <ion-menu contentId="main" type="overlay">
+      <ion-content color="dark">
+        <app-sidebar></app-sidebar>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main"></ion-router-outlet>
+  </ion-split-pane>
+</ion-content>
