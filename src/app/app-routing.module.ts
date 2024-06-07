@@ -21,9 +21,13 @@ const routes: Routes = [
         path: 'home',
         canActivate: [],
         loadChildren: () => import('./routes/home/home.module').then(m => m.HomePageModule)
+      },
+      {
+        path: 'locais',
+        loadChildren: () => import('./routes/locais/locais.module').then( m => m.LocaisPageModule)
       }
     ]
-  }
+  },
 ];
 
 @NgModule({

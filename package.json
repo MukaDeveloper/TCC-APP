@@ -1,8 +1,7 @@
 {
   "name": "tcc-app",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "TechBridge",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -28,6 +27,7 @@
     "@capacitor/status-bar": "6.0.0",
     "@ionic/angular": "^8.0.0",
     "ionicons": "^7.0.0",
+    "lint": "^1.1.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -60,5 +60,5 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.2.2"
   },
-  "description": "An Ionic project"
+  "description": "Um aplicativo gerenciador e facilitador de estoque e armazenamento para TCC"
 }

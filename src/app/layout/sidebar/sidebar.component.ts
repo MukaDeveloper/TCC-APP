@@ -1,5 +1,6 @@
-import { alertController } from '@ionic/core';
 import { Component, OnInit } from '@angular/core';
+import { sidebarMenu } from './sidebar-menus';
+import { SidebarService } from 'src/services/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +11,11 @@ export class SidebarComponent  implements OnInit {
 
   public isLoading = true;
 
-  constructor() { }
+  constructor(
+    private readonly sidebarService: SidebarService,
+  ) {
+    sidebarService.addMenu(sidebarMenu);
+  }
 
   ngOnInit() {
     this.isLoading = false;
