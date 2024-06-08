@@ -10,7 +10,7 @@ export class SidebarService {
 
     constructor() { }
 
-    public addMenu(items: Array<IMenu>): void {
+    public addMenu(items: IMenu[]): void {
         this.menuItems$.next([]);
         items.forEach((item) => this.menuItems$.value.push(item));
     }

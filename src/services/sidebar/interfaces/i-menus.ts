@@ -1,4 +1,6 @@
-export class IMenu {
+import { ISubMenu } from "./i-submenus";
+
+export interface IMenu {
   text: string;
   heading?: boolean;
   link: string;
@@ -6,5 +8,5 @@ export class IMenu {
   target?: string;
   icon?: string;
   alert?: string;
-  submenu?: Array<ISubMenu>;
+  submenu?: ISubMenu[];
 }
