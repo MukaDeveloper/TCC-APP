@@ -1,33 +1,38 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LayoutPage } from './layout/layout.page';
+import { RoutersEnum } from 'src/shared/utils/routers-enum';
+import { payloadGuard } from './guards/payload.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'app',
+    redirectTo: RoutersEnum.app,
     pathMatch: 'full'
   },
   {
-    path: 'app',
+    path: RoutersEnum.login,
+    canActivate: [],
+    loadChildren: () => import('./routes/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: RoutersEnum.app,
     component: LayoutPage,
+    canActivate: [payloadGuard],
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: RoutersEnum.login,
         pathMatch: 'full'
       },
       {
-        path: 'home',
+        path: RoutersEnum.home,
         canActivate: [],
         loadChildren: () => import('./routes/home/home.module').then(m => m.HomePageModule)
       },
-      {
-        path: 'locais',
-        loadChildren: () => import('./routes/locais/locais.module').then( m => m.LocaisPageModule)
-      }
     ]
   },
+  { path: '**', redirectTo: RoutersEnum.app },
 ];
 
 @NgModule({

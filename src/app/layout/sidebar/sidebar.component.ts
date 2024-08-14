@@ -12,9 +12,7 @@ export class SidebarComponent  implements OnInit {
   public isLoading = true;
 
   constructor(
-    private readonly sidebarService: SidebarService,
   ) {
-    sidebarService.addMenu(sidebarMenu);
   }
 
   ngOnInit() {

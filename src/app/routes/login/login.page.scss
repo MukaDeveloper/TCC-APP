@@ -1,0 +1,59 @@
+
+body {
+  background-color: var(--ion-color-primary);
+  color: var(--ion-color-ligth);
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-icon {
+  width: 6.25rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.user-icon svg {
+  width: 3.125rem;
+  height: 3.125rem;
+  fill: var(--ion-color-ligth);
+}
+
+button {
+  background-color: var(--ion-color-primary-tint);
+  color: var(--ion-color-ligth);
+  padding: 0.75rem 2.5rem;
+  border: var(--ion-color-primary);
+  border-radius: 0.3125rem;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.create-account {
+  font-size: 0.875rem;
+  text-decoration: underline;
+  color: var(--ion-color-ligth);
+}
+
+.create-account:hover {
+  text-decoration: underline;
+}

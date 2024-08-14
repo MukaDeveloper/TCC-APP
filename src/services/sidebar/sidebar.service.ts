@@ -6,12 +6,7 @@ import { IMenu } from './interfaces/i-menus';
     providedIn: 'root'
 })
 export class SidebarService {
-    public menuItems$: BehaviorSubject<[]> = new BehaviorSubject([]);
+    // public menuItems$: BehaviorSubject<[]> = new BehaviorSubject([]);
 
     constructor() { }
-
-    public addMenu(items: IMenu[]): void {
-        this.menuItems$.next([]);
-        items.forEach((item) => this.menuItems$.value.push(item));
-    }
 }

@@ -1,4 +1,5 @@
 export enum RoutersEnum {
+  app = 'app',
   login = 'login',
   register = 'register',
   recovery = 'recovery-password',
@@ -6,5 +7,5 @@ export enum RoutersEnum {
   phoneConfirm = 'phone-confirm',
   emailConfirm = 'email-confirm',
   home = 'app/home',
-  locais = 'app/locais',
+  areas = 'app/areas',
 }

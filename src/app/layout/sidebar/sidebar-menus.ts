@@ -2,7 +2,7 @@ import { RoutersEnum } from "src/shared/utils/routers-enum"
 
 const locais = {
   text: 'Locais',
-  link: RoutersEnum.locais,
+  link: RoutersEnum.areas,
   icon: '',
 }
 
