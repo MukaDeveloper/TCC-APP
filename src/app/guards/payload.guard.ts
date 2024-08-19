@@ -7,7 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { PayloadService } from '../../services/payload/payload.services';
+import { PayloadService } from '../../services/payload/payload.service';
 import { RoutersEnum } from 'src/shared/utils/routers-enum';
 
 @Injectable({
