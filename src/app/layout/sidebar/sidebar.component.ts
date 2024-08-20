@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { sidebarMenu } from './sidebar-menus';
-import { SidebarService } from 'src/services/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent  implements OnInit {
+export class SidebarComponent implements OnInit {
+  // #region Properties (1)
 
   public isLoading = true;
 
-  constructor(
-  ) {
-  }
+  // #endregion Properties (1)
 
-  ngOnInit() {
+  // #region Constructors (1)
+
+  constructor() {}
+
+  // #endregion Constructors (1)
+
+  // #region Public Methods (1)
+
+  public ngOnInit() {
     this.isLoading = false;
   }
 
+  // #endregion Public Methods (1)
 }

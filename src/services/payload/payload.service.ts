@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { LocalStorageAuthService } from '../localstorage/auth.service';
 import { IPayload } from './interfaces/i-payload';
 
 @Injectable({
@@ -17,7 +18,7 @@ export class PayloadService {
 
   // #region Constructors (1)
 
-  constructor() {
+  constructor(readonly localStorageAuthService: LocalStorageAuthService) {
     this.payloadSubject = new BehaviorSubject<IPayload | null>(null);
     this.payload$ = this.payloadSubject.asObservable();
   }
@@ -29,15 +30,15 @@ export class PayloadService {
   public get payload(): IPayload | null {
     let payload = this.payloadSubject.value;
     if (!payload) {
-      // const token = this.localstorageTokenService.val;
-      // payload = this.decodeJWT(token);
-      this.payloadSubject.next(payload || null);
+      const token = this.localStorageAuthService.val;
+      if (token) {
+        payload = this.decodeJWT(token);
+        this.payloadSubject.next(payload || null);
+        return payload;
+      }
+      return null;
     }
     return this.payloadSubject.value;
-  }
-
-  public set payload(value: IPayload | null) {
-    this.payloadSubject.next(value);
   }
 
   // #endregion Public Getters And Setters (2)
@@ -46,11 +47,11 @@ export class PayloadService {
 
   public nextPayload(token: string | null): void {
     if (!token) {
-      // this.localstorageTokenService.val = '';
+      this.localStorageAuthService.val = '';
       this.payloadSubject.next(null);
       return;
     }
-    // this.localstorageTokenService.val = token;
+    this.localStorageAuthService.val = token;
     const payload = this.decodeJWT(token);
     this.payloadSubject.next(payload || null);
   }

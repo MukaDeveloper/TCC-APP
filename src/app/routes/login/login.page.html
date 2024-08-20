@@ -10,16 +10,19 @@
       <form [formGroup]="formGroup" *ngIf="formGroup">
         <ion-item lines="full">
           <ion-input
+            formControlName="email"
             label="E-mail"
-            labelPlacement="start"
+            labelPlacement="floating"
             placeholder="seu-email@email.com"
             type="text"
           ></ion-input>
         </ion-item>
+        <br />
         <ion-item lines="full">
           <ion-input
+            formControlName="password"
             label="Senha"
-            labelPlacement="start"
+            labelPlacement="floating"
             type="password"
           ></ion-input>
         </ion-item>
@@ -32,7 +35,8 @@
           *ngIf="formGroup"
           [disabled]="!formGroup.valid"
           (click)="onSubmit()"
-        >ACESSAR</ion-button>
+          >ACESSAR</ion-button
+        >
       </form>
     </div>
   </section>

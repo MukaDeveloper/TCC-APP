@@ -6,13 +6,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./layout.page.scss'],
 })
 export class LayoutPage implements OnInit {
+  // #region Properties (1)
 
   public isLoading = true;
 
-  constructor() { }
+  // #endregion Properties (1)
 
-  ngOnInit() {
+  // #region Constructors (1)
+
+  constructor() {}
+
+  // #endregion Constructors (1)
+
+  // #region Public Methods (1)
+
+  public ngOnInit() {
     this.isLoading = false;
   }
 
+  // #endregion Public Methods (1)
 }

@@ -5,14 +5,24 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
 })
-export class FooterComponent  implements OnInit {
+export class FooterComponent implements OnInit {
+  // #region Properties (1)
 
   public isLoading = true;
 
-  constructor() { }
+  // #endregion Properties (1)
 
-  ngOnInit() {
+  // #region Constructors (1)
+
+  constructor() {}
+
+  // #endregion Constructors (1)
+
+  // #region Public Methods (1)
+
+  public ngOnInit() {
     this.isLoading = false;
   }
 
+  // #endregion Public Methods (1)
 }

@@ -26,8 +26,9 @@ p {
 }
 
 ion-item {
-  --background: none;
-  color: var(--ion-color-light);
+  --background: var(ion-color-light-shade);
+  border-radius: 0.5rem;
+  color: var(--ion-color-secondary);
 }
 
 ion-button {

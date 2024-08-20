@@ -8,9 +8,15 @@ import { ApiBaseService } from 'src/shared/utils/api-base.service';
   providedIn: 'root',
 })
 export class ApiUsersService extends ApiBaseService {
+  // #region Constructors (1)
+
   constructor(http: HttpClient) {
     super(http);
   }
+
+  // #endregion Constructors (1)
+
+  // #region Public Methods (1)
 
   public auth(credentials: {
     email: string;
@@ -21,4 +27,6 @@ export class ApiUsersService extends ApiBaseService {
       .post<{ token: string }>(url, credentials)
       .pipe(catchError(HandleError.handler));
   }
+
+  // #endregion Public Methods (1)
 }
