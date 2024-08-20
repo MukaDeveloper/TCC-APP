@@ -1,59 +1,35 @@
+ion-content {
+  --background: var(--ion-color-primary);
+}
 
-body {
-  background-color: var(--ion-color-primary);
-  color: var(--ion-color-ligth);
-  font-family: sans-serif;
+.wrapper {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.content {
+  padding: 20px;
+  max-width: 450px;
+  margin-top: 124px;
 }
 
-.user-icon {
-  width: 6.25rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.25rem;
+h2 {
+  text-align: center;
+  color: var(--ion-color-light);
 }
 
-.user-icon svg {
-  width: 3.125rem;
-  height: 3.125rem;
-  fill: var(--ion-color-ligth);
+p {
+  text-align: center;
+  color: var(--ion-color-light);
 }
 
-button {
-  background-color: var(--ion-color-primary-tint);
-  color: var(--ion-color-ligth);
-  padding: 0.75rem 2.5rem;
-  border: var(--ion-color-primary);
-  border-radius: 0.3125rem;
-  margin-bottom: 1.25rem;
-  cursor: pointer;
+ion-item {
+  --background: none;
+  color: var(--ion-color-light);
 }
 
-button:hover {
-  opacity: 0.8;
-}
-
-.create-account {
-  font-size: 0.875rem;
-  text-decoration: underline;
-  color: var(--ion-color-ligth);
-}
-
-.create-account:hover {
-  text-decoration: underline;
+ion-button {
+  --background: var(--ion-color-primary-tint);
 }

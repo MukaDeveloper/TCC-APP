@@ -1,17 +1,39 @@
 <ion-content [fullscreen]="true">
-  <div class="container">
-    <div class="user-icon">
-      <!-- ion-icon user_dummy -->
+  <section *ngIf="!isBusy">
+    <div class="wrapper">
+      <div class="content">
+        <h2>StockTrack</h2>
+        <p>Informe suas credenciais para</p>
+        <p>acessar sua conta de forma segura</p>
+      </div>
+      <br />
+      <form [formGroup]="formGroup" *ngIf="formGroup">
+        <ion-item lines="full">
+          <ion-input
+            label="E-mail"
+            labelPlacement="start"
+            placeholder="seu-email@email.com"
+            type="text"
+          ></ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-input
+            label="Senha"
+            labelPlacement="start"
+            type="password"
+          ></ion-input>
+        </ion-item>
+        <br />
+        <ion-button
+          type="submit"
+          fill="solid"
+          shape="round"
+          expand="block"
+          *ngIf="formGroup"
+          [disabled]="!formGroup.valid"
+          (click)="onSubmit()"
+        >ACESSAR</ion-button>
+      </form>
     </div>
-    <ion-button>Almoxarife</ion-button>
-    <ion-button>Solicitante</ion-button>
-    <ion-label>
-      <ion-text>
-        Não tem cadastro?
-        <a (click)="goToRegister()" class="create-account"
-          >Crie uma conta</a
-        >
-      </ion-text>
-    </ion-label>
-  </div>
+  </section>
 </ion-content>
