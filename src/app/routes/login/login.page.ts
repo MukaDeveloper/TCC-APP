@@ -42,11 +42,17 @@ export class LoginPage extends BaseComponent implements OnInit {
     this.createForm();
   }
 
+  public onKeyup($e: number): void {
+    if ($e === 13 && this.formGroup!.valid) {
+      this.onSubmit();
+    }
+  }
+
   public onSubmit() {
-    const email = this.formGroup?.get('email')?.value;
-    const password = this.formGroup?.get('password')?.value;
-    if (email && password) {
-      this.usersService.auth({ email, password }).subscribe({
+    const Email = this.formGroup?.get('email')?.value;
+    const PasswordString = this.formGroup?.get('password')?.value;
+    if (Email && PasswordString) {
+      this.usersService.auth({ Email, PasswordString }).subscribe({
         next: (res) => {
           console.log('LOGADO');
         },

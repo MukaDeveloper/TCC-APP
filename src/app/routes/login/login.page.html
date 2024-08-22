@@ -1,43 +1,81 @@
 <ion-content [fullscreen]="true">
   <section *ngIf="!isBusy">
     <div class="wrapper">
-      <div class="content">
-        <h2>StockTrack</h2>
-        <p>Informe suas credenciais para</p>
-        <p>acessar sua conta de forma segura</p>
-      </div>
-      <br />
-      <form [formGroup]="formGroup" *ngIf="formGroup">
-        <ion-item lines="full">
-          <ion-input
-            formControlName="email"
-            label="E-mail"
-            labelPlacement="floating"
-            placeholder="seu-email@email.com"
-            type="text"
-          ></ion-input>
-        </ion-item>
-        <br />
-        <ion-item lines="full">
-          <ion-input
-            formControlName="password"
-            label="Senha"
-            labelPlacement="floating"
-            type="password"
-          ></ion-input>
-        </ion-item>
-        <br />
-        <ion-button
-          type="submit"
-          fill="solid"
-          shape="round"
-          expand="block"
-          *ngIf="formGroup"
-          [disabled]="!formGroup.valid"
-          (click)="onSubmit()"
-          >ACESSAR</ion-button
-        >
-      </form>
+      <ion-card>
+        <ion-card-header>
+          <h2>StockTrack</h2>
+          <p>Informe suas credenciais para</p>
+          <p>acessar sua conta de forma segura</p>
+        </ion-card-header>
+        <ion-card-content class="content">
+          <br />
+          <form
+            [formGroup]="formGroup"
+            *ngIf="formGroup"
+            class="ion-no-padding form"
+          >
+            <div class="item">
+              <ion-input
+                formControlName="email"
+                label="E-mail"
+                labelPlacement="start"
+                fill="outline"
+                placeholder="seu-email@email.com"
+                errorText="Insira um e-mail válido"
+                type="email"
+                class="custom"
+                inputmode="email"
+                shape="round"
+                autocomplete="email"
+                (keyup)="onKeyup($event.keyCode)"
+                email
+              ></ion-input>
+            </div>
+            <br />
+            <div class="item">
+              <ion-input
+                formControlName="password"
+                label="Senha"
+                labelPlacement="start"
+                fill="outline"
+                type="password"
+                class="custom"
+                shape="round"
+                (keyup)="onKeyup($event.keyCode)"
+              ></ion-input>
+            </div>
+            <br />
+            <div>
+              <ion-input
+                formControlName="institutionCode"
+                aria-label="Instituição"
+                labelPlacement="end"
+                fill="outline"
+                type="text"
+                inputmode="numeric"
+                class="custom"
+                shape="round"
+                maxlength="3"
+                minlength="3"
+              ></ion-input>
+            </div>
+            <br />
+            <ion-button
+              type="submit"
+              fill="solid"
+              shape="round"
+              expand="block"
+              *ngIf="formGroup"
+              [disabled]="!formGroup.valid"
+              (click)="onSubmit()"
+              >ACESSAR</ion-button
+            >
+            <a href="" style="color: var(--ion-color-tertiary)"
+              ><small>Esqueci minha senha</small></a
+            >
+          </form>
+        </ion-card-content>
+      </ion-card>
     </div>
   </section>
 </ion-content>

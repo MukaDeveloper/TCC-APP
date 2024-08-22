@@ -19,8 +19,8 @@ export class UsersService {
   // #region Public Methods (1)
 
   public auth(credentials: {
-    email: string;
-    password: string;
+    Email: string;
+    PasswordString: string;
   }): Observable<{ token: string }> {
     return this.apiUsersService.auth(credentials).pipe(
       map((res: { token: string }) => {
