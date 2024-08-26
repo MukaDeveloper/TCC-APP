@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="!isMenuOpen">
   <app-header></app-header>
 </ion-header>
 <ion-content>
@@ -8,7 +8,7 @@
     (ionSplitPaneVisible)="onSplitPaneVisible($event)"
   >
     <ion-menu contentId="main" type="overlay">
-      <ion-content color="dark">
+      <ion-content color="primary" style="height: 100%; overflow-y: hidden;">
         <app-sidebar></app-sidebar>
       </ion-content>
     </ion-menu>

@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RoutersEnum } from '../shared/utils/routers-enum';
 import { payloadGuard } from './guards/payload.guard';
 import { LayoutPage } from './layout/layout.page';
+import { toHomeGuard } from './guards/to-home.guard';
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: RoutersEnum.login,
-    canActivate: [],
+    canActivate: [toHomeGuard],
     loadChildren: () =>
       import('./routes/login/login.module').then((m) => m.LoginPageModule),
   },

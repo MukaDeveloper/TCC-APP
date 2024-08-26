@@ -1,8 +1,8 @@
-<ion-toolbar color="dark">
+<ion-toolbar color="primary">
   <ion-title>
     <div class="d-flex align-items-center justify-content-center">
       <img
-        [src]="isDarkModeImg()"
+        src="assets/imgs/logo.png"
         alt="Logo"
         class="img-logo"
         style="width: 150px"
@@ -13,3 +13,6 @@
 <app-userblock
   class="d-flex align-items-center justify-content-center"
 ></app-userblock>
+<ion-button (click)="onLogout()" fill="solid" color="danger">
+  SAIR
+</ion-button>

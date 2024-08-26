@@ -84,12 +84,4 @@ export class BaseComponent implements OnDestroy {
     });
     return toast.present();
   }
-
-  public isDarkModeImg(): string {
-    if (!this.darkMode) {
-      return 'assets/imgs/logo_w.png';
-    } else {
-      return 'assets/imgs/logo.png';
-    }
-  }
 }

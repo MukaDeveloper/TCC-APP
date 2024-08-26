@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PayloadService } from 'src/services/payload/payload.service';
+import { RoutersEnum } from 'src/shared/utils/routers-enum';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +17,10 @@ export class HeaderComponent implements OnInit {
 
   // #region Constructors (1)
 
-  constructor() {}
+  constructor(
+    private readonly payloadService: PayloadService,
+    private readonly router: Router,
+  ) {}
 
   // #endregion Constructors (1)
 
@@ -22,6 +28,13 @@ export class HeaderComponent implements OnInit {
 
   public ngOnInit() {
     this.isLoading = false;
+  }
+
+  public onLogout() {
+    this.payloadService.nextPayload(null);
+    this.router.navigate([RoutersEnum.login], {
+      queryParams: { redirected: true },
+    });
   }
 
   // #endregion Public Methods (1)

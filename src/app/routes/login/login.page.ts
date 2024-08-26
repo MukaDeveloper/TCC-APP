@@ -61,19 +61,17 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
       loading.then((l) => l.dismiss());
       return;
     }
-    console.log(Email, PasswordString);
     if (Email && PasswordString) {
       this.usersService.auth({ Email, PasswordString }).subscribe({
         next: (res) => {
           console.log('LOGADO', res);
           loading.then((l) => l.dismiss());
-          this.isBusy = true;
+          this.formGroup?.reset();
           this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
         },
         error: (error) => {
-          this.alert(error?.message, 'Aviso!');
+          this.alert(error?.error?.message, 'Aviso!');
           loading.then((l) => l.dismiss());
-          console.error(error);
         },
       });
     }

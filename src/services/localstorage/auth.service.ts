@@ -19,7 +19,7 @@ export class LocalStorageAuthService {
   // #region Public Accessors (1)
 
   public get val(): string {
-    const val = localStorage.getItem(this.key);
+    const val = sessionStorage.getItem(this.key);
     if (!val) {
       return '';
     }
@@ -32,9 +32,9 @@ export class LocalStorageAuthService {
 
   public set val(val: string) {
     if (!val) {
-      localStorage.setItem(this.key, '');
+      sessionStorage.setItem(this.key, '');
     } else {
-      localStorage.setItem(this.key, val);
+      sessionStorage.setItem(this.key, val);
     }
   }
 
