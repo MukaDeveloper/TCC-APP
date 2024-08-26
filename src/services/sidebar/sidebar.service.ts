@@ -1,12 +1,29 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IMenu } from './interfaces/i-menus';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class SidebarService {
-    // public menuItems$: BehaviorSubject<[]> = new BehaviorSubject([]);
+  public menuItems$: BehaviorSubject<any[]> = new BehaviorSubject<any>([]);
 
-    constructor() { }
+  constructor() {}
+
+  public addMenu(
+    items: Array<{
+      text: string;
+      heading?: boolean;
+      link?: string;
+      elink?: string;
+      target?: string;
+      icon?: string;
+      alert?: string;
+      submenu?: Array<any>;
+    }>
+  ): void {
+    this.menuItems$.next([]);
+    items.forEach((item) => {
+      this.menuItems$.value.push(item);
+    });
+  }
 }

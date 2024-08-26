@@ -5,16 +5,18 @@ import {
   AlertController,
   LoadingController,
   ToastController,
+  ViewDidEnter,
 } from '@ionic/angular';
 import { UsersService } from 'src/services/users/users.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
+import { RoutersEnum } from '../../../shared/utils/routers-enum';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage extends BaseComponent implements OnInit {
+export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Properties (2)
 
   public formGroup: FormGroup | null = null;
@@ -42,6 +44,8 @@ export class LoginPage extends BaseComponent implements OnInit {
     this.createForm();
   }
 
+  ionViewDidEnter(): void {}
+
   public onKeyup($e: number): void {
     if ($e === 13 && this.formGroup!.valid) {
       this.onSubmit();
@@ -49,15 +53,27 @@ export class LoginPage extends BaseComponent implements OnInit {
   }
 
   public onSubmit() {
+    const loading = this.loadingShow('Autenticando...');
     const Email = this.formGroup?.get('email')?.value;
     const PasswordString = this.formGroup?.get('password')?.value;
+    if (!Email || !PasswordString) {
+      this.alert('Preencha os campos corretamente', 'Aviso!');
+      loading.then((l) => l.dismiss());
+      return;
+    }
+    console.log(Email, PasswordString);
     if (Email && PasswordString) {
       this.usersService.auth({ Email, PasswordString }).subscribe({
         next: (res) => {
-          console.log('LOGADO');
+          console.log('LOGADO', res);
+          loading.then((l) => l.dismiss());
+          this.isBusy = true;
+          this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
         },
         error: (error) => {
-          console.log(error);
+          this.alert(error?.message, 'Aviso!');
+          loading.then((l) => l.dismiss());
+          console.error(error);
         },
       });
     }
@@ -72,6 +88,7 @@ export class LoginPage extends BaseComponent implements OnInit {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
+      // institutionCode: new FormControl(''),
     });
     loading.then((l) => l.dismiss());
     this.isBusy = false;

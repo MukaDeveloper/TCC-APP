@@ -21,10 +21,10 @@ export class ApiUsersService extends ApiBaseService {
   public auth(credentials: {
     Email: string;
     PasswordString: string;
-  }): Observable<{ token: string }> {
+  }): Observable<any> {
     const url = `${this.apiUrl}/Users/Authenticate`;
     return this.http
-      .post<{ token: string }>(url, credentials)
+      .post<any>(url, credentials)
       .pipe(catchError(HandleError.handler));
   }
 

@@ -10,10 +10,14 @@ ion-card {
   max-width: 400px;
   transform: translate(-50%, -50%);
   border-radius: 1rem;
+  // background: var(--ion-color-light-shade);
+  background: none;
 }
 
 ion-card-header {
-  background: var(--ion-color-light);
+  // background: var(--ion-color-light);
+  background: none;
+  color: #ffffff
 }
 
 .content {
@@ -39,12 +43,12 @@ p {
 
 ion-input.custom {
   // --background: var(--ion-color-medium);
-  --background: var(--ion-color-medium-light);
-  --placeholder-opacity: 0.5;
+  --background: var(--ion-color-light-shade);
   border-radius: 0.5rem;
-  color: var(--ion-color-primary);
+  color: var(--ion-color-dark);
 }
 
 ion-button {
   --background: var(--ion-color-primary-tint);
+  color: #ffffff;
 }

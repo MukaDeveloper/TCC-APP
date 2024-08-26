@@ -21,9 +21,9 @@ export class UsersService {
   public auth(credentials: {
     Email: string;
     PasswordString: string;
-  }): Observable<{ token: string }> {
+  }): Observable<any> {
     return this.apiUsersService.auth(credentials).pipe(
-      map((res: { token: string }) => {
+      map((res: any) => {
         if (res.token) {
           this.payloadService.nextPayload(res.token);
         } else {

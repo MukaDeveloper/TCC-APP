@@ -1,1 +1,15 @@
-<p>sidebar works!</p>
+<ion-toolbar color="dark">
+  <ion-title>
+    <div class="d-flex align-items-center justify-content-center">
+      <img
+        [src]="isDarkModeImg()"
+        alt="Logo"
+        class="img-logo"
+        style="width: 150px"
+      />
+    </div>
+  </ion-title>
+</ion-toolbar>
+<app-userblock
+  class="d-flex align-items-center justify-content-center"
+></app-userblock>

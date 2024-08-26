@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RoutersEnum } from '../shared/utils/routers-enum';
 import { payloadGuard } from './guards/payload.guard';
 import { LayoutPage } from './layout/layout.page';
 
@@ -7,33 +8,33 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'app',
+    redirectTo: RoutersEnum.app,
   },
   {
-    path: 'login',
+    path: RoutersEnum.login,
     canActivate: [],
     loadChildren: () =>
       import('./routes/login/login.module').then((m) => m.LoginPageModule),
   },
   {
-    path: 'app',
+    path: RoutersEnum.app,
     canActivateChild: [payloadGuard],
     component: LayoutPage,
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: RoutersEnum.home,
         pathMatch: 'full',
       },
       {
-        path: 'home',
+        path: RoutersEnum.home,
         canActivate: [],
         loadChildren: () =>
           import('./routes/home/home.module').then((m) => m.HomePageModule),
       },
     ],
   },
-  { path: '**', redirectTo: 'app' },
+  { path: '**', redirectTo: RoutersEnum.app },
 ];
 
 @NgModule({

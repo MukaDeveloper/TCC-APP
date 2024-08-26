@@ -6,6 +6,6 @@ export enum RoutersEnum {
   terms = 'terms-of-use',
   phoneConfirm = 'phone-confirm',
   emailConfirm = 'email-confirm',
-  home = 'app/home',
-  areas = 'app/areas',
+  home = 'home',
+  areas = 'areas',
 }

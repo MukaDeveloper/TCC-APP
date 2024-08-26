@@ -2,7 +2,11 @@
   <app-header></app-header>
 </ion-header>
 <ion-content>
-  <ion-split-pane contentId="main" when="sm">
+  <ion-split-pane
+    contentId="main"
+    when="sm"
+    (ionSplitPaneVisible)="onSplitPaneVisible($event)"
+  >
     <ion-menu contentId="main" type="overlay">
       <ion-content color="dark">
         <app-sidebar></app-sidebar>

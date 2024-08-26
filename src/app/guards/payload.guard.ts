@@ -7,8 +7,8 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { PayloadService } from '../../services/payload/payload.service';
 import { RoutersEnum } from 'src/shared/utils/routers-enum';
+import { PayloadService } from '../../services/payload/payload.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +37,7 @@ export class PermissionsService {
 
     const payload = this.payloadService.payload;
 
+    console.log('[PayloadGuard] Payload =>', payload);
     if (!payload) {
       console.log('[PayloadGuard] BLOCKED => REDIRECT');
       return this.router.createUrlTree([RoutersEnum.login], {

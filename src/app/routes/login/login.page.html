@@ -4,8 +4,9 @@
       <ion-card>
         <ion-card-header>
           <h2>StockTrack</h2>
-          <p>Informe suas credenciais para</p>
-          <p>acessar sua conta de forma segura</p>
+          <p>
+            Informe suas credenciais para<br />acessar sua conta de forma segura
+          </p>
         </ion-card-header>
         <ion-card-content class="content">
           <br />
@@ -45,7 +46,7 @@
               ></ion-input>
             </div>
             <br />
-            <div>
+            <!-- <div>
               <ion-input
                 formControlName="institutionCode"
                 aria-label="Instituição"
@@ -58,7 +59,7 @@
                 maxlength="3"
                 minlength="3"
               ></ion-input>
-            </div>
+            </div> -->
             <br />
             <ion-button
               type="submit"
@@ -70,9 +71,11 @@
               (click)="onSubmit()"
               >ACESSAR</ion-button
             >
-            <a href="" style="color: var(--ion-color-tertiary)"
-              ><small>Esqueci minha senha</small></a
-            >
+            <div style="text-align: center">
+              <a href="" style="color: var(--ion-color-tertiary)"
+                ><small>Esqueci minha senha</small></a
+              >
+            </div>
           </form>
         </ion-card-content>
       </ion-card>
