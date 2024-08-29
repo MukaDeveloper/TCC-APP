@@ -64,7 +64,6 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
     if (Email && PasswordString) {
       this.usersService.auth({ Email, PasswordString }).subscribe({
         next: (res) => {
-          console.log('LOGADO', res);
           loading.then((l) => l.dismiss());
           this.formGroup?.reset();
           this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
