@@ -11,6 +11,11 @@
       <ion-content color="primary" style="height: 100%; overflow-y: hidden;">
         <app-sidebar></app-sidebar>
       </ion-content>
+      <ion-footer class="background-color">
+        <ion-button (click)="onLogout()" fill="solid" color="secondary">
+          Sair
+        </ion-button>
+      </ion-footer>
     </ion-menu>
     <ion-router-outlet id="main"></ion-router-outlet>
   </ion-split-pane>

@@ -16,7 +16,7 @@ import { RoutersEnum } from 'src/shared/utils/routers-enum';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent extends BaseComponent implements OnInit {
+export class SidebarComponent implements OnInit {
   // #region Properties (1)
 
   public isLoading = true;
@@ -26,14 +26,8 @@ export class SidebarComponent extends BaseComponent implements OnInit {
   // #region Constructors (1)
 
   constructor(
-    private readonly payloadService: PayloadService,
     private readonly sidebarService: SidebarService,
-    private router: Router,
-    toastController: ToastController,
-    alertController: AlertController,
-    loadingController: LoadingController
   ) {
-    super(toastController, alertController, loadingController);
     sidebarService.addMenu(sidebarMenu);
   }
 
@@ -45,12 +39,6 @@ export class SidebarComponent extends BaseComponent implements OnInit {
     this.isLoading = false;
   }
 
-  public onLogout() {
-    this.payloadService.nextPayload(null);
-    this.router.navigate([RoutersEnum.login], {
-      queryParams: { redirected: true },
-    });
-  }
 
   // #endregion Public Methods (1)
 }

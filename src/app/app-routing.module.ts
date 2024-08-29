@@ -35,7 +35,11 @@ const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: RoutersEnum.app },
+  { path: '**', redirectTo: RoutersEnum.app },  {
+    path: 'warehouses',
+    loadChildren: () => import('./routes/warehouses/warehouses.module').then( m => m.WarehousesPageModule)
+  },
+
 ];
 
 @NgModule({

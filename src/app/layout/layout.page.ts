@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PayloadService } from '../../services/payload/payload.service';
+import { RoutersEnum } from '../../shared/utils/routers-enum';
 
 @Component({
   selector: 'app-layout',
@@ -15,7 +18,12 @@ export class LayoutPage implements OnInit {
 
   // #region Constructors (1)
 
-  constructor() {}
+  constructor(
+    
+    private readonly payloadService: PayloadService,
+
+    private router: Router,
+  ) {}
 
   // #endregion Constructors (1)
 
@@ -27,6 +35,13 @@ export class LayoutPage implements OnInit {
 
   public ngOnInit() {
     this.isLoading = false;
+  }
+
+  public onLogout() {
+    this.payloadService.nextPayload(null);
+    this.router.navigate([RoutersEnum.login], {
+      queryParams: { redirected: true },
+    });
   }
 
   // #endregion Public Methods (1)
