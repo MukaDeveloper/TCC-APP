@@ -9,7 +9,7 @@ export class WarehousesService {
   private warehousesSubject: BehaviorSubject<any | null>;
   public warehouses$: Observable<any | null>;
 
-  constructor(public apiWarehousesService: ApiWarehousesService) {
+  constructor(private readonly apiWarehousesService: ApiWarehousesService) {
     this.warehousesSubject = new BehaviorSubject<any | null>(null);
     this.warehouses$ = this.warehousesSubject.asObservable();
   }

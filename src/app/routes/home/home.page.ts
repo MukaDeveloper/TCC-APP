@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ToastController,
   AlertController,
   LoadingController,
+  ToastController,
 } from '@ionic/angular';
 import { WarehousesService } from 'src/services/warehouses/warehouses.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
@@ -27,8 +27,10 @@ export class HomePage extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.subs.push(
-      this.warehousesService.warehouses$.subscribe((res) => this.warehouses = res),
-    )
+      this.warehousesService.warehouses$.subscribe(
+        (res) => (this.warehouses = res)
+      )
+    );
     this.isLoading = false;
   }
 }

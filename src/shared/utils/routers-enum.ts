@@ -8,4 +8,5 @@ export enum RoutersEnum {
   emailConfirm = 'email-confirm',
   home = 'home',
   areas = 'areas',
+  warehouses = 'warehouses',
 }

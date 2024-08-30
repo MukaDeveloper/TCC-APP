@@ -69,7 +69,7 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
           this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
         },
         error: (error) => {
-          this.alert(error?.error?.message, 'Aviso!');
+          this.alert(error?.message, 'Aviso!');
           loading.then((l) => l.dismiss());
         },
       });

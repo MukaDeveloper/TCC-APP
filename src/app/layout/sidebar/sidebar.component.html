@@ -1,4 +1,4 @@
-<ion-toolbar color="primary">
+<!-- <ion-toolbar color="primary">
   <ion-title>
     <div class="d-flex align-items-center justify-content-center">
       <img
@@ -9,7 +9,63 @@
       />
     </div>
   </ion-title>
-</ion-toolbar>
+</ion-toolbar> -->
 <app-userblock
   class="d-flex align-items-center justify-content-center"
 ></app-userblock>
+<ion-list color="primary">
+  <span *ngFor="let item of menus; let i = index">
+    <ion-list-header *ngIf="item.heading" color="primary">
+      <ion-label>{{ item.text }}</ion-label>
+    </ion-list-header>
+    <ion-menu-toggle
+      autoHide="false"
+      *ngIf="!item.heading && !item.subMenu?.length"
+    >
+      <ion-item
+        lines="full"
+        button
+        detail
+        color="primary"
+        (click)="onNavigate(item.link)"
+        [ngClass]="{ selected: item.link === routerLinkActive }"
+      >
+        <ion-icon
+          *ngIf="item.icon"
+          style="color: white;"
+          slot="start"
+          [ios]="item.icon + '-outline'"
+          [md]="item.icon + '-sharp'"
+        ></ion-icon>
+        <div *ngIf="item.svg">
+          <img [src]="item.svg" alt="" class="img-svg">
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+        </div>
+        <ion-label style="color: white;">{{ item.text }}</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+    <ion-accordion-group *ngIf="!item.heading && item.subMenu?.length">
+      <ion-accordion [value]="item.text">
+        <ion-item slot="header" color="primary">
+          <ion-icon
+            slot="start"
+            [ios]="item.icon + '-outline'"
+            [md]="item.icon + '-sharp'"
+          ></ion-icon>
+          <ion-label>{{ item.text }}</ion-label>
+        </ion-item>
+        <div slot="content" *ngFor="let subItem of item.subMenu">
+          <ion-item
+            button
+            detail
+            color="primary"
+            (click)="onNavigate(subItem.link)"
+          >
+            <ion-icon slot="start" name=""> </ion-icon>
+            <ion-label>{{ subItem.text }}</ion-label>
+          </ion-item>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </span>
+</ion-list>

@@ -1,13 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>warehouses</ion-title>
+    <ion-title>Almoxarifados</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">warehouses</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item>
+    <ion-searchbar></ion-searchbar>
+  </ion-item>
+  <ion-item *ngIf="!warehouses?.length" lines="none" class="d-flex justify-content-center">
+    <ion-label>Nenhum almoxarifado cadastrado</ion-label>
+  </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let item of warehouses">
+      <ion-label>{{ item.name }}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

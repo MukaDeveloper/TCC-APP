@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RoutersEnum } from '../shared/utils/routers-enum';
 import { payloadGuard } from './guards/payload.guard';
-import { LayoutPage } from './layout/layout.page';
 import { toHomeGuard } from './guards/to-home.guard';
+import { LayoutPage } from './layout/layout.page';
 
 const routes: Routes = [
   {
@@ -33,13 +33,21 @@ const routes: Routes = [
         loadChildren: () =>
           import('./routes/home/home.module').then((m) => m.HomePageModule),
       },
+      {
+        path: RoutersEnum.warehouses,
+        loadChildren: () =>
+          import('./routes/warehouses/warehouses.module').then(
+            (m) => m.WarehousesPageModule
+          ),
+      },
+      {
+        path: RoutersEnum.areas,
+        loadChildren: () =>
+          import('./routes/areas/areas.module').then((m) => m.AreasPageModule),
+      },
     ],
   },
-  { path: '**', redirectTo: RoutersEnum.app },  {
-    path: 'warehouses',
-    loadChildren: () => import('./routes/warehouses/warehouses.module').then( m => m.WarehousesPageModule)
-  },
-
+  { path: '**', redirectTo: RoutersEnum.app },
 ];
 
 @NgModule({
