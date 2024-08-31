@@ -1,0 +1,49 @@
+<ion-modal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Adicionar Almoxarifado</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="modal.dismiss()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content color="light">
+      <section class="wrapper" *ngIf="!isLoading">
+        <form
+          [formGroup]="formGroup"
+          *ngIf="formGroup"
+          class="ion-no-padding form"
+        >
+          <ion-item lines="none" color="light" class="input-name">
+            <ion-input
+              label="Nome"
+              labelPlacement="start"
+              formControlName="name"
+              fill="outline"
+              inputmode="text"
+              shape="round"
+              type="text"
+              placeholder="Almoxarifado Informática"
+            ></ion-input>
+          </ion-item>
+        </form>
+      </section>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="onSubmit()"
+            [disabled]="!formGroup?.valid"
+            color="primary"
+          >
+            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>

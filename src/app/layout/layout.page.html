@@ -9,7 +9,7 @@
   >
     <ion-menu contentId="main" type="overlay">
       <ion-content color="primary" style="height: 100%; overflow-y: hidden">
-        <app-sidebar></app-sidebar>
+        <app-sidebar [isMenuOpen]="isMenuOpen"></app-sidebar>
       </ion-content>
       <ion-footer class="background-color">
         <ion-button (click)="onLogout()" fill="solid" color="secondary">

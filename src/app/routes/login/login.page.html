@@ -1,9 +1,11 @@
 <ion-content [fullscreen]="true">
-  <section *ngIf="!isBusy">
+  <section *ngIf="!isLoading">
     <div class="wrapper">
       <ion-card>
         <ion-card-header>
-          <h2>StockTrack</h2>
+          <div class="d-flex justify-content-center">
+            <img src="assets/imgs/logo.png" alt="" style="width: 250px;" />
+          </div>
           <p>
             Informe suas credenciais para<br />acessar sua conta de forma segura
           </p>
@@ -46,20 +48,20 @@
               ></ion-input>
             </div>
             <br />
-            <!-- <div>
+            <div>
               <ion-input
                 formControlName="institutionCode"
-                aria-label="Instituição"
-                labelPlacement="end"
+                label="Instituição"
+                labelPlacement="start"
                 fill="outline"
-                type="text"
+                type="number"
                 inputmode="numeric"
                 class="custom"
                 shape="round"
                 maxlength="3"
-                minlength="3"
+                minlength="1"
               ></ion-input>
-            </div> -->
+            </div>
             <br />
             <ion-button
               type="submit"

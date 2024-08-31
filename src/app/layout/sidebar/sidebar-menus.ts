@@ -15,5 +15,10 @@ const warehouses = {
   link: RoutersEnum.app + '/' + RoutersEnum.warehouses,
   svg: 'assets/svgs/warehouse-icon.svg',
 };
+const materials = {
+  text: 'Materiais',
+  link: RoutersEnum.app + '/' + RoutersEnum.materials,
+  icon: ''
+};
 
-export const sidebarMenu = [home, areas, warehouses];
+export const sidebarMenu = [home, areas, warehouses, materials];

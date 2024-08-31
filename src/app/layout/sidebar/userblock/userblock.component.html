@@ -1,1 +1,15 @@
-<p>BOLOLÔ</p>
+<div *ngIf="payload">
+  <ion-avatar class="mx-auto user-avatar">
+    <ion-img [src]="getPayloadImage()" (error)="onImgError($event)"></ion-img>
+  </ion-avatar> <br />
+  <ion-label style="color: #FDFDFD;">
+    <ion-text class="ion-text-center">
+      <h1>
+        {{ payload.name }}
+      </h1>
+      <!-- <h3>
+        {{ payload?.email }}
+      </h3> -->
+    </ion-text>
+  </ion-label>
+</div>

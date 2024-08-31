@@ -20,6 +20,7 @@ export class WarehousesService {
         if (res) {
           this.warehousesSubject.next(res);
         }
+        return res;
       })
     );
   }

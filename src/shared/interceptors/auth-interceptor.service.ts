@@ -27,7 +27,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     const local = this.localStorageAuthService.val;
     const xUser = local ? `Bearer ${local}` : '';
     const dupReq = req.clone({
-      headers: req.headers.set('user', xUser),
+      headers: req.headers.set('Authorization', xUser),
     });
     return next.handle(dupReq);
   }

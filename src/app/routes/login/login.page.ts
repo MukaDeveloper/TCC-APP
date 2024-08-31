@@ -20,7 +20,7 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Properties (2)
 
   public formGroup: FormGroup | null = null;
-  public isBusy: boolean = true;
+  public isLoading: boolean = true;
 
   // #endregion Properties (2)
 
@@ -54,15 +54,17 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   public onSubmit() {
     const loading = this.loadingShow('Autenticando...');
+
     const Email = this.formGroup?.get('email')?.value;
     const PasswordString = this.formGroup?.get('password')?.value;
-    if (!Email || !PasswordString) {
+    const InstitutionCode = this.formGroup?.get('institutionCode')?.value;
+    if (!Email || !PasswordString || !InstitutionCode) {
       this.alert('Preencha os campos corretamente', 'Aviso!');
       loading.then((l) => l.dismiss());
       return;
     }
-    if (Email && PasswordString) {
-      this.usersService.auth({ Email, PasswordString }).subscribe({
+    if (Email && PasswordString && InstitutionCode) {
+      this.usersService.auth({ Email, PasswordString, InstitutionCode }).subscribe({
         next: (res) => {
           loading.then((l) => l.dismiss());
           this.formGroup?.reset();
@@ -85,10 +87,10 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      // institutionCode: new FormControl(''),
+      institutionCode: new FormControl('', [Validators.required]),
     });
     loading.then((l) => l.dismiss());
-    this.isBusy = false;
+    this.isLoading = false;
   }
 
   // #endregion Private Methods (1)

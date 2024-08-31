@@ -45,9 +45,14 @@ const routes: Routes = [
         loadChildren: () =>
           import('./routes/areas/areas.module').then((m) => m.AreasPageModule),
       },
+      {
+        path: RoutersEnum.materials,
+        loadChildren: () => import('./routes/materials/materials.module').then( m => m.MaterialsPageModule)
+      },
     ],
   },
   { path: '**', redirectTo: RoutersEnum.app },
+
 ];
 
 @NgModule({

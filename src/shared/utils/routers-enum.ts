@@ -9,4 +9,5 @@ export enum RoutersEnum {
   home = 'home',
   areas = 'areas',
   warehouses = 'warehouses',
+  materials = 'materials',
 }

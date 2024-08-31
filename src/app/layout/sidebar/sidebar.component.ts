@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   AlertController,
@@ -19,6 +19,7 @@ import { sidebarMenu } from './sidebar-menus';
 export class SidebarComponent extends BaseComponent implements OnInit {
   // #region Properties (1)
 
+  @Input('isMenuOpen') public isMenuOpen = false;
   public isLoading = true;
   public menus: any[] = [];
   public payload: IPayload | null = null;
