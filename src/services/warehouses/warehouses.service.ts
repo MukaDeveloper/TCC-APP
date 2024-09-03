@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { ApiWarehousesService } from 'src/app/api/api-warehouses.service';
+import { IEnvelope } from 'src/shared/utils/envelope';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +15,11 @@ export class WarehousesService {
     this.warehouses$ = this.warehousesSubject.asObservable();
   }
 
-  public getAll(): Observable<any> {
+  public getAll(): Observable<IEnvelope<any>> {
     return this.apiWarehousesService.getAll().pipe(
-      map((res: any) => {
-        if (res) {
-          this.warehousesSubject.next(res);
+      map((res: IEnvelope<any>) => {
+        if (res?.item) {
+          this.warehousesSubject.next(res.item);
         }
         return res;
       })

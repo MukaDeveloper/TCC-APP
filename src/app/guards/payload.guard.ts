@@ -37,7 +37,6 @@ export class PermissionsService {
 
     const payload = this.payloadService.payload;
 
-    console.log('[PayloadGuard] Payload =>', payload);
     if (!payload) {
       console.log('[PayloadGuard] BLOCKED => REDIRECT');
       return this.router.createUrlTree([RoutersEnum.login], {

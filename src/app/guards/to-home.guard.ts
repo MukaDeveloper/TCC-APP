@@ -1,4 +1,4 @@
-import { LocalStorageAuthService } from './../../services/localstorage/auth.service';
+import { SessionStorageAuthService } from '../../services/localstorage/auth-session.service';
 import { Injectable, inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -10,6 +10,7 @@ import {
 import { Observable } from 'rxjs';
 import { RoutersEnum } from 'src/shared/utils/routers-enum';
 import { PayloadService } from '../../services/payload/payload.service';
+import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class PermissionsService {
   // #region Constructors (1)
 
   constructor(
+    private readonly sessionStorageAuthService: SessionStorageAuthService,
     private readonly localStorageAuthService: LocalStorageAuthService,
     private readonly router: Router
   ) {}
@@ -36,9 +38,10 @@ export class PermissionsService {
     | Promise<boolean | UrlTree> {
     console.log('[ToHomeGuard] PermissionsService.canActivate');
 
+    const sessionStorage = this.sessionStorageAuthService.val;
     const localStorage = this.localStorageAuthService.val;
 
-    if (localStorage) {
+    if (sessionStorage || localStorage) {
       console.log('[ToHomeGuard] REDIRECT');
       return this.router.createUrlTree([`${RoutersEnum.app}/${RoutersEnum.home}`], {
         queryParams: { redirected: true },

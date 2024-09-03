@@ -3,13 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
-import { IInstitution } from '../../services/instution/interfaces/i-institution';
-import { IEnvelope } from 'src/shared/utils/envelope';
+import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApiInstitutionService extends ApiBaseService {
+export class ApiAreasService extends ApiBaseService {
   // #region Constructors (1)
 
   constructor(http: HttpClient) {
@@ -20,10 +19,10 @@ export class ApiInstitutionService extends ApiBaseService {
 
   // #region Public Methods (1)
 
-  public getCurrent(): Observable<IEnvelope<IInstitution>> {
-    const url = `${this.apiUrl}/Institution/get-current`;
+  public getAll(): Observable<IEnvelopeArray<any>> {
+    const url = `${this.apiUrl}/Areas/get-all`;
     return this.http
-      .get<IEnvelope<IInstitution>>(url)
+      .get<IEnvelopeArray<any>>(url)
       .pipe(catchError(HandleError.handler));
   }
 

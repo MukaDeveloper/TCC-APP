@@ -5,14 +5,21 @@ import { RoutersEnum } from '../../shared/utils/routers-enum';
 import { InstitutionService } from '../../services/instution/intitution.service';
 import { WarehousesService } from '../../services/warehouses/warehouses.service';
 import { IPayload } from '../../services/payload/interfaces/i-payload';
-import { map, merge, mergeMap } from 'rxjs';
+import { mergeMap } from 'rxjs';
+import { BaseComponent } from 'src/shared/utils/base.component';
+import {
+  ToastController,
+  AlertController,
+  LoadingController,
+  ViewDidEnter,
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.page.html',
   styleUrls: ['./layout.page.scss'],
 })
-export class LayoutPage implements OnInit {
+export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Properties (1)
 
   public isLoading = true;
@@ -28,7 +35,12 @@ export class LayoutPage implements OnInit {
     private readonly institutionService: InstitutionService,
     private readonly warehousesService: WarehousesService,
     private router: Router,
-  ) {}
+    toastController: ToastController,
+    alertController: AlertController,
+    loadingController: LoadingController
+  ) {
+    super(toastController, alertController, loadingController);
+  }
 
   // #endregion Constructors (1)
 
@@ -38,9 +50,14 @@ export class LayoutPage implements OnInit {
     this.isMenuOpen = event.detail.visible;
   }
 
-  public ngOnInit() {
-    this.isLoading = false;
+  public ionViewDidEnter(): void {
     this.onPayload();
+  }
+
+  public ngOnInit() {
+    this.subs.push(
+      this.payloadService.payload$.subscribe((res) => (this.payload = res))
+    );
   }
 
   public onLogout() {
@@ -51,17 +68,18 @@ export class LayoutPage implements OnInit {
   }
 
   private onPayload() {
-    console.log('Fazendo requisição de instituição e armazéns');
+    console.log('Fazendo requisição de instituição e armazéns', this.payload);
     this.institutionService
-      .getById(this.payload?.institutionId as number)
-      .pipe(
-        mergeMap(() => this.warehousesService.getAll()),
-      )
+      .getCurrent()
+      .pipe(mergeMap(() => this.warehousesService.getAll()))
       .subscribe({
-        next: (res) => {},
-        error: (err) => {},
+        next: (res) => {
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.isLoading = false;
+        },
       });
-    this.isLoading = false;
   }
 
   // #endregion Public Methods (1)

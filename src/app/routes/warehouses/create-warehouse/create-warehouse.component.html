@@ -29,18 +29,43 @@
               placeholder="Almoxarifado Informática"
             ></ion-input>
           </ion-item>
+          <br />
+          <ion-item lines="none" color="light">
+            <ion-select
+              label="Área"
+              fill="outline"
+              shape="round"
+              formControlName="area"
+              placeholder="Qual área pertence o almoxarifado?"
+            >
+              <ion-select-option value="apple">Apple</ion-select-option>
+              <ion-select-option value="banana">Banana</ion-select-option>
+              <ion-select-option value="orange">Orange</ion-select-option>
+            </ion-select>
+          </ion-item>
         </form>
       </section>
     </ion-content>
     <ion-footer>
       <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button
+            fill="solid"
+            (click)="modal.dismiss()"
+            [disabled]="!formGroup?.valid"
+            color="medium"
+          >
+            CANCELAR
+          </ion-button>
+        </ion-buttons>
         <ion-buttons slot="end">
           <ion-button
+            fill="solid"
             (click)="onSubmit()"
             [disabled]="!formGroup?.valid"
             color="primary"
           >
-            <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            ADICIONAR
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

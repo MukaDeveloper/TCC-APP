@@ -10,6 +10,7 @@ import {
 import { UsersService } from 'src/services/users/users.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { RoutersEnum } from '../../../shared/utils/routers-enum';
+import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
 
 @Component({
   selector: 'app-login',
@@ -21,12 +22,14 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   public formGroup: FormGroup | null = null;
   public isLoading: boolean = true;
+  public keepMeLogIn: boolean = false;
 
   // #endregion Properties (2)
 
   // #region Constructors (1)
 
   constructor(
+    private readonly localStorageAuthService: LocalStorageAuthService,
     private readonly usersService: UsersService,
     private router: Router,
     toastController: ToastController,
@@ -64,17 +67,26 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
       return;
     }
     if (Email && PasswordString && InstitutionId) {
-      this.usersService.auth({ Email, PasswordString, InstitutionId }).subscribe({
-        next: (res) => {
-          loading.then((l) => l.dismiss());
-          this.formGroup?.reset();
-          this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
-        },
-        error: (error) => {
-          this.alert(error?.message, 'Aviso!');
-          loading.then((l) => l.dismiss());
-        },
-      });
+      this.usersService
+        .auth({ Email, PasswordString, InstitutionId })
+        .subscribe({
+          next: (res) => {
+            loading.then((l) => l.dismiss());
+            console.log(
+              '[KEEP ME IN] =>',
+              this.formGroup?.get('keepIn')?.value
+            );
+            if (this.formGroup?.get('keepIn')?.value) {
+              this.localStorageAuthService.val = res?.item;
+            }
+            this.formGroup?.reset();
+            this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
+          },
+          error: (error) => {
+            this.alert(error?.message, 'Aviso!');
+            loading.then((l) => l.dismiss());
+          },
+        });
     }
   }
 
@@ -88,6 +100,7 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
       institutionId: new FormControl('', [Validators.required]),
+      keepIn: new FormControl(false),
     });
     loading.then((l) => l.dismiss());
     this.isLoading = false;

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { ApiInstitutionService } from '../../app/api/api-institution.service';
 import { IInstitution } from './interfaces/i-institution';
+import { IEnvelope } from 'src/shared/utils/envelope';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +23,12 @@ export class InstitutionService {
     this.institution$ = this.institutionSubject.asObservable();
   }
 
-  public getById(id: number): Observable<IInstitution> {
-    return this.apiInstitutionService.getById(id).pipe(
-      map((res: IInstitution) => {
-        if (res) {
-          this.institutionSubject.next(res);
+  public getCurrent(): Observable<IEnvelope<IInstitution>> {
+    return this.apiInstitutionService.getCurrent().pipe(
+      map((res: IEnvelope<IInstitution>) => {
+        if (res?.item) {
+          console.log('[INSTITUTION]', res.item);
+          this.institutionSubject.next(res.item);
         }
         return res;
       })

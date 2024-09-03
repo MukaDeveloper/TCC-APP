@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { ApiUsersService } from 'src/app/api/api-users.service';
 import { PayloadService } from './../payload/payload.service';
+import { IEnvelope } from 'src/shared/utils/envelope';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +23,11 @@ export class UsersService {
     Email: string;
     PasswordString: string;
     InstitutionId: number;
-  }): Observable<any> {
+  }): Observable<IEnvelope<string>> {
     return this.apiUsersService.auth(credentials).pipe(
-      map((res: any) => {
-        if (res.token) {
-          this.payloadService.nextPayload(res.token);
+      map((res: IEnvelope<string>) => {
+        if (res?.item) {
+          this.payloadService.nextPayload(res.item);
         } else {
           this.payloadService.nextPayload(null);
         }

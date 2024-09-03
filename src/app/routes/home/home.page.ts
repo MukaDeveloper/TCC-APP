@@ -38,10 +38,10 @@ export class HomePage extends BaseComponent implements OnInit {
       this.warehousesService.warehouses$.subscribe(
         (res) => (this.warehouses = res)
       ),
-      this.institutionService.institution$.subscribe((res) => {
-        this.institution = res;
-        console.log(this.institution);
-      })
+      this.institutionService.institution$.subscribe(
+        (res) => (this.institution = res)
+      )
     );
+    this.isLoading = false;
   }
 }

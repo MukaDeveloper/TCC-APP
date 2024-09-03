@@ -19,6 +19,7 @@ import { sidebarMenu } from './sidebar-menus';
 export class SidebarComponent extends BaseComponent implements OnInit {
   // #region Properties (1)
 
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('isMenuOpen') public isMenuOpen = false;
   public isLoading = true;
   public menus: any[] = [];

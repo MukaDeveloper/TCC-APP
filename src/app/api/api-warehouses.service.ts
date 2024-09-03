@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
+import { IEnvelope } from 'src/shared/utils/envelope';
 
 @Injectable({
   providedIn: 'root',
@@ -18,10 +19,10 @@ export class ApiWarehousesService extends ApiBaseService {
 
   // #region Public Methods (1)
 
-  public getAll(): Observable<any> {
+  public getAll(): Observable<IEnvelope<any>> {
     const url = `${this.apiUrl}/Warehouses/get-all`;
     return this.http
-      .get<any>(url)
+      .get<IEnvelope<any>>(url)
       .pipe(catchError(HandleError.handler));
   }
 
