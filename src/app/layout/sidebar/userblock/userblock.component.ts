@@ -3,6 +3,7 @@ import { BaseComponent } from '../../../../shared/utils/base.component';
 import { PayloadService } from '../../../../services/payload/payload.service';
 import { ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { IPayload } from '../../../../services/payload/interfaces/i-payload';
+import { InstitutionService } from '../../../../services/instution/intitution.service';
 
 @Component({
   selector: 'app-userblock',
@@ -12,9 +13,11 @@ import { IPayload } from '../../../../services/payload/interfaces/i-payload';
 export class UserblockComponent extends BaseComponent  implements OnInit {
 
   public payload: IPayload | null = null;
+  public institution: any = null;
 
   constructor(
     private readonly payloadService: PayloadService,
+    private readonly institutionService: InstitutionService,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -25,6 +28,7 @@ export class UserblockComponent extends BaseComponent  implements OnInit {
   ngOnInit() {
     this.subs.push(
       this.payloadService.payload$.subscribe((res) => (this.payload = res)),
+      this.institutionService.institution$.subscribe((res) => (this.institution = res))
     );
   }
 

@@ -4,7 +4,7 @@
       <ion-card>
         <ion-card-header>
           <div class="d-flex justify-content-center">
-            <img src="assets/imgs/logo.png" alt="" style="width: 250px;" />
+            <img src="assets/imgs/logo.png" alt="" style="width: 250px" />
           </div>
           <p>
             Informe suas credenciais para<br />acessar sua conta de forma segura
@@ -50,7 +50,7 @@
             <br />
             <div>
               <ion-input
-                formControlName="institutionCode"
+                formControlName="institutionId"
                 label="Instituição"
                 labelPlacement="start"
                 fill="outline"
@@ -60,7 +60,8 @@
                 shape="round"
                 maxlength="3"
                 minlength="1"
-              ></ion-input>
+                (keyup)="onKeyup($event.keyCode)"
+                ></ion-input>
             </div>
             <br />
             <ion-button

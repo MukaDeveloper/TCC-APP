@@ -57,14 +57,14 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
 
     const Email = this.formGroup?.get('email')?.value;
     const PasswordString = this.formGroup?.get('password')?.value;
-    const InstitutionCode = this.formGroup?.get('institutionCode')?.value;
-    if (!Email || !PasswordString || !InstitutionCode) {
+    const InstitutionId = this.formGroup?.get('institutionId')?.value;
+    if (!Email || !PasswordString || !InstitutionId) {
       this.alert('Preencha os campos corretamente', 'Aviso!');
       loading.then((l) => l.dismiss());
       return;
     }
-    if (Email && PasswordString && InstitutionCode) {
-      this.usersService.auth({ Email, PasswordString, InstitutionCode }).subscribe({
+    if (Email && PasswordString && InstitutionId) {
+      this.usersService.auth({ Email, PasswordString, InstitutionId }).subscribe({
         next: (res) => {
           loading.then((l) => l.dismiss());
           this.formGroup?.reset();
@@ -87,7 +87,7 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      institutionCode: new FormControl('', [Validators.required]),
+      institutionId: new FormControl('', [Validators.required]),
     });
     loading.then((l) => l.dismiss());
     this.isLoading = false;

@@ -21,7 +21,7 @@ export class ApiUsersService extends ApiBaseService {
   public auth(credentials: {
     Email: string;
     PasswordString: string;
-    InstitutionCode: number;
+    InstitutionId: number;
   }): Observable<any> {
     const url = `${this.apiUrl}/Users/auth`;
     return this.http

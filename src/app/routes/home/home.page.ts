@@ -4,7 +4,6 @@ import {
   LoadingController,
   ToastController,
 } from '@ionic/angular';
-import { mergeMap } from 'rxjs';
 import { WarehousesService } from 'src/services/warehouses/warehouses.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { InstitutionService } from '../../../services/instution/intitution.service';
@@ -44,18 +43,5 @@ export class HomePage extends BaseComponent implements OnInit {
         console.log(this.institution);
       })
     );
-    this.onPayload();
-  }
-
-  private onPayload() {
-    console.log('Fazendo requisição de instituição e armazéns');
-    this.institutionService
-      .getById(this.payload?.institutionId as number)
-      .pipe(mergeMap(() => this.warehousesService.getAll()))
-      .subscribe({
-        next: (res) => {},
-        error: (err) => {},
-      });
-    this.isLoading = false;
   }
 }

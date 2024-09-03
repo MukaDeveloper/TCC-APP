@@ -21,7 +21,7 @@ export class UsersService {
   public auth(credentials: {
     Email: string;
     PasswordString: string;
-    InstitutionCode: number;
+    InstitutionId: number;
   }): Observable<any> {
     return this.apiUsersService.auth(credentials).pipe(
       map((res: any) => {
