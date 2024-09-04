@@ -44,8 +44,10 @@ export class BaseComponent implements OnDestroy {
   public async loadingShow(message: string) {
     const loading = await this.loadingController.create({
       cssClass: 'custom-loading',
+      animated: true,
       message,
       duration: 0,
+      spinner: 'lines',
       translucent: true,
       backdropDismiss: false,
     });

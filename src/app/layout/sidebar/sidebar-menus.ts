@@ -18,7 +18,7 @@ const warehouses = {
 const materials = {
   text: 'Materiais',
   link: RoutersEnum.app + '/' + RoutersEnum.materials,
-  icon: ''
+  icon: 'archive'
 };
 
 export const sidebarMenu = [home, areas, warehouses, materials];

@@ -32,4 +32,15 @@ export class AreasService {
       })
     );
   }
+
+  public addNew(data: any): Observable<IEnvelope<any>> {
+    return this.apiAreasService.newArea(data).pipe(
+      map((res: IEnvelope<any>) => {
+        if (res?.item) {
+          this.areasSubject.next(res.item);
+        }
+        return res;
+      })
+    );
+  }
 }

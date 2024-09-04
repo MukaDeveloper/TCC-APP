@@ -5,5 +5,46 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <ion-item>
+    <ion-searchbar></ion-searchbar>
+  </ion-item>
+  <ion-list *ngIf="!isLoading">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="3" *ngFor="let item of areas">
+          <ion-card  button>
+            <ion-card-header>
+              <ion-buttons slot="end">
+                <!-- <ion-button (click)="editWarehouse()">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="deleteWarehouse()">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button> -->
+              </ion-buttons>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-label>
+                <p>{{ item.name }}</p>
+                <p>{{ item.description }}</p>
+              </ion-label>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="3">
+          <ion-card (click)="AppNewArea.onOpenModal()" button>
+            <ion-card-content class="add-card-content">
+              <ion-icon name="add-outline" class="add-icon"></ion-icon> <br />
+              <ion-label style="font-weight: 700"
+                >Adicionar área</ion-label
+              >
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
+  <app-new-area #AppNewArea></app-new-area>
 </ion-content>

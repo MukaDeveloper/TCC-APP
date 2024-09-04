@@ -1,13 +1,9 @@
-ion-card {
-  
-}
-
 .add-card-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%; /* Isso garante que o ícone esteja no centro vertical do card */
+  height: 100%;
 }
 
 .add-icon {

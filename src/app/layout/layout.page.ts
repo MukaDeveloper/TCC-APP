@@ -13,6 +13,7 @@ import {
   LoadingController,
   ViewDidEnter,
 } from '@ionic/angular';
+import { AreasService } from 'src/services/areas/areas.service';
 
 @Component({
   selector: 'app-layout',
@@ -33,6 +34,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   constructor(
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
+    private readonly areasService: AreasService,
     private readonly warehousesService: WarehousesService,
     private router: Router,
     toastController: ToastController,
@@ -69,14 +71,17 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   private onPayload() {
     console.log('Fazendo requisição de instituição e armazéns', this.payload);
+    const loading = this.loadingShow("Carregando...");
     this.institutionService
       .getCurrent()
-      .pipe(mergeMap(() => this.warehousesService.getAll()))
+      .pipe(mergeMap(() => this.areasService.getAll()))
       .subscribe({
         next: (res) => {
+          loading.then((l) => l.dismiss());
           this.isLoading = false;
         },
         error: (err) => {
+          loading.then((l) => l.dismiss());
           this.isLoading = false;
         },
       });

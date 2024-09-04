@@ -26,5 +26,12 @@ export class ApiAreasService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
+  public newArea(data: any): Observable<IEnvelope<any>> {
+    const url = `${this.apiUrl}/Areas/add-new`;
+    return this.http
+      .post<IEnvelope<any>>(url, data)
+      .pipe(catchError(HandleError.handler));
+  }
+
   // #endregion Public Methods (1)
 }

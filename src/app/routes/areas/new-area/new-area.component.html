@@ -1,0 +1,68 @@
+<ion-modal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Adicionar Área</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="modal.dismiss()">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content color="light">
+      <section class="wrapper" *ngIf="!isLoading">
+        <form
+          [formGroup]="formGroup"
+          *ngIf="formGroup"
+          class="ion-no-padding form"
+        >
+          <ion-item lines="none" color="light" class="input-name">
+            <ion-input
+              label="Nome"
+              labelPlacement="start"
+              formControlName="name"
+              fill="outline"
+              inputmode="text"
+              shape="round"
+              type="text"
+              placeholder="Área norte"
+            ></ion-input> <br>
+            <ion-textarea
+              label="Descrição"
+              labelPlacement="start"
+              formControlName="description"
+              inputmode="text"
+              type="text"
+              placeholder="Conjunto de almoxarifados da área norte da instituição"
+            ></ion-textarea>
+          </ion-item>
+        </form>
+      </section>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button
+            fill="solid"
+            (click)="modal.dismiss()"
+            [disabled]="!formGroup?.valid"
+            color="medium"
+          >
+            CANCELAR
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button
+            fill="solid"
+            (click)="onSubmit()"
+            [disabled]="!formGroup?.valid"
+            color="primary"
+          >
+            ADICIONAR
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
