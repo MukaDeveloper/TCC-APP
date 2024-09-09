@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   IonModal,
@@ -22,6 +22,7 @@ export class NewAreaComponent extends BaseComponent {
   public payload: IPayload | null = null;
   public isLoading = true;
   public formGroup: FormGroup | null = null;
+  @Output() public reload = new EventEmitter;
 
   constructor(
     private readonly payloadService: PayloadService,
@@ -47,6 +48,8 @@ export class NewAreaComponent extends BaseComponent {
     this.areasService.addNew(data).subscribe({
       next: (_) => {
         loading.then((l) => l.dismiss());
+        this.modal.dismiss();
+        this.reload.emit();
       },
       error: (err) => {
         console.log(err);

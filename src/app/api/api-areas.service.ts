@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
+import { IArea } from 'src/services/areas/interfaces/i-area';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
@@ -19,17 +20,17 @@ export class ApiAreasService extends ApiBaseService {
 
   // #region Public Methods (1)
 
-  public getAll(): Observable<IEnvelopeArray<any>> {
+  public getAll(): Observable<IEnvelopeArray<IArea>> {
     const url = `${this.apiUrl}/Areas/get-all`;
     return this.http
-      .get<IEnvelopeArray<any>>(url)
+      .get<IEnvelopeArray<IArea>>(url)
       .pipe(catchError(HandleError.handler));
   }
 
-  public newArea(data: any): Observable<IEnvelope<any>> {
+  public newArea(data: IArea): Observable<IEnvelope<IArea>> {
     const url = `${this.apiUrl}/Areas/add-new`;
     return this.http
-      .post<IEnvelope<any>>(url, data)
+      .post<IEnvelope<IArea>>(url, data)
       .pipe(catchError(HandleError.handler));
   }
 

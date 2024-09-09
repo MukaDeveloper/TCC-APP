@@ -10,6 +10,7 @@ import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { SidebarService } from '../../../services/sidebar/sidebar.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import { sidebarMenu } from './sidebar-menus';
+import { IMenu } from 'src/services/sidebar/interfaces/i-menus';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,7 +23,7 @@ export class SidebarComponent extends BaseComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('isMenuOpen') public isMenuOpen = false;
   public isLoading = true;
-  public menus: any[] = [];
+  public menus: IMenu[] | null = [];
   public payload: IPayload | null = null;
 
   // #endregion Properties (1)

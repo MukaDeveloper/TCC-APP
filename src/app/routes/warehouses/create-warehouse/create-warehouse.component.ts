@@ -8,6 +8,7 @@ import {
 } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AreasService } from 'src/services/areas/areas.service';
+import { IArea } from 'src/services/areas/interfaces/i-area';
 
 @Component({
   selector: 'app-create-warehouse',
@@ -19,7 +20,7 @@ export class CreateWarehouseComponent extends BaseComponent {
   @ViewChild(IonModal) public modal!: IonModal;
   public isLoading = true;
   public formGroup: FormGroup | null = null;
-  public areas: any[] | null = [];
+  public areas: IArea[] | null = [];
 
   constructor(
     private readonly areasService: AreasService,

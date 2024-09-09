@@ -2,6 +2,10 @@
   margin-top: 1rem;
 }
 
-.input-name {
-  --placeholder-opacity: 0.5;
+ion-input {
+  --placeholder-opacity: 0.3;
+}
+
+ion-textarea {
+  --placeholder-opacity: 0.3;
 }

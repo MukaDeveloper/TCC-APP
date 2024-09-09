@@ -1,12 +1,16 @@
-.add-card-content {
+ion-card {
+  height: 100%;
+}
+
+ion-card-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  text-align: center;
 }
 
-.add-icon {
+.icons {
   width: 100px;
   height: 100px;
 }

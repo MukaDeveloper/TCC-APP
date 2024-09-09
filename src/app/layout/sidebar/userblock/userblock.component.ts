@@ -4,6 +4,7 @@ import { PayloadService } from '../../../../services/payload/payload.service';
 import { ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { IPayload } from '../../../../services/payload/interfaces/i-payload';
 import { InstitutionService } from '../../../../services/instution/intitution.service';
+import { IInstitution } from 'src/services/instution/interfaces/i-institution';
 
 @Component({
   selector: 'app-userblock',
@@ -13,7 +14,7 @@ import { InstitutionService } from '../../../../services/instution/intitution.se
 export class UserblockComponent extends BaseComponent  implements OnInit {
 
   public payload: IPayload | null = null;
-  public institution: any = null;
+  public institution: IInstitution | null = null;
 
   constructor(
     private readonly payloadService: PayloadService,

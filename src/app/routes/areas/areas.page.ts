@@ -6,6 +6,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { AreasService } from 'src/services/areas/areas.service';
+import { IArea } from 'src/services/areas/interfaces/i-area';
 
 @Component({
   selector: 'app-areas',
@@ -14,7 +15,7 @@ import { AreasService } from 'src/services/areas/areas.service';
 })
 export class AreasPage extends BaseComponent implements OnInit {
   public isLoading = true;
-  public areas: any[] | null = [];
+  public areas: IArea[] | null = [];
 
   constructor(
     private readonly areasService: AreasService,
@@ -28,11 +29,36 @@ export class AreasPage extends BaseComponent implements OnInit {
   ngOnInit() {
     this.subs.push(
       this.areasService.areas$.subscribe((res) => {
-        console.log(res);
         this.areas = res;
       })
     );
 
     this.isLoading = false;
+  }
+
+  public selectArea(area: any) {
+
+  }
+
+  public editArea(area: any) {
+
+  }
+
+  public deleteArea(area: any) {
+
+  }
+
+  public onReload() {
+    this.isLoading = true;
+    this.areasService
+      .getAll()
+      .subscribe({
+        next: (res) => {
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.isLoading = false;
+        },
+      });
   }
 }

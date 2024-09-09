@@ -7,6 +7,7 @@ export interface IMenu {
   elink?: string;
   target?: string;
   icon?: string;
+  svg?: string;
   alert?: string;
-  submenu?: ISubMenu[];
+  subMenu?: ISubMenu[];
 }

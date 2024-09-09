@@ -22,6 +22,7 @@
               label="Nome"
               labelPlacement="start"
               formControlName="name"
+              justify="space-between"
               fill="outline"
               inputmode="text"
               shape="round"
@@ -38,9 +39,11 @@
               formControlName="area"
               placeholder="Qual área pertence o almoxarifado?"
             >
-              <ion-select-option value="apple">Apple</ion-select-option>
-              <ion-select-option value="banana">Banana</ion-select-option>
-              <ion-select-option value="orange">Orange</ion-select-option>
+              <ion-select-option
+                *ngFor="let area of areas"
+                [value]="area.name"
+                >{{ area.name }}</ion-select-option
+              >
             </ion-select>
           </ion-item>
         </form>
@@ -65,7 +68,7 @@
             [disabled]="!formGroup?.valid"
             color="primary"
           >
-            ADICIONAR
+            <ion-label style="color: #fdfdfd">ADICIONAR</ion-label>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

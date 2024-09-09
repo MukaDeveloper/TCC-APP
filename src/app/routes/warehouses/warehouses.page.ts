@@ -8,6 +8,7 @@ import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
 import { WarehousesService } from '../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
+import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 
 @Component({
   selector: 'app-warehouses',
@@ -17,7 +18,7 @@ import { BaseComponent } from '../../../shared/utils/base.component';
 export class WarehousesPage extends BaseComponent implements OnInit {
   @ViewChild('AppCreateWarehouse') public createWarehouse: any;
   public isLoading = true;
-  public warehouses: any[] = [];
+  public warehouses: IWarehouse[] | null = [];
   public payload: IPayload | null = null;
 
   constructor(

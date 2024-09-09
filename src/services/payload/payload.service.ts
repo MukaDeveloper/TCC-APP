@@ -63,7 +63,6 @@ export class PayloadService {
     }
     this.sessionStorageAuthService.val = token;
     const payload = this.decodeJWT(token);
-    console.log('[NextPayload]', payload);
     this.payloadSubject.next(payload || null);
   }
 
@@ -74,7 +73,6 @@ export class PayloadService {
   private decodeJWT(token: string): IPayload | null {
     try {
       const decoded = jwtDecode<IPayload>(token);
-      console.log('[DECODE]', decoded);
       if (decoded) {
         return decoded as IPayload;
       }

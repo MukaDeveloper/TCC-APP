@@ -35,7 +35,6 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
     private readonly areasService: AreasService,
-    private readonly warehousesService: WarehousesService,
     private router: Router,
     toastController: ToastController,
     alertController: AlertController,
@@ -70,7 +69,6 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   }
 
   private onPayload() {
-    console.log('Fazendo requisição de instituição e armazéns', this.payload);
     const loading = this.loadingShow("Carregando...");
     this.institutionService
       .getCurrent()

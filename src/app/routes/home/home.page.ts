@@ -9,6 +9,8 @@ import { BaseComponent } from 'src/shared/utils/base.component';
 import { InstitutionService } from '../../../services/instution/intitution.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
+import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
+import { IInstitution } from 'src/services/instution/interfaces/i-institution';
 
 @Component({
   selector: 'app-home',
@@ -18,8 +20,8 @@ import { PayloadService } from '../../../services/payload/payload.service';
 export class HomePage extends BaseComponent implements OnInit {
   public isLoading = true;
   public payload: IPayload | null = null;
-  public institution: any | null = null;
-  public warehouses: any[] = [];
+  public institution: IInstitution | null = null;
+  public warehouses: IWarehouse[] | null = [];
 
   constructor(
     private readonly payloadService: PayloadService,
