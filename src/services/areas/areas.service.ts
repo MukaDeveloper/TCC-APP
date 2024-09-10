@@ -11,8 +11,10 @@ export class AreasService {
   // #region Properties (2)
 
   private areasSubject: BehaviorSubject<IArea[] | null>;
-
   public areas$: Observable<IArea[] | null>;
+
+  private selectedAreaSubject: BehaviorSubject<IArea | null>;
+  public selectedArea$: Observable<IArea | null>;
 
   // #endregion Properties (2)
 
@@ -21,6 +23,8 @@ export class AreasService {
   constructor(private readonly apiAreasService: ApiAreasService) {
     this.areasSubject = new BehaviorSubject<IArea[] | null>([]);
     this.areas$ = this.areasSubject.asObservable();
+    this.selectedAreaSubject = new BehaviorSubject<IArea | null>(null);
+    this.selectedArea$ = this.selectedAreaSubject.asObservable();
   }
 
   public getAll(): Observable<IEnvelopeArray<IArea>> {
@@ -38,6 +42,7 @@ export class AreasService {
     return this.apiAreasService.newArea(data).pipe(
       map((res: IEnvelope<IArea>) => {
         if (res?.item) {
+          this.selectedAreaSubject.next(res.item);
           const index = this.areasSubject.value?.findIndex((a) => a.id === res.item.id) as number;
           if (index >= 0 && this.areasSubject.value?.length) {
             this.areasSubject.value[index] = res.item;

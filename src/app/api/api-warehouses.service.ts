@@ -4,7 +4,7 @@ import { Observable, catchError } from 'rxjs';
 import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
-import { IEnvelopeArray } from 'src/shared/utils/envelope';
+import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +24,13 @@ export class ApiWarehousesService extends ApiBaseService {
     const url = `${this.apiUrl}/Warehouses/get-all`;
     return this.http
       .get<IEnvelopeArray<IWarehouse>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public create(data: IWarehouse): Observable<IEnvelope<IWarehouse>> {
+    const url = `${this.apiUrl}/Warehouses/create`;
+    return this.http
+      .post<IEnvelope<IWarehouse>>(url, data)
       .pipe(catchError(HandleError.handler));
   }
 

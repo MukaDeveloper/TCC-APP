@@ -1,6 +1,6 @@
 {
   "name": "tcc-app",
-  "version": "0.0.1",
+  "version": "0.0.21",
   "author": "TechBridge",
   "scripts": {
     "ng": "ng",

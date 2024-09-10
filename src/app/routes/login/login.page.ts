@@ -72,10 +72,6 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
         .subscribe({
           next: (res) => {
             loading.then((l) => l.dismiss());
-            console.log(
-              '[KEEP ME IN] =>',
-              this.formGroup?.get('keepIn')?.value
-            );
             if (this.formGroup?.get('keepIn')?.value) {
               this.localStorageAuthService.val = res?.item;
             }
