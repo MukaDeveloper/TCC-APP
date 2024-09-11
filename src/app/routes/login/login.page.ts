@@ -7,10 +7,10 @@ import {
   ToastController,
   ViewDidEnter,
 } from '@ionic/angular';
+import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
 import { UsersService } from 'src/services/users/users.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { RoutersEnum } from '../../../shared/utils/routers-enum';
-import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
 
 @Component({
   selector: 'app-login',
@@ -49,7 +49,7 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   ionViewDidEnter(): void {}
 
-  public onKeyup($e: number): void {
+  public onKeyEvent($e: number): void {
     if ($e === 13 && this.formGroup!.valid) {
       this.onSubmit();
     }

@@ -43,6 +43,10 @@ export class NewAreaComponent extends BaseComponent {
   }
 
   public onSubmit() {
+    if (!this.formGroup?.valid) {
+      this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
+      return;
+    }
     const loading = this.loadingShow("Adicionando...");
     const data = this.formGroup?.value;
     this.areasService.addNew(data).subscribe({

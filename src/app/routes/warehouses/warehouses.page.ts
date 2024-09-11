@@ -38,10 +38,14 @@ export class WarehousesPage extends BaseComponent implements OnInit {
         (res) => (this.warehouses = res)
       )
     );
-    this.isLoading = false;
+    this.getAll();
   }
 
   public onReload() {
+    this.getAll();
+  }
+
+  public getAll() {
     this.isLoading = true;
     this.warehousesService
       .getAll()
@@ -59,9 +63,9 @@ export class WarehousesPage extends BaseComponent implements OnInit {
     this.createWarehouse.onOpenModal();
   }
 
-  public editWarehouse() {}
+  public editWarehouse(wh: IWarehouse) {}
 
-  public deleteWarehouse() {}
+  public deleteWarehouse(wh: IWarehouse) {}
 
   public goToWarehouse() {}
 }

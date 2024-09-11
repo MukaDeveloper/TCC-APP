@@ -30,7 +30,8 @@
                 inputmode="email"
                 shape="round"
                 autocomplete="email"
-                (keyup)="onKeyup($event.keyCode)"
+                (keyup)="onKeyEvent($event.keyCode)"
+                (keydown)="onKeyEvent($event.keyCode)"
                 email
               ></ion-input>
             </div>
@@ -44,7 +45,8 @@
                 type="password"
                 class="custom"
                 shape="round"
-                (keyup)="onKeyup($event.keyCode)"
+                (keyup)="onKeyEvent($event.keyCode)"
+                (keydown)="onKeyEvent($event.keyCode)"
               ></ion-input>
             </div>
             <br />
@@ -60,12 +62,16 @@
                 shape="round"
                 maxlength="3"
                 minlength="1"
-                (keyup)="onKeyup($event.keyCode)"
+                (keyup)="onKeyEvent($event.keyCode)"
+                (keydown)="onKeyEvent($event.keyCode)"
               ></ion-input>
             </div>
             <br />
             <div class="checkbox">
-              <ion-checkbox formControlName="keepIn" slot="end" labelPlacement="start"
+              <ion-checkbox
+                formControlName="keepIn"
+                slot="end"
+                labelPlacement="start"
                 >Manter-me conectado</ion-checkbox
               >
             </div>

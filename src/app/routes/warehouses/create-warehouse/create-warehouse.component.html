@@ -20,7 +20,8 @@
           <ion-item lines="none" color="light" class="input-name">
             <ion-input
               label="Nome"
-              justify="space-between"
+              labelPlacement="fixed"
+              justify="space-around"
               formControlName="name"
               fill="outline"
               inputmode="text"
@@ -35,12 +36,12 @@
               label="Área"
               fill="outline"
               shape="round"
-              formControlName="area"
+              formControlName="areaId"
               placeholder="Qual área pertence o almoxarifado?"
             >
               <ion-select-option
                 *ngFor="let area of areas"
-                [value]="area.name"
+                [value]="area.id"
                 >{{ area.name }}</ion-select-option
               >
             </ion-select>

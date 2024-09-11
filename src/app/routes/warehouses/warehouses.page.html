@@ -19,23 +19,34 @@
         <ion-col size="3" *ngFor="let item of warehouses">
           <ion-card (click)="goToWarehouse()" button>
             <ion-card-header>
-              <ion-buttons slot="end">
-                <ion-button (click)="editWarehouse()">
-                  <ion-icon name="create-outline"></ion-icon>
-                </ion-button>
-                <ion-button (click)="deleteWarehouse()">
-                  <ion-icon name="trash-outline"></ion-icon>
-                </ion-button>
-              </ion-buttons>
+              <ion-card-title
+                style="display: flex; justify-content: space-between"
+              >
+                <ion-label>
+                  <ion-text>{{ item.name }}</ion-text>
+                </ion-label>
+                <ion-buttons>
+                  <ion-button (click)="editWarehouse(item)">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </ion-button>
+                  <!-- ARRUMAR OS ÍCONES. SE O NOME FOR MUITO GRANDE, JOGA OS ÍCONES PRA FORA DO CARD -->
+                  <ion-button (click)="deleteWarehouse(item)">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-card-title>
             </ion-card-header>
-            <ion-card-content> {{ item.description }} </ion-card-content>
+            <ion-card-content>
+              <img src="assets/svgs/warehouse-icon.svg" alt="" class="icons" />
+              <ion-label>{{ item.description }}</ion-label>
+            </ion-card-content>
           </ion-card>
         </ion-col>
 
         <ion-col size="3">
           <ion-card (click)="addNewWarehouse()" button>
             <ion-card-content class="add-card-content">
-              <ion-icon name="add-outline" class="add-icon"></ion-icon> <br />
+              <ion-icon name="add-outline" class="icons"></ion-icon> <br />
               <ion-label style="font-weight: 700"
                 >Inserir almoxarifado</ion-label
               >
@@ -46,5 +57,8 @@
     </ion-grid>
   </ion-list>
 
-  <app-create-warehouse #AppCreateWarehouse></app-create-warehouse>
+  <app-create-warehouse
+    #AppCreateWarehouse
+    (reload)="onReload()"
+  ></app-create-warehouse>
 </ion-content>

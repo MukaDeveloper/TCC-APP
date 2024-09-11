@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { BaseComponent } from '../../../../shared/utils/base.component';
 import {
   AlertController,
@@ -9,6 +9,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AreasService } from 'src/services/areas/areas.service';
 import { IArea } from 'src/services/areas/interfaces/i-area';
+import { WarehousesService } from '../../../../services/warehouses/warehouses.service';
 
 @Component({
   selector: 'app-create-warehouse',
@@ -21,8 +22,10 @@ export class CreateWarehouseComponent extends BaseComponent {
   public isLoading = true;
   public formGroup: FormGroup | null = null;
   public areas: IArea[] | null = [];
+  @Output() public reload = new EventEmitter;
 
   constructor(
+    private readonly warehousesService: WarehousesService,
     private readonly areasService: AreasService,
     toastController: ToastController,
     alertController: AlertController,
@@ -40,14 +43,31 @@ export class CreateWarehouseComponent extends BaseComponent {
   }
 
   public onSubmit() {
-
+    if (!this.formGroup?.valid) {
+      this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
+      return;
+    }
+    const loading = this.loadingShow("Adicionando...");
+    const data = this.formGroup?.value;
+    this.warehousesService.create(data).subscribe({
+      next: (_) => {
+        loading.then((l) => l.dismiss());
+        this.modal.dismiss();
+        this.reload.emit();
+      },
+      error: (err) => {
+        console.log(err);
+        this.alert(err.message, "Atenção!");
+        loading.then((l) => l.dismiss());
+      }
+    });
   }
 
   private createForm() {
     const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
-      area: new FormControl('', [Validators.required]),
+      areaId: new FormControl('', [Validators.required]),
       description: new FormControl(''),
     });
     loading.then((l) => l.dismiss());
