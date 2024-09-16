@@ -3,6 +3,7 @@ import { Observable, map } from 'rxjs';
 import { ApiUsersService } from 'src/app/api/api-users.service';
 import { PayloadService } from './../payload/payload.service';
 import { IEnvelope } from 'src/shared/utils/envelope';
+import { CredentialsDto } from './dto/credentials.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +20,7 @@ export class UsersService {
 
   // #region Public Methods (1)
 
-  public auth(credentials: {
-    Email: string;
-    PasswordString: string;
-    InstitutionId: number;
-  }): Observable<IEnvelope<string>> {
+  public auth(credentials: CredentialsDto): Observable<IEnvelope<string>> {
     return this.apiUsersService.auth(credentials).pipe(
       map((res: IEnvelope<string>) => {
         if (res?.item) {

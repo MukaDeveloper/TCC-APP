@@ -1,15 +1,29 @@
+// #region Interfaces (2)
+
 export interface IEnvelope<T> {
+  // #region Properties (1)
+
   item: T;
+
+  // #endregion Properties (1)
 }
 
 export interface IEnvelopeArray<T> {
+  // #region Properties (6)
+
   actives?: number;
-  offSet: number;
-  limit: number;
-  itemsTotal: number;
-  total: number;
   items: T[];
+  itemsTotal: number;
+  limit: number;
+  offSet: number;
+  total: number;
+
+  // #endregion Properties (6)
 }
+
+// #endregion Interfaces (2)
+
+// #region Functions (3)
 
 export function factoryEnvelope<T>(data: T | null) {
   return {
@@ -29,6 +43,7 @@ export function factoryEnvelopeArray<T>(items?: T[]) {
   data.items = items;
   return data;
 }
+
 export function factoryEnvelopeArrayPagination<T>(
   items: T[],
   offset: number,
@@ -43,3 +58,5 @@ export function factoryEnvelopeArrayPagination<T>(
   data.items = items;
   return data;
 }
+
+// #endregion Functions (3)

@@ -16,14 +16,16 @@
   <ion-list *ngIf="!isLoading">
     <ion-grid>
       <ion-row>
-        <ion-col size="3" *ngFor="let item of areas">
-          <ion-card  (click)="selectArea(item)" button>
-            <ion-card-header>
-              <ion-card-title style="display: flex; justify-content: space-between;">
-                <ion-label>
-                  <ion-text>{{ item.name }}</ion-text>
-                </ion-label>
-                <ion-buttons>
+        <ion-col [size]="columnSize" *ngFor="let item of areas">
+          <ion-card (click)="selectArea(item)" button>
+            <ion-card-header title="{{ item.name }}">
+              <ion-card-title class="card-header-content">
+                <div class="card-header-text">
+                  <ion-label>
+                    <ion-text>{{ item.name }}</ion-text>
+                  </ion-label>
+                </div>
+                <ion-buttons class="ion-no-padding">
                   <ion-button (click)="editArea(item)">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button>
@@ -40,11 +42,17 @@
           </ion-card>
         </ion-col>
 
-        <ion-col size="3">
-          <ion-card class="ion-padding" (click)="AppNewArea.onOpenModal()" button>
+        <ion-col [size]="columnSize">
+          <ion-card
+            class="ion-padding"
+            (click)="AppNewArea.onOpenModal()"
+            button
+          >
             <ion-card-content>
               <ion-icon name="add-outline" class="icons"></ion-icon> <br />
-              <ion-label style="font-weight: 700">Adicionar nova<br />área</ion-label>
+              <ion-label style="font-weight: 700"
+                >Adicionar nova<br />área</ion-label
+              >
             </ion-card-content>
           </ion-card>
         </ion-col>

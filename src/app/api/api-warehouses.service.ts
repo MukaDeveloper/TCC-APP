@@ -18,14 +18,7 @@ export class ApiWarehousesService extends ApiBaseService {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
-
-  public getAll(): Observable<IEnvelopeArray<IWarehouse>> {
-    const url = `${this.apiUrl}/Warehouses/get-all`;
-    return this.http
-      .get<IEnvelopeArray<IWarehouse>>(url)
-      .pipe(catchError(HandleError.handler));
-  }
+  // #region Public Methods (2)
 
   public create(data: IWarehouse): Observable<IEnvelope<IWarehouse>> {
     const url = `${this.apiUrl}/Warehouses/create`;
@@ -34,5 +27,12 @@ export class ApiWarehousesService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  // #endregion Public Methods (1)
+  public getAll(): Observable<IEnvelopeArray<IWarehouse>> {
+    const url = `${this.apiUrl}/Warehouses/get-all`;
+    return this.http
+      .get<IEnvelopeArray<IWarehouse>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  // #endregion Public Methods (2)
 }

@@ -48,7 +48,12 @@ ion-input.custom {
   color: var(--ion-color-dark);
 }
 
-.checkbox {
+.checkbox-left {
+  display: flex;
+  justify-content: left;
+}
+
+.checkbox-right {
   display: flex;
   justify-content: right;
 }

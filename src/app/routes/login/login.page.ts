@@ -11,6 +11,7 @@ import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.se
 import { UsersService } from 'src/services/users/users.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { RoutersEnum } from '../../../shared/utils/routers-enum';
+import { CredentialsDto } from '../../../services/users/dto/credentials.dto';
 
 @Component({
   selector: 'app-login',
@@ -18,13 +19,13 @@ import { RoutersEnum } from '../../../shared/utils/routers-enum';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
-  // #region Properties (2)
+  // #region Properties (3)
 
   public formGroup: FormGroup | null = null;
   public isLoading: boolean = true;
   public keepMeLogIn: boolean = false;
 
-  // #endregion Properties (2)
+  // #endregion Properties (3)
 
   // #region Constructors (1)
 
@@ -41,13 +42,13 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (2)
+  // #region Public Methods (4)
+
+  public ionViewDidEnter(): void {}
 
   public ngOnInit() {
     this.createForm();
   }
-
-  ionViewDidEnter(): void {}
 
   public onKeyEvent($e: number): void {
     if ($e === 13 && this.formGroup!.valid) {
@@ -58,35 +59,48 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
   public onSubmit() {
     const loading = this.loadingShow('Autenticando...');
 
-    const Email = this.formGroup?.get('email')?.value;
-    const PasswordString = this.formGroup?.get('password')?.value;
-    const InstitutionId = this.formGroup?.get('institutionId')?.value;
-    if (!Email || !PasswordString || !InstitutionId) {
+    const email = this.formGroup?.get('email')?.value;
+    const passwordString = this.formGroup?.get('password')?.value;
+    const institutionId = this.formGroup?.get('institutionId')?.value;
+    const noInstitution = this.formGroup?.get('noInstitution')?.value;
+    console.log(email, passwordString, institutionId, noInstitution);
+    if (!email || !passwordString || (!institutionId && !noInstitution)) {
       this.alert('Preencha os campos corretamente', 'Aviso!');
       loading.then((l) => l.dismiss());
       return;
     }
-    if (Email && PasswordString && InstitutionId) {
-      this.usersService
-        .auth({ Email, PasswordString, InstitutionId })
-        .subscribe({
-          next: (res) => {
-            loading.then((l) => l.dismiss());
-            if (this.formGroup?.get('keepIn')?.value) {
-              this.localStorageAuthService.val = res?.item;
-            }
+    if (email && passwordString && (institutionId || noInstitution)) {
+      const credentials = {
+        email,
+        passwordString,
+        noInstitution,
+      } as CredentialsDto;
+      if (!noInstitution) {
+        credentials.institutionId = institutionId;
+      }
+      this.usersService.auth(credentials).subscribe({
+        next: (res) => {
+          loading.then((l) => l.dismiss());
+          if (this.formGroup?.get('keepIn')?.value) {
+            this.localStorageAuthService.val = res?.item;
+          }
+          if (this.formGroup?.get('noInstitution')?.value) {
             this.formGroup?.reset();
-            this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
-          },
-          error: (error) => {
-            this.alert(error?.message, 'Aviso!');
-            loading.then((l) => l.dismiss());
-          },
-        });
+            this.router.navigate([RoutersEnum.checkin]);
+            return;
+          }
+          this.formGroup?.reset();
+          this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
+        },
+        error: (error) => {
+          this.alert(error?.message, 'Aviso!');
+          loading.then((l) => l.dismiss());
+        },
+      });
     }
   }
 
-  // #endregion Public Methods (2)
+  // #endregion Public Methods (4)
 
   // #region Private Methods (1)
 
@@ -95,8 +109,25 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      institutionId: new FormControl('', [Validators.required]),
+      institutionId: new FormControl(''),
       keepIn: new FormControl(false),
+      noInstitution: new FormControl(false),
+    });
+    this.formGroup.get('institutionId')?.valueChanges.subscribe((value) => {
+      if (value) {
+        this.formGroup
+          ?.get('noInstitution')
+          ?.setValue(false, { emitEvent: false });
+      }
+    });
+
+    // Monitora mudanças no checkbox noInstitution
+    this.formGroup.get('noInstitution')?.valueChanges.subscribe((checked) => {
+      if (checked) {
+        this.formGroup
+          ?.get('institutionId')
+          ?.setValue(null, { emitEvent: false });
+      }
     });
     loading.then((l) => l.dismiss());
     this.isLoading = false;

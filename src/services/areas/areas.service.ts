@@ -8,15 +8,15 @@ import { IArea } from './interfaces/i-area';
   providedIn: 'root',
 })
 export class AreasService {
-  // #region Properties (2)
+  // #region Properties (4)
 
   private areasSubject: BehaviorSubject<IArea[] | null>;
-  public areas$: Observable<IArea[] | null>;
-
   private selectedAreaSubject: BehaviorSubject<IArea | null>;
+
+  public areas$: Observable<IArea[] | null>;
   public selectedArea$: Observable<IArea | null>;
 
-  // #endregion Properties (2)
+  // #endregion Properties (4)
 
   // #region Constructors (1)
 
@@ -27,16 +27,9 @@ export class AreasService {
     this.selectedArea$ = this.selectedAreaSubject.asObservable();
   }
 
-  public getAll(): Observable<IEnvelopeArray<IArea>> {
-    return this.apiAreasService.getAll().pipe(
-      map((res: IEnvelopeArray<IArea>) => {
-        if (res?.items) {
-          this.areasSubject.next(res.items);
-        }
-        return res;
-      })
-    );
-  }
+  // #endregion Constructors (1)
+
+  // #region Public Methods (3)
 
   public addNew(data: IArea): Observable<IEnvelope<IArea>> {
     return this.apiAreasService.newArea(data).pipe(
@@ -54,4 +47,22 @@ export class AreasService {
       })
     );
   }
+
+  public getAll(): Observable<IEnvelopeArray<IArea>> {
+    return this.apiAreasService.getAll().pipe(
+      map((res: IEnvelopeArray<IArea>) => {
+        if (res?.items) {
+          this.areasSubject.next(res.items);
+        }
+        return res;
+      })
+    );
+  }
+
+  public reset() {
+    this.areasSubject.next(null);
+    this.selectedAreaSubject.next(null);
+  }
+
+  // #endregion Public Methods (3)
 }

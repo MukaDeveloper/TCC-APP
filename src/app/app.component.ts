@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  // #region Constructors (1)
+
   constructor() {}
+
+  // #endregion Constructors (1)
 }

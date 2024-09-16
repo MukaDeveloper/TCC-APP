@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '../../../shared/utils/base.component';
 import {
   AlertController,
   LoadingController,
@@ -7,6 +6,7 @@ import {
 } from '@ionic/angular';
 import { AreasService } from 'src/services/areas/areas.service';
 import { IArea } from 'src/services/areas/interfaces/i-area';
+import { BaseComponent } from '../../../shared/utils/base.component';
 
 @Component({
   selector: 'app-areas',
@@ -14,8 +14,14 @@ import { IArea } from 'src/services/areas/interfaces/i-area';
   styleUrls: ['./areas.page.scss'],
 })
 export class AreasPage extends BaseComponent implements OnInit {
-  public isLoading = true;
+  // #region Properties (2)
+
   public areas: IArea[] | null = [];
+  public isLoading = true;
+
+  // #endregion Properties (2)
+
+  // #region Constructors (1)
 
   constructor(
     private readonly areasService: AreasService,
@@ -26,7 +32,25 @@ export class AreasPage extends BaseComponent implements OnInit {
     super(toastController, alertController, loadingController);
   }
 
-  ngOnInit() {
+  // #endregion Constructors (1)
+
+  // #region Public Methods (5)
+
+  public get columnSize(): number {
+    if (window.innerWidth <= 950 && window.innerWidth > 798) {
+      return 4;
+    }
+    if (window.innerWidth <= 798) {
+      return 6;
+    }
+    return 3;
+  }
+
+  public deleteArea(area: any) {}
+
+  public editArea(area: any) {}
+
+  public ngOnInit() {
     this.subs.push(
       this.areasService.areas$.subscribe((res) => {
         this.areas = res;
@@ -36,29 +60,21 @@ export class AreasPage extends BaseComponent implements OnInit {
     this.isLoading = false;
   }
 
-  public selectArea(area: any) {
-
-  }
-
-  public editArea(area: any) {
-
-  }
-
-  public deleteArea(area: any) {
-
-  }
-
   public onReload() {
     this.isLoading = true;
-    this.areasService
-      .getAll()
-      .subscribe({
-        next: (res) => {
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.isLoading = false;
-        },
-      });
+    this.areasService.getAll().subscribe({
+      next: (res) => {
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+      },
+    });
   }
+
+  public selectArea(area: any) {
+    console.log('[AREA]', area);
+  }
+
+  // #endregion Public Methods (5)
 }

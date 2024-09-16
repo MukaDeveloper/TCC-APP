@@ -14,3 +14,17 @@ ion-card-content {
   width: 100px;
   height: 100px;
 }
+
+.card-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.card-header-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}

@@ -4,6 +4,7 @@ import { Observable, catchError } from 'rxjs';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope } from 'src/shared/utils/envelope';
+import { CredentialsDto } from '../../services/users/dto/credentials.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +20,8 @@ export class ApiUsersService extends ApiBaseService {
 
   // #region Public Methods (1)
 
-  public auth(credentials: {
-    Email: string;
-    PasswordString: string;
-    InstitutionId: number;
-  }): Observable<IEnvelope<string>> {
-    const url = `${this.apiUrl}/Users/auth`;
+  public auth(credentials: CredentialsDto): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/auth?noInstitution=${credentials.noInstitution}`;
     return this.http
       .post<IEnvelope<string>>(url, credentials)
       .pipe(catchError(HandleError.handler));

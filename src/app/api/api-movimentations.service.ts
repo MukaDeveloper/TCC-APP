@@ -5,11 +5,12 @@ import { IArea } from 'src/services/areas/interfaces/i-area';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
+import { IMovimentations } from '../../services/movimentations/interfaces/i-movimentations';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApiAreasService extends ApiBaseService {
+export class ApiMovimentationsService extends ApiBaseService {
   // #region Constructors (1)
 
   constructor(http: HttpClient) {
@@ -18,21 +19,14 @@ export class ApiAreasService extends ApiBaseService {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (2)
+  // #region Public Methods (1)
 
-  public getAll(): Observable<IEnvelopeArray<IArea>> {
-    const url = `${this.apiUrl}/Areas/get-all`;
+  public getAll(): Observable<IEnvelopeArray<IMovimentations>> {
+    const url = `${this.apiUrl}/Movimentations/get-all`;
     return this.http
-      .get<IEnvelopeArray<IArea>>(url)
+      .get<IEnvelopeArray<IMovimentations>>(url)
       .pipe(catchError(HandleError.handler));
   }
 
-  public newArea(data: IArea): Observable<IEnvelope<IArea>> {
-    const url = `${this.apiUrl}/Areas/add-new`;
-    return this.http
-      .post<IEnvelope<IArea>>(url, data)
-      .pipe(catchError(HandleError.handler));
-  }
-
-  // #endregion Public Methods (2)
+  // #endregion Public Methods (1)
 }

@@ -18,15 +18,15 @@ import { IMenu } from 'src/services/sidebar/interfaces/i-menus';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent extends BaseComponent implements OnInit {
-  // #region Properties (1)
+  // #region Properties (4)
 
+  public isLoading = true;
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('isMenuOpen') public isMenuOpen = false;
-  public isLoading = true;
   public menus: IMenu[] | null = [];
   public payload: IPayload | null = null;
 
-  // #endregion Properties (1)
+  // #endregion Properties (4)
 
   // #region Constructors (1)
 
@@ -44,11 +44,15 @@ export class SidebarComponent extends BaseComponent implements OnInit {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
+  // #region Public Getters And Setters (1)
 
   public get routerLinkActive() {
     return this.router.url;
   }
+
+  // #endregion Public Getters And Setters (1)
+
+  // #region Public Methods (2)
 
   public ngOnInit() {
     this.subs.push(
@@ -61,5 +65,5 @@ export class SidebarComponent extends BaseComponent implements OnInit {
     this.router.navigateByUrl(link);
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Methods (2)
 }

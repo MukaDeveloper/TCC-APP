@@ -16,7 +16,7 @@ export class SessionStorageAuthService {
 
   // #endregion Constructors (1)
 
-  // #region Public Accessors (1)
+  // #region Public Getters And Setters (2)
 
   public get val(): string {
     const val = sessionStorage.getItem(this.key);
@@ -26,10 +26,6 @@ export class SessionStorageAuthService {
     return val;
   }
 
-  // #endregion Public Accessors (1)
-
-  // #region Public Methods (1)
-
   public set val(val: string) {
     if (!val) {
       sessionStorage.setItem(this.key, '');
@@ -38,5 +34,5 @@ export class SessionStorageAuthService {
     }
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Getters And Setters (2)
 }

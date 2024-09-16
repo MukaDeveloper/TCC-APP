@@ -1,6 +1,7 @@
 export enum RoutersEnum {
   app = 'app',
   login = 'login',
+  checkin = 'checkin',
   register = 'register',
   recovery = 'recovery-password',
   terms = 'terms-of-use',

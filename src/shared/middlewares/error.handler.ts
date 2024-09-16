@@ -2,11 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
 export class HandleError {
-  static handler(error: HttpErrorResponse | any) {
+  // #region Public Static Methods (2)
+
+  public static handler(error: HttpErrorResponse | any) {
     return throwError(HandleError.makeErrorModel(error));
   }
-  
-  static makeErrorModel(error: HttpErrorResponse | any) {
+
+  public static makeErrorModel(error: HttpErrorResponse | any) {
     console.log('Error:', error);
   
     let errorModel: { message: string; status: number };
@@ -28,4 +30,6 @@ export class HandleError {
   
     return errorModel;
   }
+
+  // #endregion Public Static Methods (2)
 }

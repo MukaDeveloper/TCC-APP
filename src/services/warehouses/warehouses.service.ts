@@ -8,11 +8,17 @@ import { IWarehouse } from './interfaces/i-warehouse';
   providedIn: 'root',
 })
 export class WarehousesService {
-  private warehousesSubject: BehaviorSubject<IWarehouse[] | null>;
-  public warehouses$: Observable<IWarehouse[] | null>;
+  // #region Properties (4)
 
   private selectedWarehouseSubject: BehaviorSubject<IWarehouse | null>;
+  private warehousesSubject: BehaviorSubject<IWarehouse[] | null>;
+
   public selectedWarehouse$: Observable<IWarehouse | null>;
+  public warehouses$: Observable<IWarehouse[] | null>;
+
+  // #endregion Properties (4)
+
+  // #region Constructors (1)
 
   constructor(private readonly apiWarehousesService: ApiWarehousesService) {
     this.warehousesSubject = new BehaviorSubject<IWarehouse[] | null>([]);
@@ -21,16 +27,9 @@ export class WarehousesService {
     this.selectedWarehouse$ = this.selectedWarehouseSubject.asObservable();
   }
 
-  public getAll(): Observable<IEnvelopeArray<IWarehouse>> {
-    return this.apiWarehousesService.getAll().pipe(
-      map((res: IEnvelopeArray<IWarehouse>) => {
-        if (res?.items?.length) {
-          this.warehousesSubject.next(res.items);
-        }
-        return res;
-      })
-    );
-  }
+  // #endregion Constructors (1)
+
+  // #region Public Methods (3)
 
   public create(data: IWarehouse): Observable<IEnvelope<IWarehouse>> {
     return this.apiWarehousesService.create(data).pipe(
@@ -52,4 +51,22 @@ export class WarehousesService {
       })
     );
   }
+
+  public getAll(): Observable<IEnvelopeArray<IWarehouse>> {
+    return this.apiWarehousesService.getAll().pipe(
+      map((res: IEnvelopeArray<IWarehouse>) => {
+        if (res?.items?.length) {
+          this.warehousesSubject.next(res.items);
+        }
+        return res;
+      })
+    );
+  }
+
+  public reset() {
+    this.warehousesSubject.next(null);
+    this.selectedWarehouseSubject.next(null);
+  }
+
+  // #endregion Public Methods (3)
 }

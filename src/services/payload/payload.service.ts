@@ -29,7 +29,7 @@ export class PayloadService {
 
   // #endregion Constructors (1)
 
-  // #region Public Getters And Setters (2)
+  // #region Public Getters And Setters (1)
 
   public get payload(): IPayload | null {
     let payload = this.payloadSubject.value;
@@ -50,7 +50,7 @@ export class PayloadService {
     return this.payloadSubject.value;
   }
 
-  // #endregion Public Getters And Setters (2)
+  // #endregion Public Getters And Setters (1)
 
   // #region Public Methods (1)
 

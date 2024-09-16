@@ -67,12 +67,20 @@
               ></ion-input>
             </div>
             <br />
-            <div class="checkbox">
+            <div class="checkbox-right">
               <ion-checkbox
                 formControlName="keepIn"
                 slot="end"
                 labelPlacement="start"
                 >Manter-me conectado</ion-checkbox
+              >
+            </div>
+            <div class="checkbox-left">
+              <ion-checkbox
+                formControlName="noInstitution"
+                slot="start"
+                labelPlacement="end"
+                >Não sei minha instituição</ion-checkbox
               >
             </div>
             <br />
@@ -96,4 +104,5 @@
       </ion-card>
     </div>
   </section>
+  <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
 </ion-content>

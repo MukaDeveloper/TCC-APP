@@ -16,7 +16,7 @@ export class LocalStorageAuthService {
 
   // #endregion Constructors (1)
 
-  // #region Public Accessors (1)
+  // #region Public Getters And Setters (2)
 
   public get val(): string {
     const val = localStorage.getItem(this.key);
@@ -26,10 +26,6 @@ export class LocalStorageAuthService {
     return val;
   }
 
-  // #endregion Public Accessors (1)
-
-  // #region Public Methods (1)
-
   public set val(val: string) {
     if (!val) {
       localStorage.setItem(this.key, '');
@@ -38,5 +34,5 @@ export class LocalStorageAuthService {
     }
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Getters And Setters (2)
 }

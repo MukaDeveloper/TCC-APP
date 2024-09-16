@@ -11,9 +11,16 @@ import { environment } from 'src/environments/environment';
   template: '',
 })
 export class BaseComponent implements OnDestroy {
+  // #region Properties (2)
+
   protected subs: Subscription[] = [];
+
   public darkMode: boolean = window.matchMedia('(prefers-color-scheme: dark)')
     .matches;
+
+  // #endregion Properties (2)
+
+  // #region Constructors (1)
 
   constructor(
     public readonly toastController: ToastController,
@@ -21,8 +28,46 @@ export class BaseComponent implements OnDestroy {
     public readonly loadingController: LoadingController
   ) {}
 
+  // #endregion Constructors (1)
+
+  // #region Public Getters And Setters (1)
+
   public get isDev() {
     return !environment.production;
+  }
+
+  // #endregion Public Getters And Setters (1)
+
+  // #region Public Methods (5)
+
+  public async alert(message: string, header: string, subHeader: string = '') {
+    const alert = await this.alertController.create({
+      cssClass: 'custom-alert',
+      header,
+      subHeader,
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
+    const { role } = await alert.onDidDismiss();
+  }
+
+  public async loadingShow(message: string) {
+    const loading = await this.loadingController.create({
+      cssClass: 'custom-loading',
+      animated: true,
+      message,
+      duration: 0,
+      spinner: 'lines',
+      translucent: true,
+      backdropDismiss: false,
+    });
+    await loading.present();
+    return loading;
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 
   public phoneMaskEvent(event: any) {
@@ -41,36 +86,6 @@ export class BaseComponent implements OnDestroy {
     event.target.value = phoneNumber;
   }
 
-  public async loadingShow(message: string) {
-    const loading = await this.loadingController.create({
-      cssClass: 'custom-loading',
-      animated: true,
-      message,
-      duration: 0,
-      spinner: 'lines',
-      translucent: true,
-      backdropDismiss: false,
-    });
-    await loading.present();
-    return loading;
-  }
-
-  public async alert(message: string, header: string, subHeader: string = '') {
-    const alert = await this.alertController.create({
-      cssClass: 'custom-alert',
-      header,
-      subHeader,
-      message,
-      buttons: ['OK'],
-    });
-    await alert.present();
-    const { role } = await alert.onDidDismiss();
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
-
   public async toast(
     message: string,
     header: string,
@@ -86,4 +101,6 @@ export class BaseComponent implements OnDestroy {
     });
     return toast.present();
   }
+
+  // #endregion Public Methods (5)
 }

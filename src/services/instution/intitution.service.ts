@@ -23,6 +23,10 @@ export class InstitutionService {
     this.institution$ = this.institutionSubject.asObservable();
   }
 
+  // #endregion Constructors (1)
+
+  // #region Public Methods (2)
+
   public getCurrent(): Observable<IEnvelope<IInstitution>> {
     return this.apiInstitutionService.getCurrent().pipe(
       map((res: IEnvelope<IInstitution>) => {
@@ -34,4 +38,10 @@ export class InstitutionService {
       })
     );
   }
+
+  public reset() {
+    this.institutionSubject.next(null);
+  }
+
+  // #endregion Public Methods (2)
 }

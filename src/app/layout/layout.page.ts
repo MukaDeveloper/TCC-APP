@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PayloadService } from '../../services/payload/payload.service';
-import { RoutersEnum } from '../../shared/utils/routers-enum';
-import { InstitutionService } from '../../services/instution/intitution.service';
-import { WarehousesService } from '../../services/warehouses/warehouses.service';
-import { IPayload } from '../../services/payload/interfaces/i-payload';
-import { mergeMap } from 'rxjs';
-import { BaseComponent } from 'src/shared/utils/base.component';
 import {
-  ToastController,
   AlertController,
   LoadingController,
+  ToastController,
   ViewDidEnter,
 } from '@ionic/angular';
+import { mergeMap } from 'rxjs';
 import { AreasService } from 'src/services/areas/areas.service';
+import { BaseComponent } from 'src/shared/utils/base.component';
+import { InstitutionService } from '../../services/instution/intitution.service';
+import { IPayload } from '../../services/payload/interfaces/i-payload';
+import { PayloadService } from '../../services/payload/payload.service';
+import { ResetService } from '../../services/reset/reset.service';
+import { RoutersEnum } from '../../shared/utils/routers-enum';
 
 @Component({
   selector: 'app-layout',
@@ -21,17 +21,18 @@ import { AreasService } from 'src/services/areas/areas.service';
   styleUrls: ['./layout.page.scss'],
 })
 export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
-  // #region Properties (1)
+  // #region Properties (3)
 
   public isLoading = true;
   public isMenuOpen = false;
   public payload: IPayload | null = null;
 
-  // #endregion Properties (1)
+  // #endregion Properties (3)
 
   // #region Constructors (1)
 
   constructor(
+    private readonly resetService: ResetService,
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
     private readonly areasService: AreasService,
@@ -45,11 +46,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
-
-  onSplitPaneVisible(event: any) {
-    this.isMenuOpen = event.detail.visible;
-  }
+  // #region Public Methods (4)
 
   public ionViewDidEnter(): void {
     this.onPayload();
@@ -62,14 +59,24 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   }
 
   public onLogout() {
+    this.resetService.resetAll();
     this.payloadService.nextPayload(null);
     this.router.navigate([RoutersEnum.login], {
+      replaceUrl: true,
       queryParams: { redirected: true },
     });
   }
 
+  public onSplitPaneVisible(event: any) {
+    this.isMenuOpen = event.detail.visible;
+  }
+
+  // #endregion Public Methods (4)
+
+  // #region Private Methods (1)
+
   private onPayload() {
-    const loading = this.loadingShow("Carregando...");
+    const loading = this.loadingShow('Carregando...');
     this.institutionService
       .getCurrent()
       .pipe(mergeMap(() => this.areasService.getAll()))
@@ -85,5 +92,5 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
       });
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Private Methods (1)
 }

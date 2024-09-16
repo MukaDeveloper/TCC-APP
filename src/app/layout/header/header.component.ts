@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
+  // #region Public Methods (2)
 
   public ngOnInit() {
     this.isLoading = false;
@@ -37,5 +37,5 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Methods (2)
 }

@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./materials.page.scss'],
 })
 export class MaterialsPage implements OnInit {
+  // #region Constructors (1)
 
   constructor() { }
 
-  ngOnInit() {
+  // #endregion Constructors (1)
+
+  // #region Public Methods (1)
+
+  public ngOnInit() {
   }
 
+  // #endregion Public Methods (1)
 }
