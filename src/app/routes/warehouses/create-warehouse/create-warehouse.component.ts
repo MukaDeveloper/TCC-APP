@@ -10,6 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AreasService } from 'src/services/areas/areas.service';
 import { IArea } from 'src/services/areas/interfaces/i-area';
 import { WarehousesService } from '../../../../services/warehouses/warehouses.service';
+import { MovimentationsService } from 'src/services/movimentations/warehouses.service';
 
 @Component({
   selector: 'app-create-warehouse',
@@ -30,6 +31,7 @@ export class CreateWarehouseComponent extends BaseComponent {
   // #region Constructors (1)
 
   constructor(
+    private readonly movimentationsService: MovimentationsService,
     private readonly warehousesService: WarehousesService,
     private readonly areasService: AreasService,
     toastController: ToastController,
@@ -51,6 +53,16 @@ export class CreateWarehouseComponent extends BaseComponent {
     this.modal.present();
   }
 
+  public reloadMovimentations() {
+    this.movimentationsService.getAll().subscribe({
+      next: (_) => _,
+      error: (error) => {
+        this.alert("[MV400] " + error?.message, "Atenção!");
+        console.error(error);
+      }
+    })
+  }
+
   public onSubmit() {
     if (!this.formGroup?.valid) {
       this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
@@ -61,6 +73,7 @@ export class CreateWarehouseComponent extends BaseComponent {
     this.warehousesService.create(data).subscribe({
       next: (_) => {
         loading.then((l) => l.dismiss());
+        this.reloadMovimentations();
         this.modal.dismiss();
         this.reload.emit();
       },
