@@ -18,7 +18,7 @@ export class UsersService {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
+  // #region Public Methods (2)
 
   public auth(credentials: CredentialsDto): Observable<IEnvelope<string>> {
     return this.apiUsersService.auth(credentials).pipe(
@@ -33,5 +33,18 @@ export class UsersService {
     );
   }
 
-  // #endregion Public Methods (1)
+  public selectInstitution(id: number): Observable<IEnvelope<string>> {
+    return this.apiUsersService.selectInstitution(id).pipe(
+      map((res: IEnvelope<string>) => {
+        if (res?.item) {
+          this.payloadService.nextPayload(res.item);
+        } else {
+          this.payloadService.nextPayload(null);
+        }
+        return res;
+      })
+    );
+  }
+
+  // #endregion Public Methods (2)
 }

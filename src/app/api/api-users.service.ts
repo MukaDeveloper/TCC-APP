@@ -18,14 +18,21 @@ export class ApiUsersService extends ApiBaseService {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
+  // #region Public Methods (2)
 
   public auth(credentials: CredentialsDto): Observable<IEnvelope<string>> {
-    const url = `${this.apiUrl}/Users/auth?noInstitution=${credentials.noInstitution}`;
+    const url = `${this.apiUrl}/Users/auth`;
     return this.http
       .post<IEnvelope<string>>(url, credentials)
       .pipe(catchError(HandleError.handler));
   }
 
-  // #endregion Public Methods (1)
+  public selectInstitution(id: number): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/select-institution/${id}`;
+    return this.http
+      .patch<IEnvelope<string>>(url, null)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  // #endregion Public Methods (2)
 }

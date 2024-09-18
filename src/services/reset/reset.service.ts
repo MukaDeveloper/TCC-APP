@@ -8,6 +8,8 @@ import { InstitutionService } from '../instution/intitution.service';
   providedIn: 'root',
 })
 export class ResetService {
+  // #region Constructors (1)
+
   constructor(
     private readonly areasService: AreasService,
     private readonly institutionService: InstitutionService,
@@ -15,10 +17,16 @@ export class ResetService {
     private readonly warehousesService: WarehousesService
   ) {}
 
+  // #endregion Constructors (1)
+
+  // #region Public Methods (1)
+
   public resetAll() {
     this.areasService.reset();
     this.institutionService.reset();
     this.movimentationsService.reset();
     this.warehousesService.reset();
   }
+
+  // #endregion Public Methods (1)
 }

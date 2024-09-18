@@ -5,6 +5,9 @@ import { ToastController, AlertController, LoadingController } from '@ionic/angu
 import { IPayload } from '../../../../services/payload/interfaces/i-payload';
 import { InstitutionService } from '../../../../services/instution/intitution.service';
 import { IInstitution } from 'src/services/instution/interfaces/i-institution';
+import { ResetService } from '../../../../services/reset/reset.service';
+import { RoutersEnum } from '../../../../shared/utils/routers-enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-userblock',
@@ -22,8 +25,10 @@ export class UserblockComponent extends BaseComponent  implements OnInit {
   // #region Constructors (1)
 
   constructor(
+    private readonly resetService: ResetService, 
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
+    private router: Router,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController

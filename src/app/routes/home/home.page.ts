@@ -65,9 +65,9 @@ export class HomePage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #endregion Public Getters And Setters (2)
 
-  // #region Public Methods (2)
+  // #region Public Methods (3)
 
-  ionViewDidEnter(): void {
+  public ionViewDidEnter(): void {
     if (!this.movimentationsFilter?.length) {
       this.getAll();
     }
@@ -95,7 +95,7 @@ export class HomePage extends BaseComponent implements OnInit, ViewDidEnter {
     this.getAll();
   }
 
-  // #endregion Public Methods (2)
+  // #endregion Public Methods (3)
 
   // #region Private Methods (1)
 

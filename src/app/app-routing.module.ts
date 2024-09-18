@@ -4,7 +4,6 @@ import { RoutersEnum } from '../shared/utils/routers-enum';
 import { payloadGuard } from './guards/payload.guard';
 import { toHomeGuard } from './guards/to-home.guard';
 import { LayoutPage } from './layout/layout.page';
-import { institutionGuard } from './guards/hasInstitution.guard';
 
 const routes: Routes = [
   {
@@ -19,16 +18,8 @@ const routes: Routes = [
       import('./routes/login/login.module').then((m) => m.LoginPageModule),
   },
   {
-    path: 'checkin',
-    canActivate: [institutionGuard],
-    loadChildren: () =>
-      import('./routes/checkin/checkin.module').then(
-        (m) => m.CheckinPageModule
-      ),
-  },
-  {
     path: RoutersEnum.app,
-    canActivateChild: [payloadGuard, institutionGuard],
+    canActivateChild: [payloadGuard],
     component: LayoutPage,
     children: [
       {

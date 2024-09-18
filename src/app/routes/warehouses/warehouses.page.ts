@@ -39,7 +39,7 @@ export class WarehousesPage extends BaseComponent implements OnInit {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (7)
+  // #region Public Getters And Setters (1)
 
   public get columnSize(): number {
     if (window.innerWidth <= 950 && window.innerWidth > 798) {
@@ -50,7 +50,11 @@ export class WarehousesPage extends BaseComponent implements OnInit {
     }
     return 3;
   }
-  
+
+  // #endregion Public Getters And Setters (1)
+
+  // #region Public Methods (7)
+
   public addNewWarehouse() {
     this.createWarehouse.onOpenModal();
   }
