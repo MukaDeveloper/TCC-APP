@@ -26,7 +26,7 @@
                   </ion-label>
                 </div>
                 <ion-buttons class="ion-no-padding">
-                  <ion-button (click)="editArea(item)">
+                  <ion-button (click)="AppEditArea.onOpenModal()">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button>
                   <ion-button (click)="deleteArea(item)">
@@ -61,4 +61,5 @@
   </ion-list>
 
   <app-new-area #AppNewArea (reload)="onReload()"></app-new-area>
+  <app-edit-area #AppEditArea (reload)="onReload()"></app-edit-area>
 </ion-content>

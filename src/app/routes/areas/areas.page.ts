@@ -52,8 +52,6 @@ export class AreasPage extends BaseComponent implements OnInit {
 
   public deleteArea(area: any) {}
 
-  public editArea(area: any) {}
-
   public ngOnInit() {
     this.subs.push(
       this.areasService.areas$.subscribe((res) => {

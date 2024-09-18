@@ -1,10 +1,10 @@
-<ion-modal #AddArea>
+<ion-modal #EditArea>
   <ng-template>
     <ion-header>
       <ion-toolbar>
         <ion-title>Adicionar Área</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="AddArea.dismiss()">
+          <ion-button (click)="EditArea.dismiss()">
             <ion-icon slot="icon-only" name="close"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -53,7 +53,7 @@
         <ion-buttons slot="start">
           <ion-button
             fill="solid"
-            (click)="AddArea.dismiss()"
+            (click)="EditArea.dismiss()"
             [disabled]="!formGroup?.valid"
             color="medium"
           >

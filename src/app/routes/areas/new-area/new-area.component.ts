@@ -1,3 +1,4 @@
+import { MovimentationsService } from './../../../../services/movimentations/warehouses.service';
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
@@ -30,6 +31,7 @@ export class NewAreaComponent extends BaseComponent {
   // #region Constructors (1)
 
   constructor(
+    private readonly movimentationsService: MovimentationsService,
     private readonly payloadService: PayloadService,
     private readonly areasService: AreasService,
     toastController: ToastController,
@@ -51,6 +53,16 @@ export class NewAreaComponent extends BaseComponent {
     this.modal.present();
   }
 
+  public reloadMovimentations() {
+    this.movimentationsService.getAll().subscribe({
+      next: (_) => _,
+      error: (error) => {
+        this.alert("[MV400] " + error?.message, "Atenção!");
+        console.error(error);
+      }
+    })
+  }
+
   public onSubmit() {
     if (!this.formGroup?.valid) {
       this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
@@ -61,6 +73,7 @@ export class NewAreaComponent extends BaseComponent {
     this.areasService.addNew(data).subscribe({
       next: (_) => {
         loading.then((l) => l.dismiss());
+        this.reloadMovimentations();
         this.modal.dismiss();
         this.reload.emit();
       },

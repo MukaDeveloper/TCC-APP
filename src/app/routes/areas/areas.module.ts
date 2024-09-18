@@ -9,6 +9,7 @@ import { AreasPageRoutingModule } from './areas-routing.module';
 import { AreasPage } from './areas.page';
 import { SharedModule } from '../../../shared/shared.module';
 import { NewAreaComponent } from './new-area/new-area.component';
+import { EditAreaComponent } from './edit-area/edit-area.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { NewAreaComponent } from './new-area/new-area.component';
     IonicModule,
     AreasPageRoutingModule
   ],
-  declarations: [AreasPage, NewAreaComponent]
+  declarations: [AreasPage, NewAreaComponent, EditAreaComponent]
 })
 export class AreasPageModule {}
