@@ -6,11 +6,12 @@ import {
   LoadingController,
   ViewDidEnter,
 } from '@ionic/angular';
-import { EMovimentationType } from '../../../services/movimentations/interfaces/enum/EMovimentationType';
+import { EMovimentationEvent } from '../../../services/movimentations/interfaces/enum/EMovimentationEvent';
 import { IMovimentations } from '../../../services/movimentations/interfaces/i-movimentations';
 import { MovimentationsService } from '../../../services/movimentations/movimentations.service';
 import { PayloadService } from '../../../services/payload/payload.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
+import { EMovimentationType } from 'src/services/movimentations/interfaces/enum/EMovimentationType';
 
 @Component({
   selector: 'app-movimentations',
@@ -55,9 +56,9 @@ export class MovimentationsPage
   public get filteredEntries(): IMovimentations[] | null {
     return (
       this.movimentationsFilter
-        ?.filter((mov) => mov.type === EMovimentationType.ENTRY)
+        ?.filter((mov) => mov.event === EMovimentationEvent.ENTRY)
         .sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         ) || []
     );
   }
@@ -65,9 +66,9 @@ export class MovimentationsPage
   public get filteredExits(): IMovimentations[] | null {
     return (
       this.movimentationsFilter
-        ?.filter((mov) => mov.type === EMovimentationType.EXIT)
+        ?.filter((mov) => mov.event === EMovimentationEvent.EXIT)
         .sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         ) || []
     );
   }
@@ -94,6 +95,32 @@ export class MovimentationsPage
         (res) => (this.movimentationsFilter = res)
       )
     );
+  }
+
+  public getEvent(event: EMovimentationEvent): string {
+    switch (event) {
+      case EMovimentationEvent.ENTRY:
+        return "ENTRADA";
+      case EMovimentationEvent.EXIT:
+        return "SAÍDA"
+    }
+  }
+
+  public getType(type: EMovimentationType): string {
+    switch (type) {
+      case EMovimentationType.Area:
+        return "AREA";
+      case EMovimentationType.General:
+        return "NÃO MAPEADA"
+      case EMovimentationType.Warehouse:
+        return "ALMOXARIFADO"
+      case EMovimentationType.Material:
+        return "MATERIAL"
+      case EMovimentationType.Loan:
+        return "EMPRÉSTIMO"
+      case EMovimentationType.Maintenance:
+        return "MANUTENÇÃO"
+    }
   }
 
   public onReload() {

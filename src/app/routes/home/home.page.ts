@@ -10,7 +10,7 @@ import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 import { WarehousesService } from 'src/services/warehouses/warehouses.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { InstitutionService } from '../../../services/instution/intitution.service';
-import { EMovimentationType } from '../../../services/movimentations/interfaces/enum/EMovimentationType';
+import { EMovimentationEvent } from '../../../services/movimentations/interfaces/enum/EMovimentationEvent';
 import { IMovimentations } from '../../../services/movimentations/interfaces/i-movimentations';
 import { MovimentationsService } from '../../../services/movimentations/movimentations.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';

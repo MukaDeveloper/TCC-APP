@@ -1,4 +1,4 @@
-export enum EMovimentationType {
+export enum EMovimentationReason {
   Insertion = 1,
   Edit = 2,
   ReturnFromLoan = 3,

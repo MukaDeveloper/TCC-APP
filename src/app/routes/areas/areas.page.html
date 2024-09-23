@@ -3,7 +3,7 @@
     <ion-title>Áreas</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onReload()" fill="none">
-        <ion-icon name="reload-outline"></ion-icon>
+        <ion-icon name="refresh"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -28,7 +28,7 @@
               <ion-card-title class="card-header-content">
                 <div class="card-header-text">
                   <ion-label>
-                    <ion-text>{{ item.name }}</ion-text>
+                    <ion-text>#{{ item.id }} - {{ item.name }}</ion-text>
                   </ion-label>
                 </div>
                 <ion-buttons class="ion-no-padding">
