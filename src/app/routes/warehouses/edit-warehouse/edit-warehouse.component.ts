@@ -12,27 +12,29 @@ import {
   LoadingController,
   ToastController,
 } from '@ionic/angular';
-import { AreasService } from 'src/services/areas/areas.service';
-import { IArea } from 'src/services/areas/interfaces/i-area';
-import { NewWarehouseDto } from '../../../../services/warehouses/dto/new-warehouse.dto';
+import { AreasService } from '../../../../services/areas/areas.service';
+import { IArea } from '../../../../services/areas/interfaces/i-area';
+import { UpdateWarehouseDto } from '../../../../services/warehouses/dto/update-warehouse.dto';
+import { IWarehouse } from '../../../../services/warehouses/interfaces/i-warehouse';
 import { WarehousesService } from '../../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../../shared/utils/base.component';
 
 @Component({
-  selector: 'app-create-warehouse',
-  templateUrl: './create-warehouse.component.html',
-  styleUrls: ['./create-warehouse.component.scss'],
+  selector: 'app-edit-warehouse',
+  templateUrl: './edit-warehouse.component.html',
+  styleUrls: ['./edit-warehouse.component.scss'],
 })
-export class CreateWarehouseComponent extends BaseComponent implements OnInit {
-  // #region Properties (5)
+export class EditWarehouseComponent extends BaseComponent implements OnInit {
+  // #region Properties (6)
 
   public areas: IArea[] | null = [];
   public formGroup: FormGroup | null = null;
-  public isLoading = true;
+  public isLoading = false;
   @ViewChild(IonModal) public modal!: IonModal;
   @Output() public reload = new EventEmitter();
+  public warehouse: IWarehouse | null = null;
 
-  // #endregion Properties (5)
+  // #endregion Properties (6)
 
   // #region Constructors (1)
 
@@ -56,7 +58,8 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
     );
   }
 
-  public onOpenModal() {
+  public onOpenModal(wh: IWarehouse) {
+    this.warehouse = wh;
     this.createForm();
     this.modal.present();
   }
@@ -66,9 +69,22 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
       this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
       return;
     }
-    const loading = this.loadingShow('Adicionando...');
-    const data = this.formGroup?.value as NewWarehouseDto;
-    this.warehousesService.create(data).subscribe({
+    if (
+      this.formGroup?.value.name === this.warehouse?.name &&
+      this.formGroup.value.description === this.warehouse?.description
+    ) {
+      this.modal.dismiss();
+      return;
+    }
+    const data = this.formGroup?.value as UpdateWarehouseDto;
+    if (data.name === this.warehouse?.name) {
+      delete data.name;
+    }
+    if (data.description === this.warehouse?.description) {
+      delete data.description;
+    }
+    const loading = this.loadingShow('Salvando...');
+    this.warehousesService.updateWarehouse(data).subscribe({
       next: (_) => {
         loading.then((l) => l.dismiss());
         this.modal.dismiss();
@@ -89,8 +105,11 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
   private createForm() {
     const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      areaId: new FormControl('', [Validators.required]),
+      id: new FormControl(this.warehouse?.id, [Validators.required]),
+      name: new FormControl(this.warehouse?.name || '', [Validators.required]),
+      areaId: new FormControl(this.warehouse?.areaId || '', [
+        Validators.required,
+      ]),
       description: new FormControl(''),
     });
     loading.then((l) => l.dismiss());

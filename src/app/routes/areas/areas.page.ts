@@ -3,6 +3,7 @@ import {
   AlertController,
   LoadingController,
   ToastController,
+  ViewDidEnter,
 } from '@ionic/angular';
 import { AreasService } from 'src/services/areas/areas.service';
 import { IArea } from 'src/services/areas/interfaces/i-area';
@@ -13,7 +14,7 @@ import { BaseComponent } from '../../../shared/utils/base.component';
   templateUrl: './areas.page.html',
   styleUrls: ['./areas.page.scss'],
 })
-export class AreasPage extends BaseComponent implements OnInit {
+export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Properties (2)
 
   public areas: IArea[] | null = [];
@@ -30,6 +31,9 @@ export class AreasPage extends BaseComponent implements OnInit {
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+  }
+  ionViewDidEnter(): void {
+    this.onGetAll();
   }
 
   // #endregion Constructors (1)
@@ -48,9 +52,39 @@ export class AreasPage extends BaseComponent implements OnInit {
 
   // #endregion Public Getters And Setters (1)
 
-  // #region Public Methods (5)
+  // #region Public Methods (4)
 
-  public deleteArea(area: any) {}
+  public deleteArea(area: IArea) {
+    this.alertController.create({
+      header: 'Excluir Área',
+      message: `Deseja realmente excluir a área ${area.name}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          handler: () => {
+            this.areasService.delete(area?.id).subscribe({
+              next: (res) => {
+                this.toastController.create({
+                  message: 'Área excluída com sucesso!',
+                  duration: 2000,
+                });
+              },
+              error: (err) => {
+                this.toastController.create({
+                  message: 'Erro ao excluir a área!',
+                  duration: 2000,
+                });
+              },
+            });
+          },
+        },
+      ],
+    });
+  }
 
   public ngOnInit() {
     this.subs.push(
@@ -58,17 +92,21 @@ export class AreasPage extends BaseComponent implements OnInit {
         this.areas = res;
       })
     );
-
-    this.isLoading = false;
   }
 
   public onReload() {
+    this.onGetAll();
+  }
+
+  public onGetAll() {
     this.isLoading = true;
     this.areasService.getAll().subscribe({
       next: (res) => {
         this.isLoading = false;
       },
       error: (err) => {
+        console.log('[AREAERR]', err);
+        this.alert(err?.message, 'Atenção!');
         this.isLoading = false;
       },
     });
@@ -78,5 +116,5 @@ export class AreasPage extends BaseComponent implements OnInit {
     console.log('[AREA]', area);
   }
 
-  // #endregion Public Methods (5)
+  // #endregion Public Methods (4)
 }

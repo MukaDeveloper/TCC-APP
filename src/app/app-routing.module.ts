@@ -34,6 +34,13 @@ const routes: Routes = [
           import('./routes/home/home.module').then((m) => m.HomePageModule),
       },
       {
+        path: 'movimentations',
+        loadChildren: () =>
+          import('./routes/movimentations/movimentations.module').then(
+            (m) => m.MovimentationsPageModule
+          ),
+      },
+      {
         path: RoutersEnum.warehouses,
         loadChildren: () =>
           import('./routes/warehouses/warehouses.module').then(

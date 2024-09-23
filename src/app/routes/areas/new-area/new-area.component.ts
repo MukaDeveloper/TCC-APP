@@ -1,16 +1,16 @@
-import { MovimentationsService } from './../../../../services/movimentations/warehouses.service';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  IonModal,
-  ToastController,
   AlertController,
+  IonModal,
   LoadingController,
+  ToastController,
 } from '@ionic/angular';
 import { AreasService } from 'src/services/areas/areas.service';
 import { IPayload } from 'src/services/payload/interfaces/i-payload';
 import { PayloadService } from 'src/services/payload/payload.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
+import { NewAreaDto } from '../../../../services/areas/dto/new-area.dto';
 
 @Component({
   selector: 'app-new-area',
@@ -24,14 +24,13 @@ export class NewAreaComponent extends BaseComponent {
   public isLoading = true;
   @ViewChild(IonModal) public modal!: IonModal;
   public payload: IPayload | null = null;
-  @Output() public reload = new EventEmitter;
+  @Output() public reload = new EventEmitter();
 
   // #endregion Properties (5)
 
   // #region Constructors (1)
 
   constructor(
-    private readonly movimentationsService: MovimentationsService,
     private readonly payloadService: PayloadService,
     private readonly areasService: AreasService,
     toastController: ToastController,
@@ -47,20 +46,10 @@ export class NewAreaComponent extends BaseComponent {
 
   public onOpenModal() {
     this.subs.push(
-      this.payloadService.payload$.subscribe((res) => this.payload = res),
-    )
+      this.payloadService.payload$.subscribe((res) => (this.payload = res))
+    );
     this.createForm();
     this.modal.present();
-  }
-
-  public reloadMovimentations() {
-    this.movimentationsService.getAll().subscribe({
-      next: (_) => _,
-      error: (error) => {
-        this.alert("[MV400] " + error?.message, "Atenção!");
-        console.error(error);
-      }
-    })
   }
 
   public onSubmit() {
@@ -68,20 +57,19 @@ export class NewAreaComponent extends BaseComponent {
       this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
       return;
     }
-    const loading = this.loadingShow("Adicionando...");
-    const data = this.formGroup?.value;
+    const loading = this.loadingShow('Adicionando...');
+    const data = this.formGroup?.value as NewAreaDto;
     this.areasService.addNew(data).subscribe({
       next: (_) => {
         loading.then((l) => l.dismiss());
-        this.reloadMovimentations();
         this.modal.dismiss();
         this.reload.emit();
       },
       error: (err) => {
         console.error(err);
-        this.alert(err.message, "Atenção!");
+        this.alert(err.message, 'Atenção!');
         loading.then((l) => l.dismiss());
-      }
+      },
     });
   }
 
@@ -94,7 +82,7 @@ export class NewAreaComponent extends BaseComponent {
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl(''),
-      intitutionId: new FormControl(this.payload?.institutionId)
+      intitutionId: new FormControl(this.payload?.institutionId),
     });
     loading.then((l) => l.dismiss());
     this.isLoading = false;

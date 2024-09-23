@@ -6,7 +6,7 @@ import {
   ToastController,
   ViewDidEnter,
 } from '@ionic/angular';
-import { mergeMap } from 'rxjs';
+import { merge, mergeMap } from 'rxjs';
 import { AreasService } from 'src/services/areas/areas.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { InstitutionService } from '../../services/instution/intitution.service';
@@ -14,6 +14,7 @@ import { IPayload } from '../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../services/payload/payload.service';
 import { ResetService } from '../../services/reset/reset.service';
 import { RoutersEnum } from '../../shared/utils/routers-enum';
+import { WarehousesService } from '../../services/warehouses/warehouses.service';
 
 @Component({
   selector: 'app-layout',
@@ -36,6 +37,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
     private readonly areasService: AreasService,
+    private readonly warehousesService: WarehousesService,
     private router: Router,
     toastController: ToastController,
     alertController: AlertController,
@@ -77,19 +79,26 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   private onPayload() {
     const loading = this.loadingShow('Carregando...');
-    this.institutionService
-      .getCurrent()
-      .pipe(mergeMap(() => this.areasService.getAll()))
-      .subscribe({
-        next: (res) => {
-          loading.then((l) => l.dismiss());
-          this.isLoading = false;
-        },
-        error: (err) => {
-          loading.then((l) => l.dismiss());
-          this.isLoading = false;
-        },
-      });
+    this.institutionService.getCurrent().subscribe({
+      next: (res) => {
+        loading.then((l) => l.dismiss());
+        this.isLoading = false;
+      },
+      error: (err) => {
+        loading.then((l) => l.dismiss());
+        this.isLoading = false;
+      },
+    });
+
+    if (this.payload?.role !== 'USER') {
+      this.areasService
+        .getAll()
+        .pipe(mergeMap((_) => this.warehousesService.getAll()))
+        .subscribe({
+          next: (_) => {},
+          error: (_) => {},
+        });
+    }
   }
 
   // #endregion Private Methods (1)

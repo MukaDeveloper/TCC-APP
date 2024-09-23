@@ -4,4 +4,5 @@ export interface IPayload {
   email: string;
   photoUrl: string;
   institutionId: number;
+  role: 'USER' | 'WAREHOUSEMAN' | 'COORDINATOR' | 'SUPPORT';
 }

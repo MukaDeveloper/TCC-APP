@@ -3,48 +3,46 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { ApiWarehousesService } from 'src/app/api/api-warehouses.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { IWarehouse } from './interfaces/i-warehouse';
+import { NewWarehouseDto } from './dto/new-warehouse.dto';
+import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WarehousesService {
-  // #region Properties (4)
+  // #region Properties (2)
 
-  private selectedWarehouseSubject: BehaviorSubject<IWarehouse | null>;
-  private warehousesSubject: BehaviorSubject<IWarehouse[] | null>;
+  public selectedWarehouse$: BehaviorSubject<IWarehouse | null> =
+    new BehaviorSubject<IWarehouse | null>(null);
+  public warehouses$: BehaviorSubject<IWarehouse[] | null> =
+    new BehaviorSubject<IWarehouse[] | null>([]);
 
-  public selectedWarehouse$: Observable<IWarehouse | null>;
-  public warehouses$: Observable<IWarehouse[] | null>;
-
-  // #endregion Properties (4)
+  // #endregion Properties (2)
 
   // #region Constructors (1)
 
-  constructor(private readonly apiWarehousesService: ApiWarehousesService) {
-    this.warehousesSubject = new BehaviorSubject<IWarehouse[] | null>([]);
-    this.warehouses$ = this.warehousesSubject.asObservable();
-    this.selectedWarehouseSubject = new BehaviorSubject<IWarehouse | null>(null);
-    this.selectedWarehouse$ = this.selectedWarehouseSubject.asObservable();
-  }
+  constructor(private readonly apiWarehousesService: ApiWarehousesService) {}
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (3)
+  // #region Public Methods (4)
 
-  public create(data: IWarehouse): Observable<IEnvelope<IWarehouse>> {
+  public create(data: NewWarehouseDto): Observable<IEnvelope<IWarehouse>> {
     return this.apiWarehousesService.create(data).pipe(
       map((res: IEnvelope<IWarehouse>) => {
         if (res?.item) {
-          this.selectedWarehouseSubject.next(res.item);
-          const index = this.warehousesSubject.value?.findIndex((w) => w.id === res.item.id) as number;
-          if (this.warehousesSubject.value?.length) {
+          this.selectedWarehouse$.next(res.item);
+          const index = this.warehouses$.value?.findIndex(
+            (w) => w.id === res.item.id
+          ) as number;
+          if (this.warehouses$.value?.length) {
             if (index >= 0) {
-              this.warehousesSubject.value[index] = res.item;
+              this.warehouses$.value[index] = res.item;
             } else {
-              this.warehousesSubject.value.push(res.item);
+              this.warehouses$.value.push(res.item);
             }
           } else {
-            this.warehousesSubject.next([res.item]);
+            this.warehouses$.next([res.item]);
           }
         }
         return res;
@@ -56,7 +54,7 @@ export class WarehousesService {
     return this.apiWarehousesService.getAll().pipe(
       map((res: IEnvelopeArray<IWarehouse>) => {
         if (res?.items?.length) {
-          this.warehousesSubject.next(res.items);
+          this.warehouses$.next(res.items);
         }
         return res;
       })
@@ -64,9 +62,32 @@ export class WarehousesService {
   }
 
   public reset() {
-    this.warehousesSubject.next(null);
-    this.selectedWarehouseSubject.next(null);
+    this.warehouses$.next(null);
+    this.selectedWarehouse$.next(null);
   }
 
-  // #endregion Public Methods (3)
+  public updateWarehouse(data: UpdateWarehouseDto): Observable<IEnvelope<IWarehouse>> {
+    return this.apiWarehousesService.update(data).pipe(
+      map((res: IEnvelope<IWarehouse>) => {
+        if (res?.item) {
+          this.selectedWarehouse$.next(res.item);
+          const index = this.warehouses$.value?.findIndex(
+            (w) => w.id === res.item.id
+          ) as number;
+          if (this.warehouses$.value?.length) {
+            if (index >= 0) {
+              this.warehouses$.value[index] = res.item;
+            } else {
+              this.warehouses$.value.push(res.item);
+            }
+          } else {
+            this.warehouses$.next([res.item]);
+          }
+        }
+        return res;
+      })
+    );
+  }
+
+  // #endregion Public Methods (4)
 }

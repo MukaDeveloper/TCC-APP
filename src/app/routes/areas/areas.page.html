@@ -10,8 +10,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-item>
-    <ion-searchbar></ion-searchbar>
+  <ion-item *ngIf="isLoading">
+    <ion-label style="text-align: center"
+      ><ion-text>
+        <ion-spinner
+          name="circular"
+          style="width: 32px; height: 32px"
+        ></ion-spinner> </ion-text
+    ></ion-label>
   </ion-item>
   <ion-list *ngIf="!isLoading">
     <ion-grid>
@@ -26,7 +32,7 @@
                   </ion-label>
                 </div>
                 <ion-buttons class="ion-no-padding">
-                  <ion-button (click)="AppEditArea.onOpenModal()">
+                  <ion-button (click)="AppEditArea.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button>
                   <ion-button (click)="deleteArea(item)">

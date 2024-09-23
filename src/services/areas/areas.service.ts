@@ -3,44 +3,43 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { ApiAreasService } from 'src/app/api/api-areas.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { IArea } from './interfaces/i-area';
+import { NewAreaDto } from './dto/new-area.dto';
+import { UpdateAreaDto } from './dto/update-area.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AreasService {
-  // #region Properties (4)
+  // #region Properties (2)
 
-  private areasSubject: BehaviorSubject<IArea[] | null>;
-  private selectedAreaSubject: BehaviorSubject<IArea | null>;
+  public areas$: BehaviorSubject<IArea[] | null> = new BehaviorSubject<
+    IArea[] | null
+  >([]);
+  public selectedArea$: BehaviorSubject<IArea | null> =
+    new BehaviorSubject<IArea | null>(null);
 
-  public areas$: Observable<IArea[] | null>;
-  public selectedArea$: Observable<IArea | null>;
-
-  // #endregion Properties (4)
+  // #endregion Properties (2)
 
   // #region Constructors (1)
 
-  constructor(private readonly apiAreasService: ApiAreasService) {
-    this.areasSubject = new BehaviorSubject<IArea[] | null>([]);
-    this.areas$ = this.areasSubject.asObservable();
-    this.selectedAreaSubject = new BehaviorSubject<IArea | null>(null);
-    this.selectedArea$ = this.selectedAreaSubject.asObservable();
-  }
+  constructor(private readonly apiAreasService: ApiAreasService) {}
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (3)
+  // #region Public Methods (4)
 
-  public addNew(data: IArea): Observable<IEnvelope<IArea>> {
+  public addNew(data: NewAreaDto): Observable<IEnvelope<IArea>> {
     return this.apiAreasService.newArea(data).pipe(
       map((res: IEnvelope<IArea>) => {
         if (res?.item) {
-          this.selectedAreaSubject.next(res.item);
-          const index = this.areasSubject.value?.findIndex((a) => a.id === res.item.id) as number;
-          if (index >= 0 && this.areasSubject.value?.length) {
-            this.areasSubject.value[index] = res.item;
+          this.selectedArea$.next(res.item);
+          const index = this.areas$.value?.findIndex(
+            (a) => a.id === res.item.id
+          ) as number;
+          if (index >= 0 && this.areas$.value?.length) {
+            this.areas$.value[index] = res.item;
           } else {
-            this.areasSubject.next([res.item]);
+            this.areas$.next([res.item]);
           }
         }
         return res;
@@ -52,7 +51,23 @@ export class AreasService {
     return this.apiAreasService.getAll().pipe(
       map((res: IEnvelopeArray<IArea>) => {
         if (res?.items) {
-          this.areasSubject.next(res.items);
+          this.areas$.next(res.items);
+        }
+        return res;
+      })
+    );
+  }
+
+  public delete(areaId: number) {
+    return this.apiAreasService.deleteArea(areaId).pipe(
+      map((res: IEnvelope<IArea>) => {
+        if (res?.item) {
+          const index = this.areas$.value?.findIndex(
+            (a) => a.id === res.item.id
+          ) as number;
+          if (index >= 0 && this.areas$.value?.length) {
+            this.areas$.value.splice(index, 1);
+          }
         }
         return res;
       })
@@ -60,9 +75,28 @@ export class AreasService {
   }
 
   public reset() {
-    this.areasSubject.next(null);
-    this.selectedAreaSubject.next(null);
+    this.areas$.next(null);
+    this.selectedArea$.next(null);
   }
 
-  // #endregion Public Methods (3)
+  public updateArea(data: UpdateAreaDto): Observable<IEnvelope<IArea>> {
+    return this.apiAreasService.updateArea(data).pipe(
+      map((res: IEnvelope<IArea>) => {
+        if (res?.item) {
+          this.selectedArea$.next(res.item);
+          const index = this.areas$.value?.findIndex(
+            (a) => a.id === res.item.id
+          ) as number;
+          if (index >= 0 && this.areas$.value?.length) {
+            this.areas$.value[index] = res.item;
+          } else {
+            this.areas$.next([res.item]);
+          }
+        }
+        return res;
+      })
+    );
+  }
+
+  // #endregion Public Methods (4)
 }

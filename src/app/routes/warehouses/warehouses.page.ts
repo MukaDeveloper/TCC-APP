@@ -3,19 +3,23 @@ import {
   AlertController,
   LoadingController,
   ToastController,
+  ViewDidEnter,
 } from '@ionic/angular';
+import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
 import { WarehousesService } from '../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
-import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 
 @Component({
   selector: 'app-warehouses',
   templateUrl: './warehouses.page.html',
   styleUrls: ['./warehouses.page.scss'],
 })
-export class WarehousesPage extends BaseComponent implements OnInit {
+export class WarehousesPage
+  extends BaseComponent
+  implements OnInit, ViewDidEnter
+{
   // #region Properties (4)
 
   @ViewChild('AppCreateWarehouse') public createWarehouse: any;
@@ -53,32 +57,29 @@ export class WarehousesPage extends BaseComponent implements OnInit {
 
   // #endregion Public Getters And Setters (1)
 
-  // #region Public Methods (7)
+  // #region Public Methods (6)
 
-  public addNewWarehouse() {
-    this.createWarehouse.onOpenModal();
+  ionViewDidEnter(): void {
+    this.onGetAll();
   }
-
   public deleteWarehouse(wh: IWarehouse) {}
 
-  public editWarehouse(wh: IWarehouse) {}
-
-  public getAll() {
+  public onGetAll() {
     this.isLoading = true;
-    this.warehousesService
-      .getAll()
-      .subscribe({
-        next: (res) => {
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.isLoading = false;
-        },
-      });
+    this.warehousesService.getAll().subscribe({
+      next: (res) => {
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.log('[WHERR]', err);
+        this.alert(err?.message, 'Atenção!');
+        this.isLoading = false;
+      },
+    });
   }
 
   public goToWarehouse(wh: IWarehouse) {
-    console.log('[WAREHOUSE]', wh)
+    console.log('[WAREHOUSE]', wh);
   }
 
   public ngOnInit() {
@@ -88,12 +89,11 @@ export class WarehousesPage extends BaseComponent implements OnInit {
         (res) => (this.warehouses = res)
       )
     );
-    this.getAll();
   }
 
   public onReload() {
-    this.getAll();
+    this.onGetAll();
   }
 
-  // #endregion Public Methods (7)
+  // #endregion Public Methods (6)
 }

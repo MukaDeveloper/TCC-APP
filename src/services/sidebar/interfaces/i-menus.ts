@@ -1,4 +1,5 @@
-import { ISubMenu } from "./i-submenus";
+import { EUserRole } from '../../payload/interfaces/enum/EUserRole';
+import { ISubMenu } from './i-submenus';
 
 export interface IMenu {
   text: string;
@@ -10,4 +11,5 @@ export interface IMenu {
   svg?: string;
   alert?: string;
   subMenu?: ISubMenu[];
+  cannotAccess?: 'USER' | 'WAREHOUSEMAN' | 'COORDINATOR' | 'SUPPORT';
 }

@@ -1,10 +1,10 @@
-<ion-modal #EditArea>
+<ion-modal #ModalEditWarehouse>
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Editar Área</ion-title>
+        <ion-title>Editar Almoxarifado</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="EditArea.dismiss()">
+          <ion-button (click)="ModalEditWarehouse.dismiss()">
             <ion-icon slot="icon-only" name="close"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -19,34 +19,32 @@
         >
           <ion-item lines="none" color="light" class="input-name">
             <ion-input
-              #nameInput
               label="Nome"
-              labelPlacement="start"
+              labelPlacement="fixed"
               formControlName="name"
               fill="outline"
               inputmode="text"
               shape="round"
               type="text"
-              placeholder="Área norte"
-              (keydown)="onKeyEvent($event)"
-              (keyup)="onKeyEvent($event)"
-              ></ion-input>
-          </ion-item> <br />
-          <ion-item>
-            <ion-textarea
-              label="Descrição"
-              labelPlacement="start"
-              formControlName="description"
+              placeholder="Almoxarifado Informática"
+            ></ion-input>
+          </ion-item>
+          <br />
+          <ion-item lines="none" color="light">
+            <ion-select
+              label="Área"
+              labelPlacement="fixed"
               fill="outline"
-              inputmode="text"
               shape="round"
-              type="text"
-              placeholder="Conjunto de almoxarifados da área norte da instituição"
-              autoGrow="true"
-              maxlength="120"
-              spellcheck="true"
-              wrap="soft"
-            ></ion-textarea>
+              formControlName="areaId"
+              placeholder="Qual área pertence o almoxarifado?"
+            >
+              <ion-select-option
+                *ngFor="let area of areas"
+                [value]="area.id"
+                >{{ area.name }}</ion-select-option
+              >
+            </ion-select>
           </ion-item>
         </form>
       </section>
@@ -56,7 +54,7 @@
         <ion-buttons slot="start">
           <ion-button
             fill="solid"
-            (click)="EditArea.dismiss()"
+            (click)="ModalEditWarehouse.dismiss()"
             [disabled]="!formGroup?.valid"
             color="medium"
           >
@@ -70,7 +68,7 @@
             [disabled]="!formGroup?.valid"
             color="primary"
           >
-            <ion-label style="color: #FDFDFD;">SALVAR</ion-label>
+            <ion-label style="color: #fdfdfd">SALVAR</ion-label>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

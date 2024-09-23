@@ -26,7 +26,7 @@
                   </ion-label>
                 </div>
                 <ion-buttons class="ion-no-padding">
-                  <ion-button (click)="editWarehouse(item)">
+                  <ion-button (click)="AppEditWarehouse.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button>
                   <ion-button (click)="deleteWarehouse(item)">
@@ -39,14 +39,14 @@
               <img src="assets/svgs/warehouse-icon.svg" alt="" class="icons" />
               <ion-label>{{ item.description }}</ion-label>
               <ion-label style="color: #FDFDFD;">
-                <small>({{ item.areaName }})</small>
+                <small>({{ item.area.name }})</small>
               </ion-label>
             </ion-card-content>
           </ion-card>
         </ion-col>
 
         <ion-col [size]="columnSize">
-          <ion-card (click)="addNewWarehouse()" button>
+          <ion-card (click)="AppCreateWarehouse.onOpenModal()" button>
             <ion-card-content class="add-card-content">
               <ion-icon name="add-outline" class="icons"></ion-icon> <br />
               <ion-label style="font-weight: 700"
@@ -63,4 +63,8 @@
     #AppCreateWarehouse
     (reload)="onReload()"
   ></app-create-warehouse>
+  <app-edit-warehouse
+    #AppEditWarehouse
+    (reload)="onReload()"
+  ></app-edit-warehouse>
 </ion-content>

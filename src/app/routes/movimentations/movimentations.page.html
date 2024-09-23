@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Últimas movimentações</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Tabela de Entradas -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Entrada</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Nome</th>
+            <th>Quantidade</th>
+            <th>Data</th>
+            <th>Movimentado por</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movimentacao of filteredEntries">
+            <td>{{ movimentacao.type }}</td>
+            <td>{{ movimentacao.name }}</td>
+            <td>{{ movimentacao.quantity }}</td>
+            <td>{{ movimentacao.date | date:'short' }}</td>
+            <td>{{ movimentacao.movimentationBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Tabela de Saídas (caso tenha outra categoria) -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Saída</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Nome</th>
+            <th>Quantidade</th>
+            <th>Data</th>
+            <th>Movimentado por</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movimentacao of filteredExits">
+            <td>{{ movimentacao.type }}</td>
+            <td>{{ movimentacao.name }}</td>
+            <td>{{ movimentacao.quantity }}</td>
+            <td>{{ movimentacao.date | date:'short' }}</td>
+            <td>{{ movimentacao.movimentationBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

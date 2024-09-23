@@ -5,6 +5,8 @@ import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
+import { NewWarehouseDto } from '../../services/warehouses/dto/new-warehouse.dto';
+import { UpdateWarehouseDto } from '../../services/warehouses/dto/update-warehouse.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +20,9 @@ export class ApiWarehousesService extends ApiBaseService {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (2)
+  // #region Public Methods (3)
 
-  public create(data: IWarehouse): Observable<IEnvelope<IWarehouse>> {
+  public create(data: NewWarehouseDto): Observable<IEnvelope<IWarehouse>> {
     const url = `${this.apiUrl}/Warehouses/create`;
     return this.http
       .post<IEnvelope<IWarehouse>>(url, data)
@@ -34,5 +36,12 @@ export class ApiWarehousesService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  // #endregion Public Methods (2)
+  public update(data: UpdateWarehouseDto): Observable<IEnvelope<IWarehouse>> {
+    const url = `${this.apiUrl}/Warehouses/update`;
+    return this.http
+      .put<IEnvelope<IWarehouse>>(url, data)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  // #endregion Public Methods (3)
 }

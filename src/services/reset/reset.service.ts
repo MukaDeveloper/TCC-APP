@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AreasService } from '../areas/areas.service';
-import { MovimentationsService } from '../movimentations/warehouses.service';
-import { WarehousesService } from '../warehouses/warehouses.service';
 import { InstitutionService } from '../instution/intitution.service';
+import { MovimentationsService } from '../movimentations/movimentations.service';
+import { WarehousesService } from '../warehouses/warehouses.service';
 
 @Injectable({
   providedIn: 'root',

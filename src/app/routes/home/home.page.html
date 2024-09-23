@@ -5,55 +5,5 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-content>
-      <ion-toolbar>
-        <ion-title style="text-align: center">
-          Últimas movimentações
-        </ion-title>
-      </ion-toolbar>
-      <ion-grid *ngIf="!isLoading">
-        <ion-row>
-          <ion-col>
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title> Entrada </ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-list
-                  *ngFor="let mov of filteredEntries"
-                  title="{{ mov.description }}"
-                >
-                  <ion-item>
-                    <ion-label> {{ mov.name }} </ion-label>
-                    <ion-label slot="end"> {{ mov.quantity }} </ion-label>
-                  </ion-item>
-                </ion-list>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title> Saída </ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-list
-                  *ngFor="let mov of filteredExits"
-                  title="{{ mov.description }}"
-                >
-                  <ion-item>
-                    <ion-label> {{ mov.name }} </ion-label>
-                    <ion-label slot="end"> {{ mov.quantity }} </ion-label>
-                  </ion-item>
-                </ion-list>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+  
 </ion-content>

@@ -23,6 +23,7 @@
       *ngIf="!item.heading && !item.subMenu?.length"
     >
       <ion-item
+        *ngIf="!item.cannotAccess?.includes(payload?.role!)"
         lines="full"
         button
         detail
@@ -32,16 +33,16 @@
       >
         <ion-icon
           *ngIf="item.icon"
-          style="color: white;"
+          style="color: white"
           slot="start"
           [ios]="item.icon + '-outline'"
           [md]="item.icon + '-sharp'"
         ></ion-icon>
         <div *ngIf="item.svg">
-          <img [src]="item.svg" alt="" class="img-svg">
+          <img [src]="item.svg" alt="" class="img-svg" />
           &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
         </div>
-        <ion-label style="color: white;">{{ item.text }}</ion-label>
+        <ion-label style="color: white">{{ item.text }}</ion-label>
       </ion-item>
     </ion-menu-toggle>
     <ion-accordion-group *ngIf="!item.heading && item.subMenu?.length">

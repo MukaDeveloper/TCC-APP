@@ -7,6 +7,7 @@ export enum RoutersEnum {
   phoneConfirm = 'phone-confirm',
   emailConfirm = 'email-confirm',
   home = 'home',
+  movimentations = 'movimentations',
   areas = 'areas',
   warehouses = 'warehouses',
   materials = 'materials',
