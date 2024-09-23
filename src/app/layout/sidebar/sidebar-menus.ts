@@ -7,8 +7,8 @@ const home = {
   icon: 'home',
 };
 const movimentations = {
-  text: 'Movimentações',
-  link: RoutersEnum.app + '/' + RoutersEnum.movimentations,
+  text: 'Eventos',
+  link: RoutersEnum.app + '/' + RoutersEnum.events,
   icon: 'sync',
   cannotAccess: [EUserRole.USER, EUserRole.WAREHOUSEMAN],
 };

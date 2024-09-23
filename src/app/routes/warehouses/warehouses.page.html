@@ -36,7 +36,7 @@
               </ion-card-title>
             </ion-card-header>
             <ion-card-content>
-              <img src="assets/svgs/warehouse-icon.svg" alt="" class="icons" />
+              <img [src]="getWarehouseIcon()" alt="" class="icons" />
               <ion-label>{{ item.description }}</ion-label>
               <ion-label style="color: #FDFDFD;">
                 <small>({{ item.area.name }})</small>

@@ -34,10 +34,10 @@ const routes: Routes = [
           import('./routes/home/home.module').then((m) => m.HomePageModule),
       },
       {
-        path: 'movimentations',
+        path: RoutersEnum.events,
         loadChildren: () =>
-          import('./routes/movimentations/movimentations.module').then(
-            (m) => m.MovimentationsPageModule
+          import('./routes/events/events.module').then(
+            (m) => m.EventsPageModule
           ),
       },
       {

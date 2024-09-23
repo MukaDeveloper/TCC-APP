@@ -14,11 +14,11 @@ import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { EMovimentationType } from 'src/services/movimentations/interfaces/enum/EMovimentationType';
 
 @Component({
-  selector: 'app-movimentations',
-  templateUrl: './movimentations.page.html',
-  styleUrls: ['./movimentations.page.scss'],
+  selector: 'app-events',
+  templateUrl: './events.page.html',
+  styleUrls: ['./events.page.scss'],
 })
-export class MovimentationsPage
+export class EventsPage
   extends BaseComponent
   implements OnInit, ViewDidEnter
 {
@@ -53,33 +53,11 @@ export class MovimentationsPage
 
   // #region Public Getters And Setters (2)
 
-  public get filteredEntries(): IMovimentations[] | null {
-    return (
-      this.movimentationsFilter
-        ?.filter((mov) => mov.event === EMovimentationEvent.ENTRY)
-        .sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        ) || []
-    );
-  }
-
-  public get filteredExits(): IMovimentations[] | null {
-    return (
-      this.movimentationsFilter
-        ?.filter((mov) => mov.event === EMovimentationEvent.EXIT)
-        .sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        ) || []
-    );
-  }
-
   // #endregion Public Getters And Setters (2)
 
   // #region Public Methods (5)
 
-  public expandEntries() {}
-
-  public expandExits() {}
+  public expandMovimentations() {}
 
   public ionViewDidEnter(): void {
     this.getAll();
@@ -100,9 +78,9 @@ export class MovimentationsPage
   public getEvent(event: EMovimentationEvent): string {
     switch (event) {
       case EMovimentationEvent.ENTRY:
-        return "ENTRADA";
+        return "ADIÇÃO";
       case EMovimentationEvent.EXIT:
-        return "SAÍDA"
+        return "REMOÇÃO"
     }
   }
 

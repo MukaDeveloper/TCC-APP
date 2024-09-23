@@ -61,7 +61,6 @@ export class EditAreaComponent extends BaseComponent implements OnInit {
   }
 
   public onKeyEvent(event: any) {
-    console.log('KeyEvent', event.keyCode);
     if (event.keyCode === 13 && this.formGroup?.valid) {
       event.preventDefault();
       this.onSubmit();

@@ -17,6 +17,9 @@ export class BaseComponent implements OnDestroy {
 
   public darkMode: boolean = window.matchMedia('(prefers-color-scheme: dark)')
     .matches;
+    public preference: MediaQueryList = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    );
 
   // #endregion Properties (2)
 
@@ -100,6 +103,12 @@ export class BaseComponent implements OnDestroy {
       duration: 2000,
     });
     return toast.present();
+  }
+
+  public detectColorSchemeChanges() {
+    this.preference.addEventListener('change', (mediaQuery) => {
+      this.darkMode = mediaQuery.matches;
+    });
   }
 
   // #endregion Public Methods (5)

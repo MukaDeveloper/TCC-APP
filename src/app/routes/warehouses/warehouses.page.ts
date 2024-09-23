@@ -39,6 +39,7 @@ export class WarehousesPage
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+    this.detectColorSchemeChanges();
   }
 
   // #endregion Constructors (1)
@@ -62,7 +63,16 @@ export class WarehousesPage
   ionViewDidEnter(): void {
     this.onGetAll();
   }
+
   public deleteWarehouse(wh: IWarehouse) {}
+
+  public getWarehouseIcon(): string {
+    if (this.darkMode) {
+      return 'assets/svgs/warehouse-icon.svg';
+    }
+
+    return 'assets/svgs/warehouse-black-icon.svg'
+  }
 
   public onGetAll() {
     this.isLoading = true;
