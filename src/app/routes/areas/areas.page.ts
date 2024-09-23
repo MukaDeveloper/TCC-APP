@@ -32,9 +32,6 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
   ) {
     super(toastController, alertController, loadingController);
   }
-  ionViewDidEnter(): void {
-    this.onGetAll();
-  }
 
   // #endregion Constructors (1)
 
@@ -52,7 +49,7 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #endregion Public Getters And Setters (1)
 
-  // #region Public Methods (4)
+  // #region Public Methods (6)
 
   public deleteArea(area: IArea) {
     this.alertController.create({
@@ -86,16 +83,16 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
     });
   }
 
+  public ionViewDidEnter(): void {
+    this.onGetAll();
+  }
+
   public ngOnInit() {
     this.subs.push(
       this.areasService.areas$.subscribe((res) => {
         this.areas = res;
       })
     );
-  }
-
-  public onReload() {
-    this.onGetAll();
   }
 
   public onGetAll() {
@@ -112,9 +109,13 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
     });
   }
 
+  public onReload() {
+    this.onGetAll();
+  }
+
   public selectArea(area: any) {
     console.log('[AREA]', area);
   }
 
-  // #endregion Public Methods (4)
+  // #endregion Public Methods (6)
 }

@@ -5,61 +5,53 @@
 </ion-header>
 
 <ion-content>
-  <!-- Tabela de Entradas -->
+  <!-- Seção de Entradas -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Entrada</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <table>
-        <thead>
-          <tr>
-            <th>Tipo</th>
-            <th>Nome</th>
-            <th>Quantidade</th>
-            <th>Data</th>
-            <th>Movimentado por</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let movimentacao of filteredEntries">
-            <td>{{ movimentacao.type }}</td>
-            <td>{{ movimentacao.name }}</td>
-            <td>{{ movimentacao.quantity }}</td>
-            <td>{{ movimentacao.date | date:'short' }}</td>
-            <td>{{ movimentacao.movimentationBy }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ion-list>
+        <ion-item *ngFor="let movimentacao of filteredEntries | slice:0:maxItemsToShow">
+          <ion-label>
+            <h2>{{ movimentacao.name }}</h2>
+            <p>
+              Tipo: {{ movimentacao.type }}<br>
+              Quantidade: {{ movimentacao.quantity }}<br>
+              Data: {{ movimentacao.date | date:'short' }}<br>
+              Movimentado por: {{ movimentacao.movimentationBy }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <div *ngIf="filteredEntries?.length! > maxItemsToShow" class="expand-button">
+        <ion-button expand="full" (click)="expandEntries()">Ver Mais +</ion-button>
+      </div>
     </ion-card-content>
   </ion-card>
 
-  <!-- Tabela de Saídas (caso tenha outra categoria) -->
+  <!-- Seção de Saídas -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Saída</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <table>
-        <thead>
-          <tr>
-            <th>Tipo</th>
-            <th>Nome</th>
-            <th>Quantidade</th>
-            <th>Data</th>
-            <th>Movimentado por</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let movimentacao of filteredExits">
-            <td>{{ movimentacao.type }}</td>
-            <td>{{ movimentacao.name }}</td>
-            <td>{{ movimentacao.quantity }}</td>
-            <td>{{ movimentacao.date | date:'short' }}</td>
-            <td>{{ movimentacao.movimentationBy }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ion-list>
+        <ion-item *ngFor="let movimentacao of filteredExits | slice:0:maxItemsToShow">
+          <ion-label>
+            <h2>{{ movimentacao.name }}</h2>
+            <p>
+              Tipo: {{ movimentacao.type }}<br>
+              Quantidade: {{ movimentacao.quantity }}<br>
+              Data: {{ movimentacao.date | date:'short' }}<br>
+              Movimentado por: {{ movimentacao.movimentationBy }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <div *ngIf="filteredExits?.length! > maxItemsToShow" class="expand-button">
+        <ion-button expand="full" (click)="expandExits()">Ver Mais +</ion-button>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

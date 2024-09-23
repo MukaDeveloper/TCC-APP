@@ -26,7 +26,7 @@ export class AreasService {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (4)
+  // #region Public Methods (5)
 
   public addNew(data: NewAreaDto): Observable<IEnvelope<IArea>> {
     return this.apiAreasService.newArea(data).pipe(
@@ -47,17 +47,6 @@ export class AreasService {
     );
   }
 
-  public getAll(): Observable<IEnvelopeArray<IArea>> {
-    return this.apiAreasService.getAll().pipe(
-      map((res: IEnvelopeArray<IArea>) => {
-        if (res?.items) {
-          this.areas$.next(res.items);
-        }
-        return res;
-      })
-    );
-  }
-
   public delete(areaId: number) {
     return this.apiAreasService.deleteArea(areaId).pipe(
       map((res: IEnvelope<IArea>) => {
@@ -68,6 +57,17 @@ export class AreasService {
           if (index >= 0 && this.areas$.value?.length) {
             this.areas$.value.splice(index, 1);
           }
+        }
+        return res;
+      })
+    );
+  }
+
+  public getAll(): Observable<IEnvelopeArray<IArea>> {
+    return this.apiAreasService.getAll().pipe(
+      map((res: IEnvelopeArray<IArea>) => {
+        if (res?.items) {
+          this.areas$.next(res.items);
         }
         return res;
       })
@@ -98,5 +98,5 @@ export class AreasService {
     );
   }
 
-  // #endregion Public Methods (4)
+  // #endregion Public Methods (5)
 }

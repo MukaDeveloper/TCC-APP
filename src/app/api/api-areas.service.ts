@@ -20,7 +20,14 @@ export class ApiAreasService extends ApiBaseService {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (3)
+  // #region Public Methods (4)
+
+  public deleteArea(areaId: number): Observable<IEnvelope<IArea>> {
+    const url = `${this.apiUrl}/Areas/delete/${areaId}`;
+    return this.http
+      .delete<IEnvelope<IArea>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
 
   public getAll(): Observable<IEnvelopeArray<IArea>> {
     const url = `${this.apiUrl}/Areas/get-all`;
@@ -36,13 +43,6 @@ export class ApiAreasService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  public deleteArea(areaId: number): Observable<IEnvelope<IArea>> {
-    const url = `${this.apiUrl}/Areas/delete/${areaId}`;
-    return this.http
-      .delete<IEnvelope<IArea>>(url)
-      .pipe(catchError(HandleError.handler));
-  }
-
   public updateArea(data: UpdateAreaDto): Observable<IEnvelope<IArea>> {
     const url = `${this.apiUrl}/Areas/update`;
     return this.http
@@ -50,5 +50,5 @@ export class ApiAreasService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  // #endregion Public Methods (3)
+  // #endregion Public Methods (4)
 }
