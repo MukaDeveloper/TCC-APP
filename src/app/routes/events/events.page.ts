@@ -60,7 +60,7 @@ export class EventsPage
   public expandMovimentations() {}
 
   public ionViewDidEnter(): void {
-    this.getAll();
+    this.onGetAll();
   }
 
   public ngOnInit() {
@@ -102,14 +102,14 @@ export class EventsPage
   }
 
   public onReload() {
-    this.getAll();
+    this.onGetAll();
   }
 
   // #endregion Public Methods (5)
 
   // #region Private Methods (2)
 
-  private getAll() {
+  private onGetAll() {
     this.isLoading = true;
     this.movimentationsService.getAll().subscribe({
       next: (res) => {

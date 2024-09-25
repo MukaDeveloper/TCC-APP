@@ -22,7 +22,6 @@ export class WarehousesPage
 {
   // #region Properties (4)
 
-  @ViewChild('AppCreateWarehouse') public createWarehouse: any;
   public isLoading = true;
   public payload: IPayload | null = null;
   public warehouses: IWarehouse[] | null = [];
@@ -39,7 +38,6 @@ export class WarehousesPage
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
-    this.detectColorSchemeChanges();
   }
 
   // #endregion Constructors (1)
