@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AlertController,
+  IonInput,
   IonModal,
   LoadingController,
   ToastController,
@@ -17,12 +18,13 @@ import { NewAreaDto } from '../../../../services/areas/dto/new-area.dto';
   templateUrl: './new-area.component.html',
   styleUrls: ['./new-area.component.scss'],
 })
-export class NewAreaComponent extends BaseComponent {
+export class NewAreaComponent extends BaseComponent implements OnInit {
   // #region Properties (5)
 
   public formGroup: FormGroup | null = null;
   public isLoading = true;
   @ViewChild(IonModal) public modal!: IonModal;
+  @ViewChild('nameInput') public nameInput!: IonInput;
   public payload: IPayload | null = null;
   @Output() public reload = new EventEmitter();
 
@@ -44,12 +46,18 @@ export class NewAreaComponent extends BaseComponent {
 
   // #region Public Methods (2)
 
-  public onOpenModal() {
+  public ngOnInit(): void {
     this.subs.push(
       this.payloadService.payload$.subscribe((res) => (this.payload = res))
     );
+  }
+
+  public onOpenModal() {
     this.createForm();
     this.modal.present();
+    setTimeout(() => {
+      this.nameInput.setFocus();
+    }, 200);
   }
 
   public onSubmit() {
