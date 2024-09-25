@@ -1,10 +1,10 @@
-<ion-modal>
+<ion-modal #ModalCreateWarehouse>
   <ng-template>
     <ion-header>
       <ion-toolbar>
         <ion-title>Adicionar Almoxarifado</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="modal.dismiss()">
+          <ion-button (click)="ModalCreateWarehouse.dismiss()">
             <ion-icon slot="icon-only" name="close"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -33,19 +33,19 @@
           <br />
           <ion-item lines="none" color="light">
             <ion-textarea
-            label="Descrição"
-            labelPlacement="fixed"
-            formControlName="description"
-            fill="outline"
-            inputmode="text"
-            shape="round"
-            type="text"
-            placeholder="Almoxarifado de armazenamento de materiais relacionados a informática"
-            autoGrow="true"
-            maxlength="120"
-            spellcheck="true"
-            wrap="soft"
-          ></ion-textarea>
+              label="Descrição"
+              labelPlacement="fixed"
+              formControlName="description"
+              fill="outline"
+              inputmode="text"
+              shape="round"
+              type="text"
+              placeholder="Almoxarifado de armazenamento de materiais relacionados a informática"
+              autoGrow="true"
+              maxlength="120"
+              spellcheck="true"
+              wrap="soft"
+            ></ion-textarea>
           </ion-item>
           <br />
           <ion-item lines="none" color="light">
@@ -59,11 +59,9 @@
               placeholder="Qual área pertence o almoxarifado?"
               interface="popover"
             >
-              <ion-select-option
-                *ngFor="let area of areas"
-                [value]="area.id"
-                >{{ area.name }}</ion-select-option
-              >
+              <ion-select-option *ngFor="let area of areas" [value]="area.id">{{
+                area.name
+              }}</ion-select-option>
             </ion-select>
           </ion-item>
         </form>
