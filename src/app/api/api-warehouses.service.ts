@@ -36,6 +36,12 @@ export class ApiWarehousesService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
+  public searchByName(query: string): Observable<IEnvelopeArray<IWarehouse>> {
+    const url = `${this.apiUrl}/Warehouses/search-by-name/${query}`;
+    return this.http
+      .get<IEnvelopeArray<IWarehouse>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
   public update(data: UpdateWarehouseDto): Observable<IEnvelope<IWarehouse>> {
     const url = `${this.apiUrl}/Warehouses/update`;
     return this.http

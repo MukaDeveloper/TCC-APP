@@ -16,7 +16,6 @@ export class AppComponent extends BaseComponent {
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
-    this.detectColorSchemeChanges();
   }
 
   // #endregion Constructors (1)

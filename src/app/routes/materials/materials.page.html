@@ -1,13 +1,62 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Materiais</ion-title>
+    <ion-buttons slot="end">
+      <ion-chip
+        outline="true"
+        (click)="onCreate()"
+        style="--color: var(--ion-color-dark)"
+      >
+        <ion-label style="--color: var(--ion-color-dark)">Adicionar</ion-label>
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-chip>
+      <ion-button (click)="onReload()">
+        <ion-icon
+          slot="icon-only"
+          name="reload-outline"
+          style="--color: var(--ion-color-dark)"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar [disabled]="isLoading"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">materials</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item *ngIf="isLoading" lines="none" style="text-align: center">
+    <ion-label>
+      <ion-spinner name="circular"></ion-spinner>
+    </ion-label>
+  </ion-item>
+  <section *ngIf="!isLoading" class="wrapper">
+    <ion-list>
+      <ion-item lines="full" *ngFor="let material of filtered; let j = index">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="getMaterialIcon(material)"></ion-img>
+        </ion-thumbnail>
+        <ion-label>
+          <p class="lh-75">
+            <small
+              >Identificador: #{{ material.id }} <br />
+              Registro: #{{ material.recordNumber }}</small
+            >
+          </p>
+          <ion-text>
+            <h1 class="b">{{material.name}}</h1>
+            <h3>{{ material.quantity }} | {{ material.measure }}</h3>
+          </ion-text>
+          <p class="lh-75">
+            <small>{{ material.manufactorer }}</small>
+          </p>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button fill="none">
+            <ion-icon color="danger" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </section>
 </ion-content>

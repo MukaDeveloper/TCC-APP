@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AlertController,
+  IonSearchbar,
   LoadingController,
   ToastController,
   ViewDidEnter,
@@ -22,9 +23,12 @@ export class WarehousesPage
 {
   // #region Properties (4)
 
+  @ViewChild('searchbarInput') searchbar!: IonSearchbar;
   public isLoading = true;
   public payload: IPayload | null = null;
   public warehouses: IWarehouse[] | null = [];
+  public filtered: IWarehouse[] | null = [];
+  public search: string = '';
 
   // #endregion Properties (4)
 
@@ -38,6 +42,7 @@ export class WarehousesPage
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+    this.detectColorSchemeChanges();
   }
 
   // #endregion Constructors (1)
@@ -69,7 +74,7 @@ export class WarehousesPage
       return 'assets/svgs/warehouse-icon.svg';
     }
 
-    return 'assets/svgs/warehouse-black-icon.svg'
+    return 'assets/svgs/warehouse-black-icon.svg';
   }
 
   public onGetAll() {
@@ -86,16 +91,43 @@ export class WarehousesPage
     });
   }
 
+  public onSearch() {
+    this.isLoading = true;
+    if (!this.search) {
+      this.onGetAll();
+      setTimeout(() => {
+        this.searchbar.setFocus();
+      }, 100);
+      return;
+    }
+    this.warehousesService.searchByName(this.search).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        setTimeout(() => {
+          this.searchbar.setFocus();
+        }, 100);
+      },
+      error: (err) => {
+        console.log('[WHERR]', err);
+        this.alert(err?.message, 'Atenção!');
+        this.isLoading = false;
+      },
+    });
+  }
+
   public goToWarehouse(wh: IWarehouse) {
     console.log('[WAREHOUSE]', wh);
   }
 
   public ngOnInit() {
+    this.search = '';
     this.subs.push(
       this.payloadService.payload$.subscribe((res) => (this.payload = res)),
-      this.warehousesService.warehouses$.subscribe(
-        (res) => (this.warehouses = res)
-      )
+      this.warehousesService.warehouses$.subscribe((res) => {
+        this.warehouses = res;
+        this.filtered = res;
+      }),
+      this.warehousesService.filtered$.subscribe((res) => (this.filtered = res))
     );
   }
 

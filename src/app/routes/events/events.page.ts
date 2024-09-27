@@ -70,7 +70,12 @@ export class EventsPage
         (res) => (this.movimentations = res)
       ),
       this.movimentationsService.movimentationsFiltered$.subscribe(
-        (res) => (this.movimentationsFilter = res)
+        (res) => {
+          this.movimentationsFilter = res;
+          if (this.movimentationsFilter?.length) {
+            this.movimentationsFilter = this.movimentationsFilter?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          }
+        }
       )
     );
   }
@@ -99,6 +104,11 @@ export class EventsPage
       case EMovimentationType.Maintenance:
         return "MANUTENÇÃO"
     }
+  }
+
+  public getDate(toFormat: Date): string {
+    const date = new Date(toFormat)
+    return date.toLocaleString();
   }
 
   public onReload() {
@@ -135,7 +145,7 @@ export class EventsPage
       screenHeight - headerHeight - cardHeaderHeight * 2 - padding;
     const itemsPerList = Math.floor(availableHeight / (itemHeight * 2));
 
-    this.maxItemsToShow = itemsPerList > 0 ? itemsPerList : 1;
+    this.maxItemsToShow = itemsPerList > 0 ? itemsPerList + 1 : 1;
   }
 
   // #endregion Private Methods (2)

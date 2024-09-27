@@ -7,6 +7,18 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+        #searchbarInput
+        [(ngModel)]="search"
+        [disabled]="isLoading"
+        placeholder="Faça uma busca aqui..."
+        clearIcon
+        debounce="1000"
+        show-cancel-button="focus"
+        (ionInput)="onSearch()"
+      ></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -20,12 +32,9 @@
     ></ion-label>
   </ion-item>
   <ion-list *ngIf="!isLoading">
-    <ion-item lines="none">
-      <ion-searchbar></ion-searchbar>
-    </ion-item>
     <ion-grid>
       <ion-row>
-        <ion-col [size]="columnSize" *ngFor="let item of warehouses">
+        <ion-col [size]="columnSize" *ngFor="let item of filtered">
           <ion-card (click)="goToWarehouse(item)" button>
             <ion-card-header title="{{ item.name }}">
               <ion-card-title class="card-header-content">
@@ -47,14 +56,14 @@
             <ion-card-content>
               <img [src]="getWarehouseIcon()" alt="" class="icons" />
               <ion-label>{{ item.description }}</ion-label>
-              <ion-label style="color: #FDFDFD;">
+              <ion-label style="color: #fdfdfd">
                 <small>({{ item.area.name }})</small>
               </ion-label>
             </ion-card-content>
           </ion-card>
         </ion-col>
 
-        <ion-col [size]="columnSize">
+        <ion-col [size]="columnSize" *ngIf="!search">
           <ion-card (click)="AppCreateWarehouse.onOpenModal()" button>
             <ion-card-content class="add-card-content">
               <ion-icon name="add-outline" class="icons"></ion-icon> <br />

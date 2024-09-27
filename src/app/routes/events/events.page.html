@@ -20,6 +20,11 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
+        <ion-item *ngIf="!movimentations?.length" style="text-align: center;">
+          <ion-label>
+            <p>Nenhum evento registrado ainda.</p>
+          </ion-label>
+        </ion-item>
         <ion-item
           *ngFor="let movimentacao of movimentationsFilter | slice:0:maxItemsToShow"
         >
@@ -29,7 +34,7 @@
               Evento: {{ getEvent(movimentacao.event) }} <br />
               Tipo: {{ getType(movimentacao.type) }} <br />
               Quantidade: {{ movimentacao.quantity }} <br />
-              Data: {{ movimentacao.date | date:'short' }} <br />
+              Data: {{ getDate(movimentacao.date) }} <br />
               Movimentado por: {{ movimentacao.movimentationBy }}
             </p>
           </ion-label>
@@ -40,7 +45,7 @@
         class="expand-button"
       >
         <ion-button (click)="expandMovimentations()"
-          ><ion-label color="light">Ver Mais +</ion-label></ion-button
+          ><ion-label style="color: #FDFDFD">Ver Mais +</ion-label></ion-button
         >
       </div>
     </ion-card-content>

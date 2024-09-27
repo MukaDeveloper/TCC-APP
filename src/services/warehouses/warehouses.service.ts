@@ -16,6 +16,8 @@ export class WarehousesService {
     new BehaviorSubject<IWarehouse | null>(null);
   public warehouses$: BehaviorSubject<IWarehouse[] | null> =
     new BehaviorSubject<IWarehouse[] | null>([]);
+  public filtered$: BehaviorSubject<IWarehouse[] | null> =
+    new BehaviorSubject<IWarehouse[] | null>([]);
 
   // #endregion Properties (2)
 
@@ -55,6 +57,18 @@ export class WarehousesService {
       map((res: IEnvelopeArray<IWarehouse>) => {
         if (res?.items?.length) {
           this.warehouses$.next(res.items);
+          this.filtered$.next(res.items);
+        }
+        return res;
+      })
+    );
+  }
+
+  public searchByName(query: string): Observable<IEnvelopeArray<IWarehouse>> {
+    return this.apiWarehousesService.searchByName(query).pipe(
+      map((res) => {
+        if (res?.items?.length) {
+          this.filtered$.next(res.items);
         }
         return res;
       })
