@@ -5,6 +5,7 @@ import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope } from 'src/shared/utils/envelope';
 import { CredentialsDto } from '../../services/users/dto/credentials.dto';
+import { RegisterDto } from 'src/services/users/dto/register.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,13 @@ export class ApiUsersService extends ApiBaseService {
     const url = `${this.apiUrl}/Users/auth`;
     return this.http
       .post<IEnvelope<string>>(url, credentials)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public register(credentials: RegisterDto): Observable<IEnvelope<any>> {
+    const url = `${this.apiUrl}/Users/register`;
+    return this.http
+      .post<IEnvelope<any>>(url, credentials)
       .pipe(catchError(HandleError.handler));
   }
 

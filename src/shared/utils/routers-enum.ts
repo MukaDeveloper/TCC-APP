@@ -11,4 +11,5 @@ export enum RoutersEnum {
   areas = 'areas',
   warehouses = 'warehouses',
   materials = 'materials',
+  members = 'members',
 }

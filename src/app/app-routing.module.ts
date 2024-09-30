@@ -65,7 +65,11 @@ const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: RoutersEnum.app },
+  { path: '**', redirectTo: RoutersEnum.app },  {
+    path: 'membros',
+    loadChildren: () => import('./routes/membros/membros.module').then( m => m.MembrosPageModule)
+  },
+
 ];
 
 @NgModule({

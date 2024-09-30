@@ -530,3 +530,23 @@
 .w-60 {
   width: 60%;
 }
+
+.custom-alert {
+  .alert-wrapper {
+    .alert-button-group {
+      .alert-button {
+        color: var(--ion-color-light-fixed);
+      }
+    }
+  }
+}
+
+.custom-loading {
+  .loading-wrapper {
+    .loading-spinner {
+      ion-spinner {
+        color: var(--ion-color-light-fixed);
+      }
+    }
+  }
+}

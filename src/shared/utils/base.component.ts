@@ -17,9 +17,9 @@ export class BaseComponent implements OnDestroy {
 
   public darkMode: boolean = window.matchMedia('(prefers-color-scheme: dark)')
     .matches;
-    public preference: MediaQueryList = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    );
+  public preference: MediaQueryList = window.matchMedia(
+    '(prefers-color-scheme: dark)'
+  );
 
   // #endregion Properties (2)
 
@@ -49,7 +49,9 @@ export class BaseComponent implements OnDestroy {
       header,
       subHeader,
       message,
-      buttons: ['OK'],
+      buttons: [
+        { text: 'OK', role: 'confirm', cssClass: 'alert-button-confirm' },
+      ],
     });
     await alert.present();
     const { role } = await alert.onDidDismiss();

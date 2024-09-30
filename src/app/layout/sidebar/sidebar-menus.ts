@@ -30,5 +30,11 @@ const materials = {
   icon: 'archive',
   cannotAccess: [],
 };
+const members = {
+  text: 'Membros',
+  link: RoutersEnum.app + '/' + RoutersEnum.members,
+  icon: 'people',
+  cannotAccess: [EUserRole.USER, EUserRole.WAREHOUSEMAN],
+};
 
-export const sidebarMenu = [home, movimentations, areas, warehouses, materials];
+export const sidebarMenu = [home, movimentations, areas, warehouses, materials, members];

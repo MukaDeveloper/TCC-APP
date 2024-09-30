@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { ApiUsersService } from 'src/app/api/api-users.service';
 import { PayloadService } from './../payload/payload.service';
 import { IEnvelope } from 'src/shared/utils/envelope';
 import { CredentialsDto } from './dto/credentials.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,12 @@ export class UsersService {
         return res;
       })
     );
+  }
+
+  public register(credentials: RegisterDto): Observable<IEnvelope<any>> {
+    return this.apiUsersService
+      .register(credentials)
+      .pipe(tap((res: IEnvelope<any>) => res));
   }
 
   public selectInstitution(id: number): Observable<IEnvelope<string>> {
