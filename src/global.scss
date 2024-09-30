@@ -535,7 +535,7 @@
   .alert-wrapper {
     .alert-button-group {
       .alert-button {
-        color: var(--ion-color-light-fixed);
+        color: var(--ion-color-dark);
       }
     }
   }
@@ -545,7 +545,7 @@
   .loading-wrapper {
     .loading-spinner {
       ion-spinner {
-        color: var(--ion-color-light-fixed);
+        color: var(--ion-color-dark);
       }
     }
   }

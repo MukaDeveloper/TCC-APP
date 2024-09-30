@@ -12,6 +12,7 @@ import { UsersService } from 'src/services/users/users.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { CredentialsDto } from '../../../services/users/dto/credentials.dto';
 import { RoutersEnum } from '../../../shared/utils/routers-enum';
+import { IEnvelope } from 'src/shared/utils/envelope';
 
 @Component({
   selector: 'app-login',
@@ -55,7 +56,9 @@ export class LoginPage extends BaseComponent implements OnInit {
   }
 
   public goToRegister() {
-    this.router.navigate([`${RoutersEnum.register}`]);
+    this.router.navigate([RoutersEnum.register],{
+      replaceUrl: true,
+    });
   }
 
   public onSubmit() {
@@ -76,15 +79,17 @@ export class LoginPage extends BaseComponent implements OnInit {
         institutionId,
       } as CredentialsDto;
       this.usersService.auth(credentials).subscribe({
-        next: (res) => {
+        next: (res: IEnvelope<string>) => {
           loading.then((l) => l.dismiss());
           if (this.formGroup?.get('keepIn')?.value) {
             this.localStorageAuthService.val = res?.item;
           }
           this.formGroup?.reset();
-          this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
+          this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`], {
+            replaceUrl: true,
+          });
         },
-        error: (error) => {
+        error: (error: any) => {
           this.alert(error?.message, 'Aviso!');
           loading.then((l) => l.dismiss());
         },

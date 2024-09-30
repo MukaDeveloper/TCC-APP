@@ -56,8 +56,8 @@ export class SidebarComponent extends BaseComponent implements OnInit {
 
   public ngOnInit() {
     this.subs.push(
-      this.sidebarService.menuItems$.subscribe((res) => (this.menus = res)),
-      this.payloadService.payload$.subscribe((res) => (this.payload = res))
+      this.sidebarService.menuItems$.subscribe((res: IMenu[] | null) => (this.menus = res)),
+      this.payloadService.payload$.subscribe((res: IPayload | null) => (this.payload = res))
     );
   }
 

@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
   public onLogout() {
     this.payloadService.nextPayload(null);
     this.router.navigate([RoutersEnum.login], {
+      replaceUrl: true,
       queryParams: { redirected: true },
     });
   }

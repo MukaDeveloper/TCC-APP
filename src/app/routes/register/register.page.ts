@@ -18,6 +18,7 @@ import { UsersService } from '../../../services/users/users.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import { RoutersEnum } from '../../../shared/utils/routers-enum';
 import { RegisterDto } from 'src/services/users/dto/register.dto';
+import { IEnvelope } from 'src/shared/utils/envelope';
 
 @Component({
   selector: 'app-register',
@@ -52,7 +53,9 @@ export class RegisterPage extends BaseComponent implements OnInit {
 
   public goBack() {
     this.formGroup?.reset();
-    this.router.navigate([RoutersEnum.login]);
+    this.router.navigate([RoutersEnum.login], {
+      replaceUrl: true,
+    });
   }
 
   public onKeyEvent($e: number): void {
@@ -83,8 +86,10 @@ export class RegisterPage extends BaseComponent implements OnInit {
     delete (obj as any).confirmPassword;
 
     this.usersService.register(obj).subscribe({
-      next: (res) => {
-        this.router.navigate([RoutersEnum.login]);
+      next: (res: IEnvelope<any>) => {
+        this.router.navigate([RoutersEnum.login], {
+          replaceUrl: true,
+        });
         this.formGroup?.reset();
         this.alert(
           `Bem-vindo ${res.item.name}! Peça para um coordenador lhe atribuir a uma instituição para acessar a aplicação`,
@@ -92,7 +97,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
           'Registrado com sucesso!'
         );
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error(error);
         this.alert(error?.message, 'Atenção!');
       },
