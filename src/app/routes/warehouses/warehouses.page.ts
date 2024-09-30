@@ -11,6 +11,8 @@ import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
 import { WarehousesService } from '../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
+import { AreasService } from '../../../services/areas/areas.service';
+import { IArea } from '../../../services/areas/interfaces/i-area';
 
 @Component({
   selector: 'app-warehouses',
@@ -24,9 +26,11 @@ export class WarehousesPage
   // #region Properties (4)
 
   @ViewChild('searchbarInput') searchbar!: IonSearchbar;
+  @ViewChild('AppCreateWarehouse') createWarehouseModal!: any;
   public isLoading = true;
   public payload: IPayload | null = null;
   public warehouses: IWarehouse[] | null = [];
+  public areas: IArea[] | null = [];
   public filtered: IWarehouse[] | null = [];
   public search: string = '';
 
@@ -36,6 +40,7 @@ export class WarehousesPage
 
   constructor(
     private readonly payloadService: PayloadService,
+    private readonly areasService: AreasService,
     private readonly warehousesService: WarehousesService,
     toastController: ToastController,
     alertController: AlertController,
@@ -91,6 +96,14 @@ export class WarehousesPage
     });
   }
 
+  public onCreateWarehouse() {
+    if (!this.areas || this.areas.length === 0) {
+      this.toast("Você precisa registrar uma área antes de criar um almoxarifado.", "Atenção!", "warning", "middle");
+      return;
+    }
+    this.createWarehouseModal.onOpenModal();
+  }
+
   public onSearch() {
     this.isLoading = true;
     if (!this.search) {
@@ -123,6 +136,7 @@ export class WarehousesPage
     this.search = '';
     this.subs.push(
       this.payloadService.payload$.subscribe((res) => (this.payload = res)),
+      this.areasService.areas$.subscribe((res) => (this.areas = res)),
       this.warehousesService.warehouses$.subscribe((res) => {
         this.warehouses = res;
         this.filtered = res;

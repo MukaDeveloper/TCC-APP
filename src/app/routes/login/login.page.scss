@@ -60,17 +60,30 @@ ion-input.custom {
 
 ion-checkbox {
   --size: 1.5rem;
-  --checkmark-color: #FDFDFD;
+  --checkmark-color: var(--ion-color-light-fixed);
   --checkbox-background: var(--ion-color-light-shade);
   --checkbox-background-checked: var(--ion-color-secondary);
 }
 
 ion-checkbox::part(container) {
   border-radius: 0.4rem;
-  border: 0.125rem solid #FDFDFD;
+  border: 0.125rem solid var(--ion-color-light-fixed);
 }
 
 ion-button {
   --background: var(--ion-color-primary-tint);
   color: #ffffff;
+}
+
+.redirect {
+  text-decoration: underline;
+}
+
+.redirect:hover {
+  cursor: pointer;
+  color: #dfdfdf
+}
+
+.redirect:active {
+  color: #ffffff
 }

@@ -51,38 +51,6 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #region Public Methods (6)
 
-  public deleteArea(area: IArea) {
-    this.alertController.create({
-      header: 'Excluir Área',
-      message: `Deseja realmente excluir a área ${area.name}?`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Excluir',
-          handler: () => {
-            this.areasService.delete(area?.id).subscribe({
-              next: (res) => {
-                this.toastController.create({
-                  message: 'Área excluída com sucesso!',
-                  duration: 2000,
-                });
-              },
-              error: (err) => {
-                this.toastController.create({
-                  message: 'Erro ao excluir a área!',
-                  duration: 2000,
-                });
-              },
-            });
-          },
-        },
-      ],
-    });
-  }
-
   public ionViewDidEnter(): void {
     this.onGetAll();
   }
@@ -93,6 +61,32 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
         this.areas = res;
       })
     );
+  }
+
+  public onDeleteArea(area: IArea) {
+    this.alertController.create({
+      header: 'Excluir Área',
+      message: `Deseja realmente excluir a área ${area.name}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            this.areasService.delete(area.id).subscribe({
+              next: (res) => {
+                this.toast('Área excluída com sucesso!', 'Sucesso');
+              },
+              error: (err) => {
+                this.alert(err?.message, 'Atenção!');
+              },
+            });
+          },
+        },
+      ],
+    }).then(a => a.present());
   }
 
   public onGetAll() {

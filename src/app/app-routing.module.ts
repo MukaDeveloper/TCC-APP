@@ -12,6 +12,10 @@ const routes: Routes = [
     redirectTo: RoutersEnum.app,
   },
   {
+    path: 'register',
+    loadChildren: () => import('./routes/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
     path: RoutersEnum.login,
     canActivate: [toHomeGuard],
     loadChildren: () =>

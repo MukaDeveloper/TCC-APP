@@ -32,6 +32,11 @@
   </ion-item>
   <section *ngIf="!isLoading" class="wrapper">
     <ion-list>
+      <ion-item *ngIf="!filtered?.length" lines="none" style="text-align: center;">
+        <ion-label>
+          Nenhum material encontrado.
+        </ion-label>
+      </ion-item>
       <ion-item lines="full" *ngFor="let material of filtered; let j = index">
         <ion-thumbnail slot="start">
           <ion-img [src]="getMaterialIcon(material)"></ion-img>
@@ -53,10 +58,14 @@
         </ion-label>
         <ion-buttons slot="end">
           <ion-button fill="none">
-            <ion-icon color="danger" name="trash-outline"></ion-icon>
+            <ion-icon color="dark" name="create-outline" style="width: 24px; height: 24px;"></ion-icon>
+          </ion-button>
+          <ion-button fill="none">
+            <ion-icon color="danger" name="trash-outline" style="width: 24px; height: 24px;"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-item>
     </ion-list>
   </section>
+  <app-add-material #AddMaterial></app-add-material>
 </ion-content>

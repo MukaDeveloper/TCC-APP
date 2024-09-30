@@ -1,3 +1,12 @@
+<ion-header class="clear-borders">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content [fullscreen]="true">
     <div class="wrapper">
       <div *ngIf="isLoading">
@@ -16,7 +25,10 @@
             <img src="assets/imgs/logo.png" alt="" style="width: 250px" />
           </div>
           <p>
-            Informe suas credenciais para<br />acessar sua conta de forma segura
+            Bem-vindo(a) à StockTrack! 
+          </p>
+          <p>
+            Faça seu cadastro abaixo para acessar nosso sistema.
           </p>
         </ion-card-header>
         <ion-card-content class="content">
@@ -59,32 +71,6 @@
               ></ion-input>
             </div>
             <br />
-            <div>
-              <ion-input
-                formControlName="institutionId"
-                label="Instituição"
-                labelPlacement="start"
-                fill="outline"
-                type="number"
-                inputmode="numeric"
-                class="custom"
-                shape="round"
-                maxlength="3"
-                minlength="1"
-                (keyup)="onKeyEvent($event.keyCode)"
-                (keydown)="onKeyEvent($event.keyCode)"
-              ></ion-input>
-            </div>
-            <br />
-            <div class="checkbox-right">
-              <ion-checkbox
-                formControlName="keepIn"
-                slot="end"
-                labelPlacement="start"
-                >Manter-me conectado</ion-checkbox
-              >
-            </div>
-            <br />
             <ion-button
               type="submit"
               fill="solid"
@@ -93,20 +79,8 @@
               *ngIf="formGroup"
               [disabled]="!formGroup.valid"
               (click)="onSubmit()"
-              >ACESSAR</ion-button
+              >REGISTRAR</ion-button
             >
-            <div style="text-align: center">
-              <ion-label style="color: var(--ion-color-light-fixed)">
-                Não tem registro?
-                <span (click)="goToRegister()" class="redirect" button>Cadastre-se</span></ion-label
-              >
-              <br />
-              <br />
-              <ion-label
-                style="color: var(--ion-color-light-fixed)"
-                ><small class="redirect">Esqueci minha senha</small></ion-label
-              >
-            </div>
           </form>
         </ion-card-content>
       </ion-card>

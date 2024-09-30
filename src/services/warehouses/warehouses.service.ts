@@ -78,6 +78,7 @@ export class WarehousesService {
   public reset() {
     this.warehouses$.next(null);
     this.selectedWarehouse$.next(null);
+    this.filtered$.next(null);
   }
 
   public updateWarehouse(data: UpdateWarehouseDto): Observable<IEnvelope<IWarehouse>> {

@@ -18,7 +18,7 @@ import { RoutersEnum } from '../../../shared/utils/routers-enum';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
+export class LoginPage extends BaseComponent implements OnInit {
   // #region Properties (3)
 
   public formGroup: FormGroup | null = null;
@@ -44,8 +44,6 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #region Public Methods (4)
 
-  public ionViewDidEnter(): void {}
-
   public ngOnInit() {
     this.createForm();
   }
@@ -54,6 +52,10 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
     if ($e === 13 && this.formGroup!.valid) {
       this.onSubmit();
     }
+  }
+
+  public goToRegister() {
+    this.router.navigate([`${RoutersEnum.register}`]);
   }
 
   public onSubmit() {

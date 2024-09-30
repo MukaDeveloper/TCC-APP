@@ -2,8 +2,12 @@
   <ion-toolbar>
     <ion-title>Áreas</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="onReload()" fill="none">
-        <ion-icon name="refresh"></ion-icon>
+      <ion-button (click)="onReload()">
+        <ion-icon
+          slot="icon-only"
+          name="reload-outline"
+          style="--color: var(--ion-color-dark)"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -21,6 +25,18 @@
   </ion-item>
   <ion-list *ngIf="!isLoading">
     <ion-grid>
+      <ion-row *ngIf="!areas?.length">
+        <ion-col size="12">
+          <div style="text-align: center">
+            <ion-label>
+              <ion-text
+                >Nenhuma área registrada. Clique no botão abaixo para
+                adicionar</ion-text
+              >
+            </ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
       <ion-row>
         <ion-col [size]="columnSize" *ngFor="let item of areas">
           <ion-card (click)="selectArea(item)" button>
@@ -35,8 +51,8 @@
                   <ion-button (click)="AppEditArea.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button>
-                  <ion-button (click)="deleteArea(item)">
-                    <ion-icon name="trash-outline"></ion-icon>
+                  <ion-button (click)="onDeleteArea(item)">
+                    <ion-icon color="danger" name="trash-outline"></ion-icon>
                   </ion-button>
                 </ion-buttons>
               </ion-card-title>
