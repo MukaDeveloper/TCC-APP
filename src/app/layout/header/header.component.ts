@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PayloadService } from 'src/services/payload/payload.service';
-import { RoutersEnum } from 'src/shared/utils/routers-enum';
+import { ERouters } from 'src/shared/utils/e-routers';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private readonly payloadService: PayloadService,
-    private readonly router: Router,
+    private readonly router: Router
   ) {}
 
   // #endregion Constructors (1)
@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
 
   public onLogout() {
     this.payloadService.nextPayload(null);
-    this.router.navigate([RoutersEnum.login], {
+    this.router.navigate([ERouters.login], {
       replaceUrl: true,
       queryParams: { redirected: true },
     });

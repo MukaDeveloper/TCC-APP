@@ -6,15 +6,15 @@ import {
   ToastController,
   ViewDidEnter,
 } from '@ionic/angular';
-import { merge, mergeMap } from 'rxjs';
+import { mergeMap } from 'rxjs';
 import { AreasService } from 'src/services/areas/areas.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { InstitutionService } from '../../services/instution/intitution.service';
 import { IPayload } from '../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../services/payload/payload.service';
 import { ResetService } from '../../services/reset/reset.service';
-import { RoutersEnum } from '../../shared/utils/routers-enum';
 import { WarehousesService } from '../../services/warehouses/warehouses.service';
+import { ERouters } from '../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-layout',
@@ -63,7 +63,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   public onLogout() {
     this.resetService.resetAll();
     this.payloadService.nextPayload(null);
-    this.router.navigate([RoutersEnum.login], {
+    this.router.navigate([ERouters.login], {
       replaceUrl: true,
       queryParams: { redirected: true },
     });
@@ -78,17 +78,19 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Private Methods (1)
 
   private onPayload() {
-    const loading = this.loadingShow('Carregando...');
-    this.institutionService.getCurrent().subscribe({
-      next: (res) => {
-        loading.then((l) => l.dismiss());
-        this.isLoading = false;
-      },
-      error: (err) => {
-        loading.then((l) => l.dismiss());
-        this.isLoading = false;
-      },
-    });
+    if (!this.institutionService.institution) {
+      const loading = this.loadingShow('Carregando...');
+      this.institutionService.getCurrent().subscribe({
+        next: (res) => {
+          loading.then((l) => l.dismiss());
+          this.isLoading = false;
+        },
+        error: (err) => {
+          loading.then((l) => l.dismiss());
+          this.isLoading = false;
+        },
+      });
+    }
 
     if (this.payload?.role !== 'USER') {
       this.areasService

@@ -1,4 +1,4 @@
-export enum RoutersEnum {
+export enum ERouters {
   app = 'app',
   login = 'login',
   register = 'register',

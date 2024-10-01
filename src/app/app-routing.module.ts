@@ -1,75 +1,82 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { RoutersEnum } from '../shared/utils/routers-enum';
+import { ERouters } from '../shared/utils/e-routers';
 import { payloadGuard } from './guards/payload.guard';
 import { toHomeGuard } from './guards/to-home.guard';
 import { LayoutPage } from './layout/layout.page';
+import { institutionGuard } from './guards/institution.guard';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: RoutersEnum.app,
+    redirectTo: ERouters.app,
   },
   {
-    path: 'register',
-    loadChildren: () => import('./routes/register/register.module').then( m => m.RegisterPageModule)
+    path: ERouters.register,
+    loadChildren: () =>
+      import('./routes/register/register.module').then(
+        (m) => m.RegisterPageModule
+      ),
   },
   {
-    path: RoutersEnum.login,
+    path: ERouters.login,
     canActivate: [toHomeGuard],
     loadChildren: () =>
       import('./routes/login/login.module').then((m) => m.LoginPageModule),
   },
   {
-    path: RoutersEnum.app,
-    canActivateChild: [payloadGuard],
+    path: ERouters.app,
+    canActivateChild: [payloadGuard, institutionGuard],
     component: LayoutPage,
     children: [
       {
         path: '',
-        redirectTo: RoutersEnum.home,
+        redirectTo: ERouters.home,
         pathMatch: 'full',
       },
       {
-        path: RoutersEnum.home,
+        path: ERouters.home,
         canActivate: [],
         loadChildren: () =>
           import('./routes/home/home.module').then((m) => m.HomePageModule),
       },
       {
-        path: RoutersEnum.events,
+        path: ERouters.events,
         loadChildren: () =>
           import('./routes/events/events.module').then(
             (m) => m.EventsPageModule
           ),
       },
       {
-        path: RoutersEnum.warehouses,
+        path: ERouters.warehouses,
         loadChildren: () =>
           import('./routes/warehouses/warehouses.module').then(
             (m) => m.WarehousesPageModule
           ),
       },
       {
-        path: RoutersEnum.areas,
+        path: ERouters.areas,
         loadChildren: () =>
           import('./routes/areas/areas.module').then((m) => m.AreasPageModule),
       },
       {
-        path: RoutersEnum.materials,
+        path: ERouters.materials,
         loadChildren: () =>
           import('./routes/materials/materials.module').then(
             (m) => m.MaterialsPageModule
           ),
       },
+      {
+        path: ERouters.members,
+        loadChildren: () =>
+          import('./routes/membros/membros.module').then(
+            (m) => m.MembrosPageModule
+          ),
+      },
     ],
   },
-  { path: '**', redirectTo: RoutersEnum.app },  {
-    path: 'membros',
-    loadChildren: () => import('./routes/membros/membros.module').then( m => m.MembrosPageModule)
-  },
-
+  { path: '**', redirectTo: ERouters.app },
 ];
 
 @NgModule({

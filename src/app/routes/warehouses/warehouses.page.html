@@ -82,7 +82,7 @@
           </ion-card>
         </ion-col>
 
-        <ion-col [size]="columnSize" *ngIf="!search">
+        <ion-col [size]="columnSize" *ngIf="!search && payload?.role !== eUser">
           <ion-card
             [disabled]="!areas?.length"
             (click)="onCreateWarehouse()"

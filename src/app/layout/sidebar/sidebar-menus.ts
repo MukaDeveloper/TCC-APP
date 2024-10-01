@@ -1,40 +1,47 @@
-import { RoutersEnum } from 'src/shared/utils/routers-enum';
+import { ERouters } from 'src/shared/utils/e-routers';
 import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
 
 const home = {
   text: 'Início',
-  link: RoutersEnum.home,
+  link: ERouters.home,
   icon: 'home',
 };
 const movimentations = {
   text: 'Eventos',
-  link: RoutersEnum.app + '/' + RoutersEnum.events,
+  link: ERouters.app + '/' + ERouters.events,
   icon: 'sync',
   cannotAccess: [EUserRole.USER, EUserRole.WAREHOUSEMAN],
 };
 const areas = {
   text: 'Áreas',
-  link: RoutersEnum.app + '/' + RoutersEnum.areas,
+  link: ERouters.app + '/' + ERouters.areas,
   icon: 'cube',
-  cannotAccess: [EUserRole.USER],
+  cannotAccess: [EUserRole.USER, EUserRole.WAREHOUSEMAN],
 };
 const warehouses = {
   text: 'Almoxarifados',
-  link: RoutersEnum.app + '/' + RoutersEnum.warehouses,
+  link: ERouters.app + '/' + ERouters.warehouses,
   svg: 'assets/svgs/warehouse-icon.svg',
   cannotAccess: [EUserRole.USER],
 };
 const materials = {
   text: 'Materiais',
-  link: RoutersEnum.app + '/' + RoutersEnum.materials,
+  link: ERouters.app + '/' + ERouters.materials,
   icon: 'archive',
   cannotAccess: [],
 };
 const members = {
   text: 'Membros',
-  link: RoutersEnum.app + '/' + RoutersEnum.members,
+  link: ERouters.app + '/' + ERouters.members,
   icon: 'people',
   cannotAccess: [EUserRole.USER, EUserRole.WAREHOUSEMAN],
 };
 
-export const sidebarMenu = [home, movimentations, areas, warehouses, materials, members];
+export const sidebarMenu = [
+  home,
+  movimentations,
+  areas,
+  warehouses,
+  materials,
+  members,
+];

@@ -7,8 +7,8 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ERouters } from 'src/shared/utils/e-routers';
-import { PayloadService } from '../../services/payload/payload.service';
+import { InstitutionService } from '../../services/instution/intitution.service';
+import { ERouters } from '../../shared/utils/e-routers';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class PermissionsService {
   // #region Constructors (1)
 
   constructor(
-    private readonly payloadService: PayloadService,
+    public institutionService: InstitutionService,
     private readonly router: Router
   ) {}
 
@@ -33,23 +33,23 @@ export class PermissionsService {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    // console.log('[PayloadGuard] PermissionsService.canActivate');
-
-    const payload = this.payloadService.payload;
-
-    if (!payload) {
-      // console.log('[PayloadGuard] BLOCKED => REDIRECT');
-      return this.router.createUrlTree([ERouters.login], {
-        queryParams: { redirected: true },
+    // console.log('[InstitutionGuard] PermissionsService.canActivate');
+    const institution = this.institutionService.institution;
+    if (institution) {
+      // console.log('[InstitutionGuard] PASS => GO TO ROUTE');
+      return true;
+    } else {
+      this.institutionService.getCurrent().subscribe({
+        next: (_) => this.router.navigate([ERouters.home]),
+        error: (_) => this.router.navigate([ERouters.login]),
       });
+      return false;
     }
-    // console.log('[PayloadGuard] ALLOWED');
-    return true;
   }
 
   // #endregion Public Methods (1)
 }
-export const payloadGuard: CanActivateFn = (
+export const institutionGuard: CanActivateFn = (
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ):

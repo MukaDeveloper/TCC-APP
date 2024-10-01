@@ -13,12 +13,12 @@ import {
   LoadingController,
   ToastController,
 } from '@ionic/angular';
+import { RegisterDto } from 'src/services/users/dto/register.dto';
+import { IEnvelope } from 'src/shared/utils/envelope';
 import { LocalStorageAuthService } from '../../../services/localstorage/auth-local.service';
 import { UsersService } from '../../../services/users/users.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
-import { RoutersEnum } from '../../../shared/utils/routers-enum';
-import { RegisterDto } from 'src/services/users/dto/register.dto';
-import { IEnvelope } from 'src/shared/utils/envelope';
+import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-register',
@@ -53,7 +53,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
 
   public goBack() {
     this.formGroup?.reset();
-    this.router.navigate([RoutersEnum.login], {
+    this.router.navigate([ERouters.login], {
       replaceUrl: true,
     });
   }
@@ -87,7 +87,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
 
     this.usersService.register(obj).subscribe({
       next: (res: IEnvelope<any>) => {
-        this.router.navigate([RoutersEnum.login], {
+        this.router.navigate([ERouters.login], {
           replaceUrl: true,
         });
         this.formGroup?.reset();

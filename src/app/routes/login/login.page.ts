@@ -5,14 +5,13 @@ import {
   AlertController,
   LoadingController,
   ToastController,
-  ViewDidEnter,
 } from '@ionic/angular';
 import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
 import { UsersService } from 'src/services/users/users.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
-import { CredentialsDto } from '../../../services/users/dto/credentials.dto';
-import { RoutersEnum } from '../../../shared/utils/routers-enum';
 import { IEnvelope } from 'src/shared/utils/envelope';
+import { CredentialsDto } from '../../../services/users/dto/credentials.dto';
+import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-login',
@@ -56,14 +55,13 @@ export class LoginPage extends BaseComponent implements OnInit {
   }
 
   public goToRegister() {
-    this.router.navigate([RoutersEnum.register],{
+    this.router.navigate([ERouters.register], {
       replaceUrl: true,
     });
   }
 
   public onSubmit() {
     const loading = this.loadingShow('Autenticando...');
-
     const email = this.formGroup?.get('email')?.value;
     const passwordString = this.formGroup?.get('password')?.value;
     const institutionId = this.formGroup?.get('institutionId')?.value;
@@ -85,7 +83,7 @@ export class LoginPage extends BaseComponent implements OnInit {
             this.localStorageAuthService.val = res?.item;
           }
           this.formGroup?.reset();
-          this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`], {
+          this.router.navigate([`${ERouters.app}/${ERouters.home}`], {
             replaceUrl: true,
           });
         },
