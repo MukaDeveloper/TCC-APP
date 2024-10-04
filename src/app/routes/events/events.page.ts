@@ -12,6 +12,7 @@ import { MovimentationsService } from '../../../services/movimentations/moviment
 import { PayloadService } from '../../../services/payload/payload.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { EMovimentationType } from 'src/services/movimentations/interfaces/enum/EMovimentationType';
+import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-events',
@@ -29,6 +30,8 @@ export class EventsPage
   public movimentations: IMovimentations[] | null = [];
   public movimentationsFilter: IMovimentations[] | null = [];
   public payload: IPayload | null = null;
+  public homeURL = `/${ERouters.app}/${ERouters.home}`;
+  public defaultURL = ERouters.home;
 
   // #endregion Properties (5)
 

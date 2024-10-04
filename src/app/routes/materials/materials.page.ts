@@ -9,6 +9,7 @@ import { IMaterial } from '../../../services/materials/interfaces/i-material';
 import { MaterialsService } from '../../../services/materials/materials.service';
 import { PayloadService } from '../../../services/payload/payload.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
+import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-materials',
@@ -21,6 +22,8 @@ export class MaterialsPage extends BaseComponent implements OnInit {
   public filtered: IMaterial[] | null = [];
   public isLoading = true;
   public payload: IPayload | null = null;
+  public homeURL = `/${ERouters.app}/${ERouters.home}`;
+  public defaultURL = ERouters.home;
 
   // #endregion Properties (3)
 

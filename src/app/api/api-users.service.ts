@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
+import { RegisterDto } from 'src/services/users/dto/register.dto';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
-import { IEnvelope } from 'src/shared/utils/envelope';
+import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { CredentialsDto } from '../../services/users/dto/credentials.dto';
-import { RegisterDto } from 'src/services/users/dto/register.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +39,27 @@ export class ApiUsersService extends ApiBaseService {
     const url = `${this.apiUrl}/Users/select-institution/${id}`;
     return this.http
       .patch<IEnvelope<string>>(url, null)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public getAllFromInstitution(): Observable<IEnvelopeArray<any>> {
+    const url = `${this.apiUrl}/Users/by-institution`;
+    return this.http
+      .get<IEnvelopeArray<any>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public searchByName(query: string): Observable<IEnvelopeArray<any>> {
+    const url = `${this.apiUrl}/Users/search-by-name/${query}`;
+    return this.http
+      .get<IEnvelopeArray<any>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public searchByEmail(query: string): Observable<IEnvelopeArray<any>> {
+    const url = `${this.apiUrl}/Users/search-by-email/${query}`;
+    return this.http
+      .get<IEnvelopeArray<any>>(url)
       .pipe(catchError(HandleError.handler));
   }
 

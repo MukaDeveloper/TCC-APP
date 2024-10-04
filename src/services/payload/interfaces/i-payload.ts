@@ -1,8 +1,10 @@
+import { EUserRole } from "./enum/EUserRole";
+
 export interface IPayload {
-  id: string;
+  id: number;
   name: string;
   email: string;
   photoUrl: string;
   institutionId: number;
-  role: 'USER' | 'WAREHOUSEMAN' | 'COORDINATOR' | 'SUPPORT';
+  role: EUserRole;
 }

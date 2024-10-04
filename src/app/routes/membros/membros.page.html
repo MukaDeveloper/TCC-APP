@@ -1,7 +1,25 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
+  <ion-breadcrumbs [maxItems]="4">
+    <ion-breadcrumb [routerLink]="homeURL">Home</ion-breadcrumb>
+    <ion-breadcrumb>Membros</ion-breadcrumb>
+  </ion-breadcrumbs>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultURL"></ion-back-button>
+    </ion-buttons>
     <ion-title>Membros</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons
+      slot="end"
+      *ngIf="payload?.role !== eUser && payload?.role !== eWarehouseman"
+    >
+      <ion-chip
+        outline="true"
+        (click)="AppAddMember.modal.present()"
+        style="--color: var(--ion-color-dark)"
+      >
+        <ion-label style="--color: var(--ion-color-dark)">Adicionar</ion-label>
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-chip>
       <ion-button (click)="onReload()">
         <ion-icon
           slot="icon-only"
@@ -11,17 +29,16 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <!-- <ion-toolbar>
+  <!-- <ion-toolbar *ngIf="members.length">
     <ion-searchbar
-      #searchbarInput
       [(ngModel)]="search"
-      [disabled]="isLoading"
       placeholder="Faça uma busca aqui..."
       clearIcon
-      debounce="1000"
-      show-cancel-button="focus"
+      debounce="1500"
       (ionInput)="onSearch()"
-    ></ion-searchbar>
+      class="searchbar-circle"
+    >
+    </ion-searchbar>
   </ion-toolbar> -->
 </ion-header>
 
@@ -35,5 +52,49 @@
         ></ion-spinner> </ion-text
     ></ion-label>
   </ion-item>
+  <section *ngIf="!isLoading">
+    <ion-item *ngIf="!members?.length" style="text-align: center">
+      <ion-label>
+        <p>Como você conseguiu essa proeza de estar vendo essa mensagem????</p>
+      </ion-label>
+    </ion-item>
+    <ion-list *ngIf="members?.length">
+      <ion-item *ngFor="let member of members; let j = index" lines="none">
+        <ion-avatar slot="start">
+          <img [alt]="member.name" [src]="member.photoUrl" />
+        </ion-avatar>
+        <ion-text>
+          <h4 class="m-0 mb-1">{{ member.name ? member.name : 'ANÔNIMO' }}</h4>
+          <p class="m-0">{{ member.email }}</p>
+        </ion-text>
+        <ion-label
+          slot="end"
+          *ngIf="payload?.role !== eUser && payload?.role !== eWarehouseman"
+        >
+          <ion-toolbar *ngIf="member.id !== payload?.id">
+            <ion-buttons slot="end">
+              <ion-chip
+                [outline]="true"
+                (click)="onShowChangeRole(member)"
+                [color]="onGetRoleColor(member.role)"
+                button
+              >
+                <ion-label> {{ translateRole(member.role) }} </ion-label>
+                <ion-icon name="swap-horizontal-outline"></ion-icon>
+              </ion-chip>
+              <ion-button (click)="onShowRemove(member.id)">
+                <ion-icon
+                  name="trash-outline"
+                  color="danger"
+                  slot="icon-only"
+                ></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </section>
   <ion-list *ngIf="!isLoading"> </ion-list>
+  <app-add-member #AppAddMember></app-add-member>
 </ion-content>

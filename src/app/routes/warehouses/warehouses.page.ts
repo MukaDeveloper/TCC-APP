@@ -14,6 +14,7 @@ import { BaseComponent } from '../../../shared/utils/base.component';
 import { AreasService } from '../../../services/areas/areas.service';
 import { IArea } from '../../../services/areas/interfaces/i-area';
 import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
+import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-warehouses',
@@ -35,6 +36,8 @@ export class WarehousesPage
   public filtered: IWarehouse[] | null = [];
   public search: string = '';
   public eUser = EUserRole.USER;
+  public homeURL = `/${ERouters.app}/${ERouters.home}`;
+  public defaultURL = ERouters.home;
 
   // #endregion Properties (4)
 

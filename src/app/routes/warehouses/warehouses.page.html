@@ -1,5 +1,12 @@
 <ion-header [translucent]="true">
+  <ion-breadcrumbs [maxItems]="4">
+    <ion-breadcrumb [routerLink]="homeURL">Home</ion-breadcrumb>
+    <ion-breadcrumb>Almoxarifados</ion-breadcrumb>
+  </ion-breadcrumbs>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultURL"></ion-back-button>
+    </ion-buttons>
     <ion-title>Almoxarifados</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onReload()">

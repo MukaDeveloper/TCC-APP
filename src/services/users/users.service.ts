@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { ApiUsersService } from 'src/app/api/api-users.service';
 import { PayloadService } from './../payload/payload.service';
-import { IEnvelope } from 'src/shared/utils/envelope';
+import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { CredentialsDto } from './dto/credentials.dto';
 import { RegisterDto } from './dto/register.dto';
 
@@ -12,10 +12,16 @@ import { RegisterDto } from './dto/register.dto';
 export class UsersService {
   // #region Constructors (1)
 
+  private membersSubject: BehaviorSubject<any[] | null>;
+  public members$: Observable<any[] | null>;
+
   constructor(
     public apiUsersService: ApiUsersService,
     public payloadService: PayloadService
-  ) {}
+  ) {
+    this.membersSubject = new BehaviorSubject<any[] | null>([]);
+    this.members$ = this.membersSubject.asObservable();
+  }
 
   // #endregion Constructors (1)
 
@@ -51,6 +57,29 @@ export class UsersService {
         return res;
       })
     );
+  }
+
+  public getAllFromInstitution(): Observable<IEnvelopeArray<any>> {
+    return this.apiUsersService.getAllFromInstitution().pipe(
+      map((res: IEnvelopeArray<any>) => {
+        if (res.items) {
+          this.membersSubject.next(res.items);
+        }
+        return res;
+      })
+    );
+  }
+
+  public searchByName(query: string): Observable<IEnvelopeArray<any>> {
+    return this.apiUsersService
+      .searchByName(query)
+      .pipe(map((res: IEnvelopeArray<any>) => res));
+  }
+
+  public searchByEmail(query: string): Observable<IEnvelopeArray<any>> {
+    return this.apiUsersService
+      .searchByEmail(query)
+      .pipe(map((res: IEnvelopeArray<any>) => res));
   }
 
   // #endregion Public Methods (2)

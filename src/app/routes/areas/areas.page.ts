@@ -8,6 +8,7 @@ import {
 import { AreasService } from 'src/services/areas/areas.service';
 import { IArea } from 'src/services/areas/interfaces/i-area';
 import { BaseComponent } from '../../../shared/utils/base.component';
+import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-areas',
@@ -19,6 +20,8 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   public areas: IArea[] | null = [];
   public isLoading = true;
+  public homeURL = `/${ERouters.app}/${ERouters.home}`;
+  public defaultURL = ERouters.home;
 
   // #endregion Properties (2)
 
@@ -65,6 +68,7 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   public onDeleteArea(area: IArea) {
     this.alertController.create({
+      cssClass: 'custom-alert',
       header: 'Excluir Área',
       message: `Deseja realmente excluir a área ${area.name}?`,
       buttons: [
