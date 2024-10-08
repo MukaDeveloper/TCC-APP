@@ -53,7 +53,7 @@
     ></ion-label>
   </ion-item>
   <section *ngIf="!isLoading">
-    <ion-item *ngIf="!members?.length" style="text-align: center">
+    <ion-item *ngIf="!members?.length" style="text-align: center; margin-top: 1rem;">
       <ion-label>
         <p>Como você conseguiu essa proeza de estar vendo essa mensagem????</p>
       </ion-label>
@@ -65,15 +65,16 @@
         </ion-avatar>
         <ion-text>
           <h4 class="m-0 mb-1">{{ member.name ? member.name : 'ANÔNIMO' }}</h4>
-          <p class="m-0">{{ member.email }}</p>
+          <small class="m-0">{{ member.email }}</small>
         </ion-text>
         <ion-label
           slot="end"
           *ngIf="payload?.role !== eUser && payload?.role !== eWarehouseman"
         >
-          <ion-toolbar *ngIf="member.id !== payload?.id">
+          <ion-toolbar>
             <ion-buttons slot="end">
               <ion-chip
+                [disabled]="member.id !== payload?.id"
                 [outline]="true"
                 (click)="onShowChangeRole(member)"
                 [color]="onGetRoleColor(member.role)"
@@ -82,7 +83,10 @@
                 <ion-label> {{ translateRole(member.role) }} </ion-label>
                 <ion-icon name="swap-horizontal-outline"></ion-icon>
               </ion-chip>
-              <ion-button (click)="onShowRemove(member.id)">
+              <ion-button
+                [disabled]="member.id !== payload?.id || member.role === eSupport"
+                (click)="onShowRemove(member.id)"
+              >
                 <ion-icon
                   name="trash-outline"
                   color="danger"
@@ -96,5 +100,9 @@
     </ion-list>
   </section>
   <ion-list *ngIf="!isLoading"> </ion-list>
-  <app-add-member #AppAddMember></app-add-member>
+  <app-add-member
+    [payload]="payload"
+    (reload)="onReload()"
+    #AppAddMember
+  ></app-add-member>
 </ion-content>

@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AlertController,
   IonModal,
@@ -6,10 +14,12 @@ import {
   LoadingController,
   ToastController,
 } from '@ionic/angular';
-import { BaseComponent } from '../../../../shared/utils/base.component';
-import { FormGroup } from '@angular/forms';
-import { ERouters } from '../../../../shared/utils/e-routers';
+import { EUserRole } from '../../../../services/payload/interfaces/enum/EUserRole';
+import { IPayload } from '../../../../services/payload/interfaces/i-payload';
+import { AddUserInstitutionDto } from '../../../../services/users/dto/add-user-institution.dto';
+import { IMember } from '../../../../services/users/interfaces/i-member';
 import { UsersService } from '../../../../services/users/users.service';
+import { BaseComponent } from '../../../../shared/utils/base.component';
 
 @Component({
   selector: 'app-add-member',
@@ -19,14 +29,17 @@ import { UsersService } from '../../../../services/users/users.service';
 export class AddMemberComponent extends BaseComponent implements OnInit {
   // #region Properties (8)
 
-  public defaultURL = ERouters.home;
+  @Input() public payload: IPayload | null = null;
   public formGroup: FormGroup | null = null;
   public isLoading: boolean = false;
-  public members: any[] = [];
+  public members: IMember[] = [];
+  public eCoordinator = EUserRole.COORDINATOR;
+  public eSupport = EUserRole.SUPPORT;
   @ViewChild(IonModal) public modal!: IonModal;
   public search: string = '';
   @ViewChild(IonSearchbar) public searchbar!: IonSearchbar;
-  public selectedMember: any;
+  public selectedMember: IMember | null = null;
+  @Output() public reload = new EventEmitter<null>();
 
   // #endregion Properties (8)
 
@@ -45,7 +58,16 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
 
   // #region Public Methods (3)
 
-  public ngOnInit() {}
+  public ngOnInit() {
+    this.search = '';
+    this.selectedMember = null;
+  }
+
+  public onDismiss() {
+    this.search = '';
+    this.selectedMember = null;
+    this.modal.dismiss();
+  }
 
   public onSearch() {
     this.isLoading = true;
@@ -54,34 +76,17 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
       this.members = [];
       setTimeout(() => {
         this.searchbar.setFocus();
-      }, 100);
+      }, 200);
       return;
     }
-
-    if (this.search.includes('@.')) {
-      this.searchByEmail(this.search);
-      return;
-    }
-
-    this.searchByName(this.search);
-    return;
-  }
-
-  public onSubmit() {}
-
-  // #endregion Public Methods (3)
-
-  // #region Private Methods (2)
-
-  private searchByEmail(query: string) {
     this.isLoading = true;
-    this.usersService.searchByEmail(query).subscribe({
+    this.usersService.search(this.search).subscribe({
       next: (res) => {
         this.isLoading = false;
+        this.members = res.items;
         setTimeout(() => {
           this.searchbar.setFocus();
         }, 100);
-        this.members = res.items;
       },
       error: (err) => {
         console.log('[MMAERR]', err);
@@ -91,21 +96,59 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
     });
   }
 
-  private searchByName(query: string) {
+  public selectMember(member: IMember | null) {
+    this.search = '';
+    this.members = [];
+    if (!member) {
+      this.selectedMember = null;
+      setTimeout(() => {
+        this.searchbar.setFocus();
+      }, 200);
+      return;
+    }
+    this.selectedMember = member;
+    this.onCreateForm();
+  }
+
+  public onSubmit() {
+    if (!this.selectedMember) {
+      this.alert('Um usuário precisa ser selecionado.', 'Atenção!');
+      return;
+    }
+    if (!this.formGroup?.valid) {
+      this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
+      return;
+    }
     this.isLoading = true;
-    this.usersService.searchByName(query).subscribe({
+    const data = this.formGroup?.value as AddUserInstitutionDto;
+    console.log('[ADD USER DATA] =>', data);
+    this.usersService.addInstitutionMember(data).subscribe({
       next: (res) => {
         this.isLoading = false;
-        setTimeout(() => {
-          this.searchbar.setFocus();
-        }, 100);
-        this.members = res.items;
+        this.onDismiss();
+        if (res.item === 'OK') {
+          this.toast('Membro adicionado com sucesso!', 'Atenção!', 'success');
+        }
       },
-      error: (err) => {
-        console.log('[MMAERR]', err);
-        this.alert(err?.message, 'Atenção!');
+      error: (error) => {
         this.isLoading = false;
+        this.toast(error?.message, 'Atenção!', 'danger');
+        console.error(error);
       },
+    });
+  }
+
+  // #endregion Public Methods (3)
+
+  // #region Private Methods (2)
+
+  private onCreateForm() {
+    this.formGroup = new FormGroup({
+      userId: new FormControl(this.selectedMember?.id, [Validators.required]),
+      institutionId: new FormControl(this.payload?.institutionId, [
+        Validators.required,
+      ]),
+      userRole: new FormControl(EUserRole.USER, [Validators.required]),
     });
   }
 

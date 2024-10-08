@@ -89,12 +89,6 @@ export class EditAreaComponent extends BaseComponent implements OnInit {
       return;
     }
     const data = this.formGroup?.value as UpdateAreaDto;
-    if (data.name === this.area?.name) {
-      delete data.name;
-    }
-    if (data.description === this.area?.description) {
-      delete data.description;
-    }
     const loading = this.loadingShow('Salvando...');
     this.areasService.updateArea(data).subscribe({
       next: (_) => {

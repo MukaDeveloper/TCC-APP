@@ -16,8 +16,9 @@ export class WarehousesService {
     new BehaviorSubject<IWarehouse | null>(null);
   public warehouses$: BehaviorSubject<IWarehouse[] | null> =
     new BehaviorSubject<IWarehouse[] | null>([]);
-  public filtered$: BehaviorSubject<IWarehouse[] | null> =
-    new BehaviorSubject<IWarehouse[] | null>([]);
+  public filtered$: BehaviorSubject<IWarehouse[] | null> = new BehaviorSubject<
+    IWarehouse[] | null
+  >([]);
 
   // #endregion Properties (2)
 
@@ -81,7 +82,9 @@ export class WarehousesService {
     this.filtered$.next(null);
   }
 
-  public updateWarehouse(data: UpdateWarehouseDto): Observable<IEnvelope<IWarehouse>> {
+  public updateWarehouse(
+    data: UpdateWarehouseDto
+  ): Observable<IEnvelope<IWarehouse>> {
     return this.apiWarehousesService.update(data).pipe(
       map((res: IEnvelope<IWarehouse>) => {
         if (res?.item) {
@@ -102,6 +105,12 @@ export class WarehousesService {
         return res;
       })
     );
+  }
+
+  public delete(warehouseId: number) {
+    return this.apiWarehousesService
+      .deleteWarehouse(warehouseId)
+      .pipe(map((res: null) => res));
   }
 
   // #endregion Public Methods (4)

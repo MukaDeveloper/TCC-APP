@@ -22,10 +22,10 @@ export class ApiAreasService extends ApiBaseService {
 
   // #region Public Methods (4)
 
-  public deleteArea(areaId: number): Observable<IEnvelope<IArea>> {
+  public deleteArea(areaId: number): Observable<null> {
     const url = `${this.apiUrl}/Areas/${areaId}`;
     return this.http
-      .delete<IEnvelope<IArea>>(url)
+      .delete<null>(url)
       .pipe(catchError(HandleError.handler));
   }
 

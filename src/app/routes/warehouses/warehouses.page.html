@@ -53,7 +53,8 @@
                 adicionar</ion-text
               >
               <ion-text *ngIf="!areas?.length"
-                >Para adicionar um almoxarifado, primeiro adicione uma área.</ion-text
+                >Para adicionar um almoxarifado, primeiro adicione uma
+                área.</ion-text
               >
             </ion-label>
           </div>
@@ -73,7 +74,7 @@
                   <ion-button (click)="AppEditWarehouse.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button>
-                  <ion-button (click)="deleteWarehouse(item)">
+                  <ion-button (click)="onDeleteWarehouse(item)">
                     <ion-icon color="danger" name="trash-outline"></ion-icon>
                   </ion-button>
                 </ion-buttons>

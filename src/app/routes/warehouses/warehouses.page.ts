@@ -7,13 +7,13 @@ import {
   ViewDidEnter,
 } from '@ionic/angular';
 import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
+import { AreasService } from '../../../services/areas/areas.service';
+import { IArea } from '../../../services/areas/interfaces/i-area';
+import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
 import { WarehousesService } from '../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
-import { AreasService } from '../../../services/areas/areas.service';
-import { IArea } from '../../../services/areas/interfaces/i-area';
-import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
 import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
@@ -77,7 +77,35 @@ export class WarehousesPage
     this.onGetAll();
   }
 
-  public deleteWarehouse(wh: IWarehouse) {}
+  public onDeleteWarehouse(wh: IWarehouse) {
+    this.alertController
+      .create({
+        cssClass: 'custom-alert',
+        header: 'Excluir Almoxarifado',
+        message: `Deseja realmente excluir o almoxarifado ${wh.name}?`,
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+          },
+          {
+            text: 'Sim',
+            handler: () => {
+              this.warehousesService.delete(wh.id).subscribe({
+                next: (_) => {
+                  this.toast('Almoxarifado excluído com sucesso!', 'Sucesso');
+                  this.onReload();
+                },
+                error: (err) => {
+                  this.alert(err?.message, 'Atenção!');
+                },
+              });
+            },
+          },
+        ],
+      })
+      .then((a) => a.present());
+  }
 
   public getWarehouseIcon(): string {
     if (this.darkMode) {
@@ -103,7 +131,12 @@ export class WarehousesPage
 
   public onCreateWarehouse() {
     if (!this.areas || this.areas.length === 0) {
-      this.toast("Você precisa registrar uma área antes de criar um almoxarifado.", "Atenção!", "warning", "middle");
+      this.toast(
+        'Você precisa registrar uma área antes de criar um almoxarifado.',
+        'Atenção!',
+        'warning',
+        'middle'
+      );
       return;
     }
     this.createWarehouseModal.onOpenModal();

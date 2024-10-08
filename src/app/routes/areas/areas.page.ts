@@ -67,30 +67,33 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
   }
 
   public onDeleteArea(area: IArea) {
-    this.alertController.create({
-      cssClass: 'custom-alert',
-      header: 'Excluir Área',
-      message: `Deseja realmente excluir a área ${area.name}?`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Sim',
-          handler: () => {
-            this.areasService.delete(area.id).subscribe({
-              next: (res) => {
-                this.toast('Área excluída com sucesso!', 'Sucesso');
-              },
-              error: (err) => {
-                this.alert(err?.message, 'Atenção!');
-              },
-            });
+    this.alertController
+      .create({
+        cssClass: 'custom-alert',
+        header: 'Excluir Área',
+        message: `Deseja realmente excluir a área ${area.name}?`,
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
           },
-        },
-      ],
-    }).then(a => a.present());
+          {
+            text: 'Sim',
+            handler: () => {
+              this.areasService.delete(area.id).subscribe({
+                next: (_) => {
+                  this.toast('Área excluída com sucesso!', 'Sucesso');
+                  this.onReload();
+                },
+                error: (err) => {
+                  this.alert(err?.message, 'Atenção!');
+                },
+              });
+            },
+          },
+        ],
+      })
+      .then((a) => a.present());
   }
 
   public onGetAll() {

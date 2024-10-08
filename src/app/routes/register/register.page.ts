@@ -91,11 +91,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
           replaceUrl: true,
         });
         this.formGroup?.reset();
-        this.alert(
-          `Bem-vindo ${res.item.name}! Peça para um coordenador lhe atribuir a uma instituição para acessar a aplicação`,
-          'Atenção!',
-          'Registrado com sucesso!'
-        );
+        this.toast(`Bem-vindo ${res.item.name}! Agora você pode fazer login`, "Sucesso!", "success", "bottom");
       },
       error: (error: any) => {
         console.error(error);

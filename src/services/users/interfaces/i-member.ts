@@ -5,5 +5,5 @@ export interface IMember {
   name: string;
   email: string;
   photoUrl: string;
-  role: EUserRole;
+  role?: EUserRole;
 }

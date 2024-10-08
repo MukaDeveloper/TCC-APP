@@ -71,21 +71,17 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
     }
     if (
       this.formGroup?.value.name === this.warehouse?.name &&
-      this.formGroup.value.description === this.warehouse?.description
+      this.formGroup?.value.description === this.warehouse?.description &&
+      this.formGroup?.value.areaId === this.warehouse?.areaId
     ) {
       this.modal.dismiss();
       return;
     }
     const data = this.formGroup?.value as UpdateWarehouseDto;
-    if (data.name === this.warehouse?.name) {
-      delete data.name;
-    }
-    if (data.description === this.warehouse?.description) {
-      delete data.description;
-    }
     const loading = this.loadingShow('Salvando...');
     this.warehousesService.updateWarehouse(data).subscribe({
       next: (_) => {
+        this.toast('Almoxarifado atualizado com sucesso!', 'Sucesso!', 'success');
         loading.then((l) => l.dismiss());
         this.modal.dismiss();
         this.reload.emit();
@@ -110,7 +106,7 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
       areaId: new FormControl(this.warehouse?.areaId || '', [
         Validators.required,
       ]),
-      description: new FormControl(''),
+      description: new FormControl(this.warehouse?.description || ''),
     });
     loading.then((l) => l.dismiss());
     this.isLoading = false;

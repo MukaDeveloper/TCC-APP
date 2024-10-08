@@ -1,17 +1,17 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { BaseComponent } from '../../../shared/utils/base.component';
 import {
-  ToastController,
   AlertController,
   LoadingController,
+  ToastController,
   ViewDidEnter,
 } from '@ionic/angular';
+import { EMovimentationType } from 'src/services/movimentations/interfaces/enum/EMovimentationType';
 import { EMovimentationEvent } from '../../../services/movimentations/interfaces/enum/EMovimentationEvent';
 import { IMovimentations } from '../../../services/movimentations/interfaces/i-movimentations';
 import { MovimentationsService } from '../../../services/movimentations/movimentations.service';
-import { PayloadService } from '../../../services/payload/payload.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
-import { EMovimentationType } from 'src/services/movimentations/interfaces/enum/EMovimentationType';
+import { PayloadService } from '../../../services/payload/payload.service';
+import { BaseComponent } from '../../../shared/utils/base.component';
 import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
@@ -19,10 +19,7 @@ import { ERouters } from '../../../shared/utils/e-routers';
   templateUrl: './events.page.html',
   styleUrls: ['./events.page.scss'],
 })
-export class EventsPage
-  extends BaseComponent
-  implements OnInit, ViewDidEnter
-{
+export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Properties (5)
 
   public isLoading = true;
@@ -72,45 +69,49 @@ export class EventsPage
       this.movimentationsService.movimentations$.subscribe(
         (res) => (this.movimentations = res)
       ),
-      this.movimentationsService.movimentationsFiltered$.subscribe(
-        (res) => {
-          this.movimentationsFilter = res;
-          if (this.movimentationsFilter?.length) {
-            this.movimentationsFilter = this.movimentationsFilter?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          }
+      this.movimentationsService.movimentationsFiltered$.subscribe((res) => {
+        this.movimentationsFilter = res;
+        if (this.movimentationsFilter?.length) {
+          this.movimentationsFilter = this.movimentationsFilter?.sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          );
         }
-      )
+      })
     );
   }
 
   public getEvent(event: EMovimentationEvent): string {
     switch (event) {
       case EMovimentationEvent.ENTRY:
-        return "ADIÇÃO";
+        return 'ADIÇÃO';
+      case EMovimentationEvent.EDIT:
+        return 'EDIÇÃO';
       case EMovimentationEvent.EXIT:
-        return "REMOÇÃO"
+        return 'REMOÇÃO';
     }
   }
 
   public getType(type: EMovimentationType): string {
     switch (type) {
-      case EMovimentationType.Area:
-        return "AREA";
-      case EMovimentationType.General:
-        return "NÃO MAPEADA"
-      case EMovimentationType.Warehouse:
-        return "ALMOXARIFADO"
-      case EMovimentationType.Material:
-        return "MATERIAL"
-      case EMovimentationType.Loan:
-        return "EMPRÉSTIMO"
-      case EMovimentationType.Maintenance:
-        return "MANUTENÇÃO"
+      case EMovimentationType.USER:
+        return 'USUÁRIO';
+      case EMovimentationType.AREA:
+        return 'AREA';
+      case EMovimentationType.GENERAL:
+        return 'NÃO MAPEADA';
+      case EMovimentationType.WAREHOUSE:
+        return 'ALMOXARIFADO';
+      case EMovimentationType.MATERIAL:
+        return 'MATERIAL';
+      case EMovimentationType.LOAN:
+        return 'EMPRÉSTIMO';
+      case EMovimentationType.MAINTENANCE:
+        return 'MANUTENÇÃO';
     }
   }
 
   public getDate(toFormat: Date): string {
-    const date = new Date(toFormat)
+    const date = new Date(toFormat);
     return date.toLocaleString();
   }
 

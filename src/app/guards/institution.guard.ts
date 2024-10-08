@@ -40,8 +40,8 @@ export class PermissionsService {
       return true;
     } else {
       this.institutionService.getCurrent().subscribe({
-        next: (_) => this.router.navigate([ERouters.home]),
-        error: (_) => this.router.navigate([ERouters.login]),
+        next: (_) => this.router.navigate([ERouters.home], { replaceUrl: true }),
+        error: (_) => this.router.navigate([ERouters.login], { replaceUrl: true }),
       });
       return false;
     }

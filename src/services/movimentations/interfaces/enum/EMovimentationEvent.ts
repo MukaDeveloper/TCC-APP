@@ -1,4 +1,5 @@
 export enum EMovimentationEvent {
   ENTRY = 1,
-  EXIT = 2,
+  EDIT = 2,
+  EXIT = 3,
 }

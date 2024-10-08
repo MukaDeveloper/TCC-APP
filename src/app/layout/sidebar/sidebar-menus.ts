@@ -39,9 +39,9 @@ const members = {
 
 export const sidebarMenu = [
   home,
+  members,
   movimentations,
   areas,
   warehouses,
   materials,
-  members,
 ];

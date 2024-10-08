@@ -27,6 +27,7 @@ export class MembrosPage
   public defaultURL = ERouters.home;
   public isLoading = true;
   public eUser = EUserRole.USER;
+  public eSupport = EUserRole.SUPPORT;
   public eWarehouseman = EUserRole.WAREHOUSEMAN;
   public members: any[] | null = [];
 
@@ -88,6 +89,10 @@ export class MembrosPage
   }
 
   public async onShowRemove(memberId: number) {
+    if (this.payload?.id === memberId) {
+      this.toast('Você não pode remover a si mesmo.', 'Atenção!', 'danger');
+      return;
+    }
     await this.alertController
       .create({
         cssClass: 'custom-alert',
@@ -109,14 +114,14 @@ export class MembrosPage
       .then((alert) => alert.present());
   }
 
-  private onRemove(memberId: number) {}
+  private onRemove(memberId: number) {
+  }
 
   private onGetAll() {
     this.isLoading = true;
     this.usersService.getAllFromInstitution().subscribe({
       next: (res) => {
         this.isLoading = false;
-        console.log(res.items[0].role);
       },
       error: (error) => {
         console.error(error);

@@ -6,6 +6,8 @@ import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { CredentialsDto } from '../../services/users/dto/credentials.dto';
+import { IMember } from '../../services/users/interfaces/i-member';
+import { AddUserInstitutionDto } from '../../services/users/dto/add-user-institution.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -42,24 +44,24 @@ export class ApiUsersService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  public getAllFromInstitution(): Observable<IEnvelopeArray<any>> {
+  public getAllFromInstitution(): Observable<IEnvelopeArray<IMember>> {
     const url = `${this.apiUrl}/Users/by-institution`;
     return this.http
-      .get<IEnvelopeArray<any>>(url)
+      .get<IEnvelopeArray<IMember>>(url)
       .pipe(catchError(HandleError.handler));
   }
 
-  public searchByName(query: string): Observable<IEnvelopeArray<any>> {
-    const url = `${this.apiUrl}/Users/search-by-name/${query}`;
+  public search(query: string): Observable<IEnvelopeArray<IMember>> {
+    const url = `${this.apiUrl}/Users/search/${query}`;
     return this.http
-      .get<IEnvelopeArray<any>>(url)
+      .get<IEnvelopeArray<IMember>>(url)
       .pipe(catchError(HandleError.handler));
   }
 
-  public searchByEmail(query: string): Observable<IEnvelopeArray<any>> {
-    const url = `${this.apiUrl}/Users/search-by-email/${query}`;
+  public addInstitutionMember(data: AddUserInstitutionDto): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/add-institution-member`;
     return this.http
-      .get<IEnvelopeArray<any>>(url)
+      .post<IEnvelope<string>>(url, data)
       .pipe(catchError(HandleError.handler));
   }
 
