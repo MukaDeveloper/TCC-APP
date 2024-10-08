@@ -60,6 +60,12 @@ export class LoginPage extends BaseComponent implements OnInit {
     });
   }
 
+  public forgotPassword() {
+    this.router.navigate([ERouters.forgotPassword], {
+      replaceUrl: true,
+    });
+  }
+
   public onSubmit() {
     const loading = this.loadingShow('Autenticando...');
     const email = this.formGroup?.get('email')?.value;
