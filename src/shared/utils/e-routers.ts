@@ -2,7 +2,7 @@ export enum ERouters {
   app = 'app',
   login = 'login',
   register = 'register',
-  recovery = 'recovery-password',
+  forgotPassword = 'forgot-password',
   terms = 'terms-of-use',
   phoneConfirm = 'phone-confirm',
   emailConfirm = 'email-confirm',

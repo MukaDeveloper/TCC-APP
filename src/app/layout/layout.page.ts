@@ -15,6 +15,8 @@ import { PayloadService } from '../../services/payload/payload.service';
 import { ResetService } from '../../services/reset/reset.service';
 import { WarehousesService } from '../../services/warehouses/warehouses.service';
 import { ERouters } from '../../shared/utils/e-routers';
+import { IMember } from 'src/services/users/interfaces/i-member';
+import { UsersService } from 'src/services/users/users.service';
 
 @Component({
   selector: 'app-layout',
@@ -27,12 +29,14 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   public isLoading = true;
   public isMenuOpen = false;
   public payload: IPayload | null = null;
+  public members: IMember[] | null = null;
 
   // #endregion Properties (3)
 
   // #region Constructors (1)
 
   constructor(
+    private readonly usersService: UsersService,
     private readonly resetService: ResetService,
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
@@ -56,7 +60,8 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   public ngOnInit() {
     this.subs.push(
-      this.payloadService.payload$.subscribe((res) => (this.payload = res))
+      this.payloadService.payload$.subscribe((res) => (this.payload = res)),
+      this.usersService.members$.subscribe((res) => (this.members = res))
     );
   }
 
@@ -96,10 +101,11 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
       this.areasService
         .getAll()
         .pipe(mergeMap((_) => this.warehousesService.getAll()))
-        .subscribe({
-          next: (_) => {},
-          error: (_) => {},
-        });
+        .subscribe();
+    }
+
+    if (!this.members?.length) {
+      this.usersService.getAllFromInstitution().subscribe();
     }
   }
 

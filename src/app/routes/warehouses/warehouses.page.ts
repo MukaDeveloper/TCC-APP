@@ -15,6 +15,8 @@ import { PayloadService } from '../../../services/payload/payload.service';
 import { WarehousesService } from '../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import { ERouters } from '../../../shared/utils/e-routers';
+import { UsersService } from 'src/services/users/users.service';
+import { IMember } from 'src/services/users/interfaces/i-member';
 
 @Component({
   selector: 'app-warehouses',
@@ -33,9 +35,11 @@ export class WarehousesPage
   public payload: IPayload | null = null;
   public warehouses: IWarehouse[] | null = [];
   public areas: IArea[] | null = [];
+  public warehousemans: IMember[] | null = [];
   public filtered: IWarehouse[] | null = [];
   public search: string = '';
   public eUser = EUserRole.USER;
+  public eWarehouseman = EUserRole.WAREHOUSEMAN;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;
 
@@ -45,6 +49,7 @@ export class WarehousesPage
 
   constructor(
     private readonly payloadService: PayloadService,
+    private readonly usersService: UsersService,
     private readonly areasService: AreasService,
     private readonly warehousesService: WarehousesService,
     toastController: ToastController,
@@ -92,11 +97,11 @@ export class WarehousesPage
             text: 'Sim',
             handler: () => {
               this.warehousesService.delete(wh.id).subscribe({
-                next: (_) => {
+                next: (_: any) => {
                   this.toast('Almoxarifado excluído com sucesso!', 'Sucesso');
                   this.onReload();
                 },
-                error: (err) => {
+                error: (err: any) => {
                   this.alert(err?.message, 'Atenção!');
                 },
               });
@@ -118,10 +123,10 @@ export class WarehousesPage
   public onGetAll() {
     this.isLoading = true;
     this.warehousesService.getAll().subscribe({
-      next: (res) => {
+      next: (_: any) => {
         this.isLoading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.log('[WHERR]', err);
         this.alert(err?.message, 'Atenção!');
         this.isLoading = false;
@@ -152,13 +157,13 @@ export class WarehousesPage
       return;
     }
     this.warehousesService.searchByName(this.search).subscribe({
-      next: (res) => {
+      next: (_: any) => {
         this.isLoading = false;
         setTimeout(() => {
           this.searchbar.setFocus();
         }, 100);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.log('[WHERR]', err);
         this.alert(err?.message, 'Atenção!');
         this.isLoading = false;
@@ -173,13 +178,26 @@ export class WarehousesPage
   public ngOnInit() {
     this.search = '';
     this.subs.push(
-      this.payloadService.payload$.subscribe((res) => (this.payload = res)),
-      this.areasService.areas$.subscribe((res) => (this.areas = res)),
-      this.warehousesService.warehouses$.subscribe((res) => {
+      this.payloadService.payload$.subscribe((res: any) => (this.payload = res)),
+      this.usersService.members$.subscribe((res: any) => {
+        this.warehousemans = res?.filter(
+          (u: any) => u.role === EUserRole.WAREHOUSEMAN
+        ) as IMember[];
+      }),
+      this.areasService.areas$.subscribe((res: any) => (this.areas = res)),
+      this.warehousesService.warehouses$.subscribe((res: any) => {
         this.warehouses = res;
         this.filtered = res;
       }),
-      this.warehousesService.filtered$.subscribe((res) => (this.filtered = res))
+      this.warehousesService.filtered$.subscribe((res: any) => {
+        console.log(res);
+        if (this.payload?.role === this.eWarehouseman) {
+          const filter = res?.filter((w: any) => w.active);
+          this.filtered = filter as IWarehouse[];
+          return;
+        }
+        this.filtered = res;
+      })
     );
   }
 

@@ -64,17 +64,36 @@
               }}</ion-select-option>
             </ion-select>
           </ion-item>
+          <br />
+          <ion-item lines="none" color="light">
+            <ion-select
+              label="Responsáveis"
+              labelPlacement="start"
+              justify="space-around"
+              fill="outline"
+              shape="round"
+              formControlName="warehousemans"
+              multiple="true"
+              okText="Confirmar"
+              cancelText="Cancelar"
+              >
+              <!-- (ionChange)="onUserChange($event)" -->
+              <ion-select-option
+                *ngFor="let user of warehousemans"
+                [value]="user.id"
+              >
+                {{ user.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
         </form>
       </section>
+      <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
     </ion-content>
     <ion-footer>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-button
-            fill="solid"
-            (click)="modal.dismiss()"
-            color="medium"
-          >
+          <ion-button fill="solid" (click)="modal.dismiss()" color="medium">
             CANCELAR
           </ion-button>
         </ion-buttons>
@@ -85,7 +104,9 @@
             [disabled]="!formGroup?.valid"
             color="primary"
           >
-            <ion-label style="color: var(--ion-color-light-fixed)">ADICIONAR</ion-label>
+            <ion-label style="color: var(--ion-color-light-fixed)"
+              >ADICIONAR</ion-label
+            >
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

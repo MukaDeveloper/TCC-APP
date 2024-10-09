@@ -52,14 +52,38 @@
             <ion-select
               label="Área"
               labelPlacement="fixed"
+              justify="space-around"
               fill="outline"
               shape="round"
               formControlName="areaId"
               placeholder="Qual área pertence o almoxarifado?"
+              interface="popover"
             >
               <ion-select-option *ngFor="let area of areas" [value]="area.id">{{
                 area.name
               }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <br />
+          <ion-item lines="none" color="light">
+            <ion-select
+              label="Responsáveis"
+              labelPlacement="start"
+              justify="space-around"
+              fill="outline"
+              shape="round"
+              formControlName="warehousemans"
+              multiple="true"
+              okText="Confirmar"
+              cancelText="Cancelar"
+              (ionChange)="onUserChange($event)"
+            >
+              <ion-select-option
+                *ngFor="let user of warehousemans"
+                [value]="user.id"
+              >
+                {{ user.name }}
+              </ion-select-option>
             </ion-select>
           </ion-item>
         </form>

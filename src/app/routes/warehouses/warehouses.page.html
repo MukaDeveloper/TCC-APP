@@ -90,7 +90,7 @@
           </ion-card>
         </ion-col>
 
-        <ion-col [size]="columnSize" *ngIf="!search && payload?.role !== eUser">
+        <ion-col [size]="columnSize" *ngIf="!search && payload?.role !== eUser && payload?.role !== eWarehouseman">
           <ion-card
             [disabled]="!areas?.length"
             (click)="onCreateWarehouse()"
@@ -110,10 +110,14 @@
 
   <app-create-warehouse
     #AppCreateWarehouse
+    [areas]="areas"
+    [warehousemans]="warehousemans"
     (reload)="onReload()"
   ></app-create-warehouse>
   <app-edit-warehouse
     #AppEditWarehouse
+    [areas]="areas"
+    [warehousemans]="warehousemans"
     (reload)="onReload()"
   ></app-edit-warehouse>
 </ion-content>

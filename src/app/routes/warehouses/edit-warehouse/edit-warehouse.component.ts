@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewChild,
@@ -18,6 +19,7 @@ import { UpdateWarehouseDto } from '../../../../services/warehouses/dto/update-w
 import { IWarehouse } from '../../../../services/warehouses/interfaces/i-warehouse';
 import { WarehousesService } from '../../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../../shared/utils/base.component';
+import { IMember } from 'src/services/users/interfaces/i-member';
 
 @Component({
   selector: 'app-edit-warehouse',
@@ -27,7 +29,8 @@ import { BaseComponent } from '../../../../shared/utils/base.component';
 export class EditWarehouseComponent extends BaseComponent implements OnInit {
   // #region Properties (6)
 
-  public areas: IArea[] | null = [];
+  @Input() public areas: IArea[] | null = [];
+  @Input() public warehousemans: IMember[] | null = [];
   public formGroup: FormGroup | null = null;
   public isLoading = false;
   @ViewChild(IonModal) public modal!: IonModal;
@@ -40,7 +43,6 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
 
   constructor(
     private readonly warehousesService: WarehousesService,
-    private readonly areasService: AreasService,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -52,11 +54,7 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
 
   // #region Public Methods (3)
 
-  public ngOnInit() {
-    this.subs.push(
-      this.areasService.areas$.subscribe((res) => (this.areas = res))
-    );
-  }
+  public ngOnInit() {}
 
   public onOpenModal(wh: IWarehouse) {
     this.warehouse = wh;
@@ -80,18 +78,31 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
     const data = this.formGroup?.value as UpdateWarehouseDto;
     const loading = this.loadingShow('Salvando...');
     this.warehousesService.updateWarehouse(data).subscribe({
-      next: (_) => {
-        this.toast('Almoxarifado atualizado com sucesso!', 'Sucesso!', 'success');
+      next: (_: any) => {
+        this.toast(
+          'Almoxarifado atualizado com sucesso!',
+          'Sucesso!',
+          'success'
+        );
         loading.then((l) => l.dismiss());
         this.modal.dismiss();
         this.reload.emit();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
         this.alert(err.message, 'Atenção!');
         loading.then((l) => l.dismiss());
       },
     });
+  }
+
+  public onUserChange(event: any) {
+    const selectedIds = event.detail.value;
+    this.formGroup
+      ?.get('warehousemans')
+      ?.setValue(
+        this.warehousemans?.filter((user) => selectedIds.includes(user.id))
+      );
   }
 
   // #endregion Public Methods (3)

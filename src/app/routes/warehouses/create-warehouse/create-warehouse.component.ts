@@ -1,11 +1,12 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AlertController,
   IonModal,
@@ -17,6 +18,7 @@ import { IArea } from 'src/services/areas/interfaces/i-area';
 import { NewWarehouseDto } from '../../../../services/warehouses/dto/new-warehouse.dto';
 import { WarehousesService } from '../../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../../shared/utils/base.component';
+import { IMember } from 'src/services/users/interfaces/i-member';
 
 @Component({
   selector: 'app-create-warehouse',
@@ -26,7 +28,8 @@ import { BaseComponent } from '../../../../shared/utils/base.component';
 export class CreateWarehouseComponent extends BaseComponent implements OnInit {
   // #region Properties (5)
 
-  public areas: IArea[] | null = [];
+  @Input() public areas: IArea[] | null = [];
+  @Input() public warehousemans: IMember[] | null = [];
   public formGroup: FormGroup | null = null;
   public isLoading = true;
   @ViewChild(IonModal) public modal!: IonModal;
@@ -38,7 +41,6 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
 
   constructor(
     private readonly warehousesService: WarehousesService,
-    private readonly areasService: AreasService,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -50,11 +52,7 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
 
   // #region Public Methods (3)
 
-  public ngOnInit() {
-    this.subs.push(
-      this.areasService.areas$.subscribe((res) => (this.areas = res))
-    );
-  }
+  public ngOnInit() {}
 
   public onOpenModal() {
     this.createForm();
@@ -69,17 +67,27 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
     const loading = this.loadingShow('Adicionando...');
     const data = this.formGroup?.value as NewWarehouseDto;
     this.warehousesService.create(data).subscribe({
-      next: (_) => {
+      next: (_: any) => {
         loading.then((l) => l.dismiss());
         this.modal.dismiss();
         this.reload.emit();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
         this.alert(err.message, 'Atenção!');
         loading.then((l) => l.dismiss());
       },
     });
+  }
+
+  public onUserChange(event: any) {
+    console.log(event.detail);
+    // const selectedIds = event.detail.value;
+    // this.formGroup
+    //   ?.get('warehousemans')
+    //   ?.setValue(
+    //     this.warehousemans?.filter((user) => selectedIds.includes(user.id))
+    //   );
   }
 
   // #endregion Public Methods (3)
@@ -91,6 +99,7 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
       areaId: new FormControl('', [Validators.required]),
+      // warehousemans: new FormArray([]),
       description: new FormControl(''),
     });
     loading.then((l) => l.dismiss());

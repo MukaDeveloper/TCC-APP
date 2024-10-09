@@ -129,6 +129,7 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
         if (res.item === 'OK') {
           this.toast('Membro adicionado com sucesso!', 'Atenção!', 'success');
         }
+        this.reload.emit();
       },
       error: (error) => {
         this.isLoading = false;
