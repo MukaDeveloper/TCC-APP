@@ -26,6 +26,11 @@ const routes: Routes = [
       import('./routes/login/login.module').then((m) => m.LoginPageModule),
   },
   {
+    path: ERouters.forgotPassword,
+    loadChildren: () =>
+      import('./routes/forgot-password/forgot-password.module').then((m) => m.ForgotPasswordPageModule),
+  },
+  {
     path: ERouters.app,
     canActivateChild: [payloadGuard, institutionGuard],
     component: LayoutPage,

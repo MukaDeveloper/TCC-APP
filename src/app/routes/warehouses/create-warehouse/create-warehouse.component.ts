@@ -81,13 +81,26 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
   }
 
   public onUserChange(event: any) {
-    console.log(event.detail);
-    // const selectedIds = event.detail.value;
-    // this.formGroup
-    //   ?.get('warehousemans')
-    //   ?.setValue(
-    //     this.warehousemans?.filter((user) => selectedIds.includes(user.id))
-    //   );
+    const selectedIds = event.detail.value;
+    const warehousemansFormArray = this.formGroup?.get('warehousemans') as FormArray;
+  
+    // Primeiro limpamos o array para evitar duplicações.
+    while (warehousemansFormArray.length !== 0) {
+      warehousemansFormArray.removeAt(0);
+    }
+  
+    // Agora, adicionamos o novo conjunto de valores.
+    selectedIds.forEach((id: any) => {
+      const selectedUser = this.warehousemans?.find((user) => user.id === id);
+      if (selectedUser) {
+        warehousemansFormArray.push(
+          new FormGroup({
+            id: new FormControl(selectedUser.id),
+            name: new FormControl(selectedUser.name),
+          })
+        );
+      }
+    });
   }
 
   // #endregion Public Methods (3)
@@ -99,7 +112,7 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
       areaId: new FormControl('', [Validators.required]),
-      // warehousemans: new FormArray([]),
+      warehousemans: new FormArray([]),
       description: new FormControl(''),
     });
     loading.then((l) => l.dismiss());

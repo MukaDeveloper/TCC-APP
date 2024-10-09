@@ -20,6 +20,9 @@ export class BaseComponent implements OnDestroy {
   public preference: MediaQueryList = window.matchMedia(
     '(prefers-color-scheme: dark)'
   );
+  public customSelectOptions = {
+    cssClass: 'custom-alert',
+  }
 
   // #endregion Properties (2)
 

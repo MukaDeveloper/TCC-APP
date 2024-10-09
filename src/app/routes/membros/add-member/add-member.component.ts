@@ -70,13 +70,12 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
   }
 
   public onSearch() {
-    this.isLoading = true;
     if (!this.search) {
       this.selectedMember = null;
       this.members = [];
       setTimeout(() => {
         this.searchbar.setFocus();
-      }, 200);
+      }, 500);
       return;
     }
     this.isLoading = true;

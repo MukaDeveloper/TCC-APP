@@ -74,7 +74,7 @@
           <ion-toolbar>
             <ion-buttons slot="end">
               <ion-chip
-                [disabled]="member.id !== payload?.id"
+                [disabled]="member.id === payload?.id"
                 [outline]="true"
                 (click)="onShowChangeRole(member)"
                 [color]="onGetRoleColor(member.role)"
@@ -84,7 +84,7 @@
                 <ion-icon name="swap-horizontal-outline"></ion-icon>
               </ion-chip>
               <ion-button
-                [disabled]="member.id !== payload?.id || member.role === eSupport"
+                [disabled]="member.id === payload?.id || member.role === eSupport"
                 (click)="onShowRemove(member.id)"
               >
                 <ion-icon

@@ -57,7 +57,7 @@
               shape="round"
               formControlName="areaId"
               placeholder="Qual área pertence o almoxarifado?"
-              interface="popover"
+              [interfaceOptions]="customSelectOptions"
             >
               <ion-select-option *ngFor="let area of areas" [value]="area.id">{{
                 area.name
@@ -72,11 +72,13 @@
               justify="space-around"
               fill="outline"
               shape="round"
-              formControlName="warehousemans"
+              formArrayName="warehousemans"
               multiple="true"
               okText="Confirmar"
               cancelText="Cancelar"
+              placeholder="Selecione o(s) almoxarife(s)."
               (ionChange)="onUserChange($event)"
+              [interfaceOptions]="customSelectOptions"
             >
               <ion-select-option
                 *ngFor="let user of warehousemans"
@@ -107,7 +109,9 @@
             [disabled]="!formGroup?.valid"
             color="primary"
           >
-            <ion-label style="color: var(--ion-color-light-fixed)">SALVAR</ion-label>
+            <ion-label style="color: var(--ion-color-light-fixed)"
+              >SALVAR</ion-label
+            >
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

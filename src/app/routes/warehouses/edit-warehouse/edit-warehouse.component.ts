@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AlertController,
   IonModal,
@@ -98,11 +98,27 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
 
   public onUserChange(event: any) {
     const selectedIds = event.detail.value;
-    this.formGroup
-      ?.get('warehousemans')
-      ?.setValue(
-        this.warehousemans?.filter((user) => selectedIds.includes(user.id))
-      );
+    const warehousemansFormArray = this.formGroup?.get(
+      'warehousemans'
+    ) as FormArray;
+
+    // Primeiro limpamos o array para evitar duplicações.
+    while (warehousemansFormArray.length !== 0) {
+      warehousemansFormArray.removeAt(0);
+    }
+
+    // Agora, adicionamos o novo conjunto de valores.
+    selectedIds.forEach((id: any) => {
+      const selectedUser = this.warehousemans?.find((user) => user.id === id);
+      if (selectedUser) {
+        warehousemansFormArray.push(
+          new FormGroup({
+            id: new FormControl(selectedUser.id),
+            name: new FormControl(selectedUser.name),
+          })
+        );
+      }
+    });
   }
 
   // #endregion Public Methods (3)
@@ -114,11 +130,29 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
     this.formGroup = new FormGroup({
       id: new FormControl(this.warehouse?.id, [Validators.required]),
       name: new FormControl(this.warehouse?.name || '', [Validators.required]),
+      warehousemans: new FormArray([]),
       areaId: new FormControl(this.warehouse?.areaId || '', [
         Validators.required,
       ]),
       description: new FormControl(this.warehouse?.description || ''),
     });
+
+    // Verifica se há warehousemans e popula o FormArray
+    if (this.warehouse?.warehousemans?.length) {
+      const warehousemansArray = this.formGroup.get(
+        'warehousemans'
+      ) as FormArray;
+
+      this.warehouse.warehousemans.forEach((w: any) => {
+        // Cria um FormGroup para cada warehouseman e adiciona ao FormArray
+        const warehousemanGroup = new FormGroup({
+          userId: new FormControl(w.userId, [Validators.required]),
+          warehouseId: new FormControl(w.warehouseId, [Validators.required]),
+        });
+        warehousemansArray.push(warehousemanGroup);
+      });
+    }
+
     loading.then((l) => l.dismiss());
     this.isLoading = false;
   }

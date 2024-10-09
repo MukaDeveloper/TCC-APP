@@ -88,6 +88,7 @@
                 label="Cargo"
                 formControlName="userRole"
                 placeholder="Selecione o cargo do usuário"
+                [interfaceOptions]="customSelectOptions"
               >
                 <ion-select-option
                   *ngIf="payload?.role === eCoordinator || payload?.role === eSupport"

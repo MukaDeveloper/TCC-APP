@@ -9,7 +9,7 @@ export interface IWarehouse {
   area: IArea;
   description: string;
 
-  warehousemans?: IMember[];
+  warehousemans?: any;
 
   areaId: number;
   areaName: string;

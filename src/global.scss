@@ -535,7 +535,7 @@
   .alert-wrapper {
     .alert-button-group {
       .alert-button {
-        color: var(--ion-color-dark);
+        color: var(--ion-color-dark) !important;
       }
     }
   }
