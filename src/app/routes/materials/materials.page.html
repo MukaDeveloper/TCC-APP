@@ -9,6 +9,13 @@
     </ion-buttons>
     <ion-title>Materiais</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="onReload()">
+        <ion-icon
+          slot="icon-only"
+          name="cart-outline"
+          style="--color: var(--ion-color-dark)"
+        ></ion-icon>
+      </ion-button>
       <ion-chip
         outline="true"
         (click)="onCreate()"
@@ -39,10 +46,12 @@
   </ion-item>
   <section *ngIf="!isLoading" class="wrapper">
     <ion-list>
-      <ion-item *ngIf="!filtered?.length" lines="none" style="text-align: center;">
-        <ion-label>
-          Nenhum material encontrado.
-        </ion-label>
+      <ion-item
+        *ngIf="!filtered?.length"
+        lines="none"
+        style="text-align: center"
+      >
+        <ion-label> Nenhum material encontrado. </ion-label>
       </ion-item>
       <ion-item lines="full" *ngFor="let material of filtered; let j = index">
         <ion-thumbnail slot="start">
@@ -63,12 +72,20 @@
             <small>{{ material.manufactorer }}</small>
           </p>
         </ion-label>
-        <ion-buttons slot="end">
+        <ion-buttons slot="end" *ngIf="canEdit(material)">
           <ion-button fill="none">
-            <ion-icon color="dark" name="create-outline" style="width: 24px; height: 24px;"></ion-icon>
+            <ion-icon
+              color="dark"
+              name="create-outline"
+              style="width: 24px; height: 24px"
+            ></ion-icon>
           </ion-button>
           <ion-button fill="none">
-            <ion-icon color="danger" name="trash-outline" style="width: 24px; height: 24px;"></ion-icon>
+            <ion-icon
+              color="danger"
+              name="trash-outline"
+              style="width: 24px; height: 24px"
+            ></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-item>

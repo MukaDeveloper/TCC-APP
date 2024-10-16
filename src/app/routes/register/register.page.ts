@@ -78,6 +78,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
       this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
       return;
     }
+    this.isLoading = true;
     const initials = this.generateInitials(this.formGroup?.get('name')?.value);
     const background = this.getRandomColor();
     const photoUrl = this.generateAvatarImage(initials, background);
@@ -92,10 +93,12 @@ export class RegisterPage extends BaseComponent implements OnInit {
         });
         this.formGroup?.reset();
         this.toast(`Bem-vindo ${res.item.name}! Agora você pode fazer login`, "Sucesso!", "success", "bottom");
+        this.isLoading = false;
       },
       error: (error: any) => {
         console.error(error);
         this.alert(error?.message, 'Atenção!');
+        this.isLoading = false;
       },
     });
   }

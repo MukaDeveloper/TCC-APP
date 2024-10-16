@@ -1,3 +1,4 @@
+import { WarehousesService } from './../../../services/warehouses/warehouses.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import {
@@ -10,6 +11,7 @@ import { MaterialsService } from '../../../services/materials/materials.service'
 import { PayloadService } from '../../../services/payload/payload.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { ERouters } from '../../../shared/utils/e-routers';
+import { EUserRole } from 'src/services/payload/interfaces/enum/EUserRole';
 
 @Component({
   selector: 'app-materials',
@@ -31,6 +33,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
 
   constructor(
     private readonly payloadService: PayloadService,
+    private readonly warehousesService: WarehousesService,
     private readonly materialsService: MaterialsService,
     toastController: ToastController,
     alertController: AlertController,
@@ -61,12 +64,33 @@ export class MaterialsPage extends BaseComponent implements OnInit {
   public onCreate() {
 
   }
-  
+
   public onReload() {
     this.filtered = [];
     this.isLoading = true;
     this.onGetAll();
   }
+
+  public canEdit(material: IMaterial): boolean {
+    if (this.payload?.role === EUserRole.USER) {
+      return false;
+    }
+
+    if (this.payload?.role === EUserRole.WAREHOUSEMAN) {
+      if (material.materialWarehouses.length) {
+        if (material.materialWarehouses.length === 1) {
+          const warehouse = this.warehousesService.warehouses$.value?.find(w => w.id === material.materialWarehouses[0].id);
+          if (warehouse && !warehouse?.warehousemans?.includes(this.payload.id)) {
+            return false;
+          }
+        }
+      }
+    }
+
+    // if (material.materialWarehouses.includes)
+    return true;
+  }
+
   // #endregion Public Methods (2)
 
   // #region Private Methods (1)

@@ -11,6 +11,8 @@ export interface IMaterial {
   quantity: number;
   measure: 'UN' | 'KG' | 'L';
 
+  materialWarehouses: any[];
+
   createdAt: Date;
   createdBy: string;
   updatedAt: Date;

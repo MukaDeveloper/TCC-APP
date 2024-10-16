@@ -80,7 +80,7 @@ export class MembrosPage
       case EUserRole.WAREHOUSEMAN:
         return 'success';
       case EUserRole.COORDINATOR:
-        return 'danger';
+        return 'dark';
       case EUserRole.SUPPORT:
         return 'warning';
       default:
