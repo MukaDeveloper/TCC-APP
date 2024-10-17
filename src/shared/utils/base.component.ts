@@ -1,10 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import {
   AlertController,
   LoadingController,
   ToastController,
 } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,16 +14,10 @@ export class BaseComponent implements OnDestroy {
   // #region Properties (2)
 
   protected subs: Subscription[] = [];
-
-  public darkMode: boolean = window.matchMedia('(prefers-color-scheme: dark)')
-    .matches;
-  public preference: MediaQueryList = window.matchMedia(
-    '(prefers-color-scheme: dark)'
-  );
   public customSelectOptions = {
     cssClass: 'custom-alert',
-  }
-
+  };
+  public darkMode: boolean;
   // #endregion Properties (2)
 
   // #region Constructors (1)
@@ -32,7 +26,15 @@ export class BaseComponent implements OnDestroy {
     public readonly toastController: ToastController,
     public readonly alertController: AlertController,
     public readonly loadingController: LoadingController
-  ) {}
+  ) {
+    const savedTheme = localStorage.getItem('str-dark-media');
+    this.darkMode = savedTheme
+      ? JSON.parse(savedTheme)
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Atualiza o tema na inicialização
+    this.updateTheme(this.darkMode);
+  }
 
   // #endregion Constructors (1)
 
@@ -45,6 +47,24 @@ export class BaseComponent implements OnDestroy {
   // #endregion Public Getters And Setters (1)
 
   // #region Public Methods (5)
+
+  updateTheme(isDark: boolean) {
+    const body = document.body;
+
+    if (isDark) {
+      body.classList.add('dark-theme');
+    } else {
+      body.classList.remove('dark-theme');
+    }
+  }
+
+  public toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    this.updateTheme(this.darkMode);
+
+    // Salvar a preferência no localStorage
+    localStorage.setItem('str-dark-media', JSON.stringify(this.darkMode));
+  }
 
   public async alert(message: string, header: string, subHeader: string = '') {
     const alert = await this.alertController.create({
@@ -110,11 +130,7 @@ export class BaseComponent implements OnDestroy {
     return toast.present();
   }
 
-  public detectColorSchemeChanges() {
-    this.preference.addEventListener('change', (mediaQuery) => {
-      this.darkMode = mediaQuery.matches;
-    });
-  }
+  public detectColorSchemeChanges() {}
 
   // #endregion Public Methods (5)
 }

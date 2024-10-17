@@ -1,3 +1,15 @@
+<ion-button
+  (click)="toggleDarkMode()"
+  fill="solid"
+  color="primary"
+  expand="block"
+>
+  <ion-icon
+    class="toggleDarkmode"
+    slot="icon-only"
+    [name]="darkMode ? 'sunny' : 'moon'"
+  ></ion-icon>
+</ion-button>
 <ion-toolbar color="primary" *ngIf="isMenuOpen">
   <ion-title>
     <div class="d-flex align-items-center justify-content-center">
@@ -35,8 +47,8 @@
           *ngIf="item.icon"
           style="color: white"
           slot="start"
-          [ios]="item.icon + '-outline'"
-          [md]="item.icon + '-sharp'"
+          [ios]="item.mode ? item.icon : item.icon + '-outline'"
+          [md]="item.mode ? item.icon : item.icon + '-sharp'"
         ></ion-icon>
         <div *ngIf="item.svg">
           <img [src]="item.svg" alt="" class="img-svg" />

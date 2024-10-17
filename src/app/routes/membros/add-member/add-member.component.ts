@@ -88,7 +88,7 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
         }, 100);
       },
       error: (err) => {
-        console.log('[MMAERR]', err);
+        // console.log('[MMAERR]', err);
         this.alert(err?.message, 'Atenção!');
         this.isLoading = false;
       },
@@ -120,7 +120,7 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
     }
     this.isLoading = true;
     const data = this.formGroup?.value as AddUserInstitutionDto;
-    console.log('[ADD USER DATA] =>', data);
+    // console.log('[ADD USER DATA] =>', data);
     this.usersService.addInstitutionMember(data).subscribe({
       next: (res) => {
         this.isLoading = false;

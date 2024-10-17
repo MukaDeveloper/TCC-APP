@@ -2,9 +2,10 @@ import { ERouters } from 'src/shared/utils/e-routers';
 import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
 
 const home = {
-  text: 'Início',
+  text: 'Solicitações',
   link: ERouters.home,
-  icon: 'home',
+  icon: 'cloud-download-outline',
+  mode: true,
 };
 const movimentations = {
   text: 'Eventos',
@@ -21,7 +22,7 @@ const areas = {
 const warehouses = {
   text: 'Almoxarifados',
   link: ERouters.app + '/' + ERouters.warehouses,
-  svg: 'assets/svgs/warehouse-icon.svg',
+  icon: 'home',
   cannotAccess: [EUserRole.USER],
 };
 const materials = {

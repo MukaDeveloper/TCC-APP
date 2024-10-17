@@ -69,13 +69,13 @@
   --ion-color-dark-tint: #434343;
 }
 
-@media (prefers-color-scheme: dark) {
+// @media (prefers-color-scheme: dark) {
   /*
    * Dark Colors
    * -------------------------------------------
    */
 
-  body {
+  body.dark-theme {
     --ion-color-primary: #3A0614;
     --ion-color-primary-rgb: 58, 6, 20;
     --ion-color-primary-contrast: #000000;
@@ -146,7 +146,7 @@
    * -------------------------------------------
    */
 
-  .ios body {
+  .ios body.dark-theme {
     --ion-background-color: #000000;
     --ion-background-color-rgb: 0, 0, 0;
 
@@ -190,7 +190,7 @@
    * -------------------------------------------
    */
 
-  .md body {
+  .md body.dark-theme {
     --ion-background-color: #121212;
     --ion-background-color-rgb: 18, 18, 18;
 
@@ -227,7 +227,7 @@
 
     --ion-card-background: #1e1e1e;
   }
-}
+// }
 
 html {
   /*

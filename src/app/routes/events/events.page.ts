@@ -128,7 +128,7 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
     this.movimentationsService.getAll().subscribe({
       next: (res) => {
         this.isLoading = false;
-        console.log('[MOV]', res);
+        // console.log('[MOV]', res);
       },
       error: (err) => {
         console.error(err);

@@ -12,6 +12,8 @@ import { PayloadService } from '../../../services/payload/payload.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { ERouters } from '../../../shared/utils/e-routers';
 import { EUserRole } from 'src/services/payload/interfaces/enum/EUserRole';
+import { EMaterialStatus } from '../../../services/materials/interfaces/enum/material-status.enum';
+import { IMaterialStatus } from '../../../services/materials/interfaces/i-material-status';
 
 @Component({
   selector: 'app-materials',
@@ -61,8 +63,20 @@ export class MaterialsPage extends BaseComponent implements OnInit {
     this.onGetAll();
   }
 
-  public onCreate() {
+  public onCreate() {}
 
+  public resolveAvailableStatus(status: IMaterialStatus[]): string {
+    let message = 'Nenhum disponível';
+    const available = status.find(
+      (s) => s.status === EMaterialStatus.AVAILABLE
+    );
+    if (available?.quantity) {
+      message = '1 DISPONÍVEL';
+      if (available.quantity > 1) {
+        message = `${available.quantity} DISPONÍVEIS`;
+      }
+    }
+    return message;
   }
 
   public onReload() {
@@ -79,8 +93,13 @@ export class MaterialsPage extends BaseComponent implements OnInit {
     if (this.payload?.role === EUserRole.WAREHOUSEMAN) {
       if (material.materialWarehouses.length) {
         if (material.materialWarehouses.length === 1) {
-          const warehouse = this.warehousesService.warehouses$.value?.find(w => w.id === material.materialWarehouses[0].id);
-          if (warehouse && !warehouse?.warehousemans?.includes(this.payload.id)) {
+          const warehouse = this.warehousesService.warehouses$.value?.find(
+            (w) => w.id === material.materialWarehouses[0].id
+          );
+          if (
+            warehouse &&
+            !warehouse?.warehousemans?.includes(this.payload.id)
+          ) {
             return false;
           }
         }

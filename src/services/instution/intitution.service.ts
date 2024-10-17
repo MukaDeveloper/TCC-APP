@@ -44,7 +44,7 @@ export class InstitutionService {
     return this.apiInstitutionService.getAllByUser().pipe(
       map((res: IEnvelopeArray<IInstitution>) => {
         if (res?.items?.length) {
-          console.log('[INSTITUTIONS]', res.items);
+          // console.log('[INSTITUTIONS]', res.items);
           this.institutionsSubject.next(res.items);
         }
         return res;
@@ -56,7 +56,7 @@ export class InstitutionService {
     return this.apiInstitutionService.getCurrent().pipe(
       map((res: IEnvelope<IInstitution>) => {
         if (res?.item) {
-          console.log('[INSTITUTION]', res.item);
+          // console.log('[INSTITUTION]', res.item);
           this.institutionSubject.next(res.item);
         }
         return res;

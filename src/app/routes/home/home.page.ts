@@ -58,6 +58,7 @@ export class HomePage extends BaseComponent implements OnInit {
         (res) => (this.institution = res)
       )
     );
+    this.isLoading = false;
   }
 
   // #endregion Public Methods (1)

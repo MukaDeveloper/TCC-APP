@@ -33,17 +33,17 @@ export class PermissionsService {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    // console.log('[PayloadGuard] PermissionsService.canActivate');
+    // // console.log('[PayloadGuard] PermissionsService.canActivate');
 
     const payload = this.payloadService.payload;
 
     if (!payload) {
-      // console.log('[PayloadGuard] BLOCKED => REDIRECT');
+      // // console.log('[PayloadGuard] BLOCKED => REDIRECT');
       return this.router.createUrlTree([ERouters.login], {
         queryParams: { redirected: true },
       });
     }
-    // console.log('[PayloadGuard] ALLOWED');
+    // // console.log('[PayloadGuard] ALLOWED');
     return true;
   }
 

@@ -34,7 +34,7 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar [disabled]="isLoading"></ion-searchbar>
+    <ion-searchbar [disabled]="isLoading" placeholder="Procure um material..."></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -72,6 +72,9 @@
             <small>{{ material.manufactorer }}</small>
           </p>
         </ion-label>
+        <ion-chip color="success">
+          <ion-label>{{ resolveAvailableStatus(material.status) }}</ion-label>
+        </ion-chip>
         <ion-buttons slot="end" *ngIf="canEdit(material)">
           <ion-button fill="none">
             <ion-icon

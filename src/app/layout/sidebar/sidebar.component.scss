@@ -2,6 +2,10 @@ ion-list {
   background-color: var(--ion-color-primary);
 }
 
+.toggleDarkmode {
+  color: white;
+}
+
 .selected {
   border-left: 2px solid var(--ion-color-light);
 }

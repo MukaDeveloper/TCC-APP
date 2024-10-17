@@ -8,8 +8,9 @@ export interface IMenu {
   elink?: string;
   target?: string;
   icon?: string;
+  mode?: boolean;
   svg?: string;
   alert?: string;
   subMenu?: ISubMenu[];
-  cannotAccess?: 'USER' | 'WAREHOUSEMAN' | 'COORDINATOR' | 'SUPPORT';
+  cannotAccess?: EUserRole;
 }

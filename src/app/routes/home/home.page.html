@@ -1,9 +1,31 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Home </ion-title>
+    <ion-title> Início </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
+  <ion-item *ngIf="isLoading" lines="none" style="text-align: center">
+    <ion-label>
+      <ion-spinner
+        name="circular"
+        style="width: 32px; height: 32px"
+      ></ion-spinner>
+    </ion-label>
+  </ion-item>
+  <section class="container" *ngIf="!isLoading">
+    <div style="text-align: center">
+      <ion-label>
+        <ion-text>
+          <h1>
+            Boas-vindas à StockTrack, seu sistema de gerenciamento de
+            almoxarifados
+          </h1>
+        </ion-text>
+      </ion-label>
+      <br />
+      <br />
+      <ion-label>Suas solicitações:</ion-label>
+    </div>
+  </section>
 </ion-content>

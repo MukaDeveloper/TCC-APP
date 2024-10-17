@@ -33,15 +33,17 @@ export class PermissionsService {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    // console.log('[InstitutionGuard] PermissionsService.canActivate');
+    // // console.log('[InstitutionGuard] PermissionsService.canActivate');
     const institution = this.institutionService.institution;
     if (institution) {
-      // console.log('[InstitutionGuard] PASS => GO TO ROUTE');
+      // // console.log('[InstitutionGuard] PASS => GO TO ROUTE');
       return true;
     } else {
       this.institutionService.getCurrent().subscribe({
-        next: (_) => this.router.navigate([ERouters.home], { replaceUrl: true }),
-        error: (_) => this.router.navigate([ERouters.login], { replaceUrl: true }),
+        next: (_) =>
+          this.router.navigate([ERouters.home], { replaceUrl: true }),
+        error: (_) =>
+          this.router.navigate([ERouters.login], { replaceUrl: true }),
       });
       return false;
     }

@@ -1,3 +1,5 @@
+import { IMaterialStatus } from './i-material-status';
+
 export interface IMaterial {
   active: boolean;
   id: number;
@@ -12,6 +14,7 @@ export interface IMaterial {
   measure: 'UN' | 'KG' | 'L';
 
   materialWarehouses: any[];
+  status: IMaterialStatus[];
 
   createdAt: Date;
   createdBy: string;

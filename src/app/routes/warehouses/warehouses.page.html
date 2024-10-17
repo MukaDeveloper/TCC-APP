@@ -81,9 +81,9 @@
               </ion-card-title>
             </ion-card-header>
             <ion-card-content>
-              <img [src]="getWarehouseIcon()" alt="" class="icons" />
+              <ion-icon name="home-outline" class="icons"></ion-icon>
               <ion-label>{{ item.description }}</ion-label>
-              <ion-label style="color: var(--ion-color-light-fixed)">
+              <ion-label color="dark">
                 <small>({{ item.area.name }})</small>
               </ion-label>
             </ion-card-content>
@@ -92,6 +92,7 @@
 
         <ion-col [size]="columnSize" *ngIf="!search && payload?.role !== eUser && payload?.role !== eWarehouseman">
           <ion-card
+            class="ion-padding"
             [disabled]="!areas?.length"
             (click)="onCreateWarehouse()"
             button

@@ -35,13 +35,13 @@ export class PermissionsService {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    // console.log('[ToHomeGuard] PermissionsService.canActivate');
+    // // console.log('[ToHomeGuard] PermissionsService.canActivate');
 
     const sessionStorage = this.sessionStorageAuthService.val;
     const localStorage = this.localStorageAuthService.val;
 
     if (sessionStorage || localStorage) {
-      // console.log('[ToHomeGuard] REDIRECT');
+      // // console.log('[ToHomeGuard] REDIRECT');
       return this.router.createUrlTree([`${ERouters.app}/${ERouters.home}`], {
         queryParams: { redirected: true },
       });

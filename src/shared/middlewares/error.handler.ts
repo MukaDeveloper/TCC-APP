@@ -9,14 +9,14 @@ export class HandleError {
   }
 
   public static makeErrorModel(error: HttpErrorResponse | any) {
-    console.log('Error:', error);
-  
+    // console.log('Error:', error);
+
     let errorModel: { message: string; status: number };
-  
+
     if (error instanceof HttpErrorResponse) {
       // Verifique se 'error.error' contém o objeto esperado
       const message = error.error?.message || 'Ocorreu um erro inesperado.';
-      
+
       errorModel = {
         message: message,
         status: error.status,
@@ -27,7 +27,7 @@ export class HandleError {
         status: error.status || 0,
       };
     }
-  
+
     return errorModel;
   }
 

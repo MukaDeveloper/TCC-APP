@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { LocalStorageAuthService } from '../localstorage/auth-local.service';
 import { SessionStorageAuthService } from '../localstorage/auth-session.service';
 import { IPayload } from './interfaces/i-payload';
-import { LocalStorageAuthService } from '../localstorage/auth-local.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class PayloadService {
 
   constructor(
     readonly sessionStorageAuthService: SessionStorageAuthService,
-    readonly localStorageAuthService: LocalStorageAuthService,
+    readonly localStorageAuthService: LocalStorageAuthService
   ) {
     this.payloadSubject = new BehaviorSubject<IPayload | null>(null);
     this.payload$ = this.payloadSubject.asObservable();
@@ -74,7 +74,7 @@ export class PayloadService {
     try {
       const decoded = jwtDecode<IPayload>(token);
       if (decoded) {
-        console.log('[PAYLOAD]', decoded);
+        // console.log('[PAYLOAD]', decoded);
         return decoded as IPayload;
       }
       return null;

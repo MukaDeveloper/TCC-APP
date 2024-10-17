@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {
   AlertController,
   IonSearchbar,
@@ -6,6 +6,8 @@ import {
   ToastController,
   ViewDidEnter,
 } from '@ionic/angular';
+import { IMember } from 'src/services/users/interfaces/i-member';
+import { UsersService } from 'src/services/users/users.service';
 import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 import { AreasService } from '../../../services/areas/areas.service';
 import { IArea } from '../../../services/areas/interfaces/i-area';
@@ -15,8 +17,6 @@ import { PayloadService } from '../../../services/payload/payload.service';
 import { WarehousesService } from '../../../services/warehouses/warehouses.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import { ERouters } from '../../../shared/utils/e-routers';
-import { UsersService } from 'src/services/users/users.service';
-import { IMember } from 'src/services/users/interfaces/i-member';
 
 @Component({
   selector: 'app-warehouses',
@@ -42,6 +42,7 @@ export class WarehousesPage
   public eWarehouseman = EUserRole.WAREHOUSEMAN;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;
+  public isDark: boolean = false;
 
   // #endregion Properties (4)
 
@@ -52,12 +53,12 @@ export class WarehousesPage
     private readonly usersService: UsersService,
     private readonly areasService: AreasService,
     private readonly warehousesService: WarehousesService,
+    private cdr: ChangeDetectorRef,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
-    this.detectColorSchemeChanges();
   }
 
   // #endregion Constructors (1)
@@ -112,14 +113,6 @@ export class WarehousesPage
       .then((a) => a.present());
   }
 
-  public getWarehouseIcon(): string {
-    if (this.darkMode) {
-      return 'assets/svgs/warehouse-icon.svg';
-    }
-
-    return 'assets/svgs/warehouse-black-icon.svg';
-  }
-
   public onGetAll() {
     this.isLoading = true;
     this.warehousesService.getAll().subscribe({
@@ -127,7 +120,7 @@ export class WarehousesPage
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.log('[WHERR]', err);
+        // console.log('[WHERR]', err);
         this.alert(err?.message, 'Atenção!');
         this.isLoading = false;
       },
@@ -164,7 +157,7 @@ export class WarehousesPage
         }, 100);
       },
       error: (err: any) => {
-        console.log('[WHERR]', err);
+        // console.log('[WHERR]', err);
         this.alert(err?.message, 'Atenção!');
         this.isLoading = false;
       },
@@ -172,13 +165,15 @@ export class WarehousesPage
   }
 
   public goToWarehouse(wh: IWarehouse) {
-    console.log('[WAREHOUSE]', wh);
+    // console.log('[WAREHOUSE]', wh);
   }
 
   public ngOnInit() {
     this.search = '';
     this.subs.push(
-      this.payloadService.payload$.subscribe((res: any) => (this.payload = res)),
+      this.payloadService.payload$.subscribe(
+        (res: any) => (this.payload = res)
+      ),
       this.usersService.members$.subscribe((res: any) => {
         this.warehousemans = res?.filter(
           (u: any) => u.role === EUserRole.WAREHOUSEMAN
@@ -190,7 +185,7 @@ export class WarehousesPage
         this.filtered = res;
       }),
       this.warehousesService.filtered$.subscribe((res: any) => {
-        console.log(res);
+        // console.log(res);
         if (this.payload?.role === this.eWarehouseman) {
           const filter = res?.filter((w: any) => w.active);
           this.filtered = filter as IWarehouse[];
