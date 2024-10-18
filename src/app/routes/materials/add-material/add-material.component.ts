@@ -12,6 +12,7 @@ export class AddMaterialComponent extends BaseComponent implements OnInit {
 
   @ViewChild(IonModal) public modal!: IonModal;
   public formGroup: FormGroup | null = null;
+  public action: 'SINGLE' | 'MULTIPLE' = 'SINGLE';
 
   constructor(
     toastController: ToastController,
@@ -25,6 +26,7 @@ export class AddMaterialComponent extends BaseComponent implements OnInit {
 
   public onOpenModal() {
     this.onCreateForm();
+    this.modal.present();
   }
 
   private onCreateForm() {
