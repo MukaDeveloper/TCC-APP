@@ -1,3 +1,4 @@
+import { PayloadService } from 'src/services/payload/payload.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -31,6 +32,7 @@ export class LoginPage extends BaseComponent implements OnInit {
 
   constructor(
     private readonly localStorageAuthService: LocalStorageAuthService,
+    private readonly payloadService: PayloadService,
     private readonly usersService: UsersService,
     private router: Router,
     toastController: ToastController,
@@ -89,6 +91,12 @@ export class LoginPage extends BaseComponent implements OnInit {
             this.localStorageAuthService.val = res?.item;
           }
           this.formGroup?.reset();
+
+          if (this.payloadService.payload?.verified) {
+            this.toast('Seu e-mail não está verificado. (EM DESENVOLVIMENTO)', "Oops!", "warning", "middle");
+            return;
+          }
+
           this.router.navigate([`${ERouters.app}/${ERouters.home}`], {
             replaceUrl: true,
           });

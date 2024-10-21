@@ -169,7 +169,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
       context.fillRect(0, 0, canvas.width, canvas.height);
 
       // Define o texto
-      context.fillStyle = '#FFFFFF'; // Cor branca para o texto
+      context.fillStyle = '#FDFDFD'; // Cor branca para o texto
       context.font = 'bold 40px Arial';
       context.textAlign = 'center';
       context.textBaseline = 'middle';

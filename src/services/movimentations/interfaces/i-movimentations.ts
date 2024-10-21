@@ -1,9 +1,9 @@
 import { IArea } from '../../areas/interfaces/i-area';
 import { IPayload } from '../../payload/interfaces/i-payload';
 import { IWarehouse } from '../../warehouses/interfaces/i-warehouse';
-import { EMovimentationType } from './enum/EMovimentationType';
-import { EMovimentationReason } from './enum/EMovimentationReason';
-import { EMovimentationEvent } from './enum/EMovimentationEvent';
+import { EMovimentationType } from './enum/movimentation-type.enum';
+import { EMovimentationReason } from './enum/movimentation-reason.enum';
+import { EMovimentationEvent } from './enum/movimentation-role.enum';
 
 export interface IMovimentations {
   // #region Properties (17)

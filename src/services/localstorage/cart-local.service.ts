@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class MediaStorageService {
+export class CartStorageService {
   // #region Properties (1)
 
-  private key = 'str-media';
+  private key = 'str-cart';
 
   // #endregion Properties (1)
 

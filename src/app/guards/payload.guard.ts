@@ -37,7 +37,7 @@ export class PermissionsService {
 
     const payload = this.payloadService.payload;
 
-    if (!payload) {
+    if (!payload || !payload?.verified) {
       // // console.log('[PayloadGuard] BLOCKED => REDIRECT');
       return this.router.createUrlTree([ERouters.login], {
         queryParams: { redirected: true },

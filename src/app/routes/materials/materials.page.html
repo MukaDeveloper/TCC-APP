@@ -72,6 +72,9 @@
             <small>{{ material.manufactorer }}</small>
           </p>
         </ion-label>
+        <ion-chip color="secondary" (click)="onRequest(material)" button>
+          <ion-label style="--color: #FDFDFD">SOLICITAR</ion-label>
+        </ion-chip>
         <ion-chip color="success">
           <ion-label>{{ resolveAvailableStatus(material.status) }}</ion-label>
         </ion-chip>

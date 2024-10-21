@@ -5,8 +5,8 @@ import {
   ToastController,
   ViewDidEnter,
 } from '@ionic/angular';
-import { EMovimentationType } from 'src/services/movimentations/interfaces/enum/EMovimentationType';
-import { EMovimentationEvent } from '../../../services/movimentations/interfaces/enum/EMovimentationEvent';
+import { EMovimentationType } from 'src/services/movimentations/interfaces/enum/movimentation-type.enum';
+import { EMovimentationEvent } from '../../../services/movimentations/interfaces/enum/movimentation-role.enum';
 import { IMovimentations } from '../../../services/movimentations/interfaces/i-movimentations';
 import { MovimentationsService } from '../../../services/movimentations/movimentations.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
