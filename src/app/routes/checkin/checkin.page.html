@@ -1,0 +1,23 @@
+<ion-header class="clear-borders">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="wrapper">
+    <div *ngIf="isLoading">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <ion-label>
+        <ion-spinner name="circular"></ion-spinner>
+      </ion-label>
+    </div>
+  </div>
+</ion-content>

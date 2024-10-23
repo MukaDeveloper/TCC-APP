@@ -35,6 +35,7 @@ export class PermissionsService {
     | Promise<boolean | UrlTree> {
     // // console.log('[InstitutionGuard] PermissionsService.canActivate');
     const institution = this.institutionService.institution;
+    console.log('institution Guard => ', institution);
     if (institution) {
       // // console.log('[InstitutionGuard] PASS => GO TO ROUTE');
       return true;

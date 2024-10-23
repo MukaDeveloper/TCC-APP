@@ -74,7 +74,7 @@ export class PayloadService {
     try {
       const decoded = jwtDecode<IPayload>(token);
       if (decoded) {
-        // console.log('[PAYLOAD]', decoded);
+        console.log('[PAYLOAD]', decoded);
         return decoded as IPayload;
       }
       return null;

@@ -1,3 +1,10 @@
+ion-toolbar {
+  --background: transparent;
+  --ion-background-color: transparent;
+  --ion-toolbar-background: transparent;
+  box-shadow: none; /* Remove a sombra padrão, se houver */
+}
+
 ion-content {
   --background: var(--ion-color-primary);
 }

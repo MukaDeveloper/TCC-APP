@@ -7,27 +7,20 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
-import { ERouters } from 'src/shared/utils/e-routers';
 import { SessionStorageAuthService } from '../../services/localstorage/auth-session.service';
+import { LocalStorageAuthService } from '../../services/localstorage/auth-local.service';
+import { ERouters } from '../../shared/utils/e-routers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PermissionsService {
-  // #region Constructors (1)
-
   constructor(
     private readonly sessionStorageAuthService: SessionStorageAuthService,
     private readonly localStorageAuthService: LocalStorageAuthService,
     private readonly router: Router
   ) {}
-
-  // #endregion Constructors (1)
-
-  // #region Public Methods (1)
-
-  public canActivate(
+  canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ):
@@ -35,23 +28,22 @@ export class PermissionsService {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    // // console.log('[ToHomeGuard] PermissionsService.canActivate');
+    // console.log('[TOKENGUARD] PermissionsService.canActivate');
 
-    const sessionStorage = this.sessionStorageAuthService.val;
-    const localStorage = this.localStorageAuthService.val;
-
-    if (sessionStorage || localStorage) {
-      // // console.log('[ToHomeGuard] REDIRECT');
-      return this.router.createUrlTree([ERouters.checkin], {
+    if (
+      !this.localStorageAuthService.val ||
+      !this.sessionStorageAuthService.val
+    ) {
+      // console.log('[TOKENGUARD] BLOCKED => GO TO LOGIN');
+      return this.router.createUrlTree([ERouters.login], {
         queryParams: { redirected: true },
       });
     }
+    // console.log('[TOKENGUARD] ALLOWED');
     return true;
   }
-
-  // #endregion Public Methods (1)
 }
-export const toHomeGuard: CanActivateFn = (
+export const tokenGuard: CanActivateFn = (
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ):

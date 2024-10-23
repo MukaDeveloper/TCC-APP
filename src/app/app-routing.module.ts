@@ -5,25 +5,40 @@ import { payloadGuard } from './guards/payload.guard';
 import { toHomeGuard } from './guards/to-home.guard';
 import { LayoutPage } from './layout/layout.page';
 import { institutionGuard } from './guards/institution.guard';
+import { tokenGuard } from './guards/token.guard';
 
 const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
     redirectTo: ERouters.app,
+    pathMatch: 'full',
   },
   {
     path: ERouters.register,
+    canActivate: [],
     loadChildren: () =>
       import('./routes/register/register.module').then(
         (m) => m.RegisterPageModule
       ),
   },
   {
+    path: ERouters.confirm,
+    canActivate: [],
+    loadChildren: () => import('./routes/confirm/confirm.module').then( m => m.ConfirmPageModule)
+  },
+  {
     path: ERouters.login,
     canActivate: [toHomeGuard],
     loadChildren: () =>
       import('./routes/login/login.module').then((m) => m.LoginPageModule),
+  },
+  {
+    path: ERouters.checkin,
+    canActivateChild: [tokenGuard],
+    loadChildren: () =>
+      import('./routes/checkin/checkin.module').then(
+        (m) => m.CheckinPageModule
+      ),
   },
   {
     path: ERouters.forgotPassword,

@@ -92,7 +92,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
           replaceUrl: true,
         });
         this.formGroup?.reset();
-        this.toast(`Bem-vindo ${res.item.name}! Agora você pode fazer login`, "Sucesso!", "success", "bottom");
+        this.alert(`Um e-mail de confirmação foi enviado para ${obj.email}`, 'Atenção!', "Confirme sua conta");
         this.isLoading = false;
       },
       error: (error: any) => {
@@ -110,6 +110,7 @@ export class RegisterPage extends BaseComponent implements OnInit {
     const confirmPassword = formGroup.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { mismatch: true };
   };
+
   private createForm() {
     this.formGroup = new FormGroup(
       {

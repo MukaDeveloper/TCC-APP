@@ -43,6 +43,14 @@ export class PermissionsService {
         queryParams: { redirected: true },
       });
     }
+
+    const institutionId = payload.institutionId;
+    if (!institutionId) {
+      // console.log('[PayloadGuard] BLOCKED2 => GO TO CHECKIN');
+      return this.router.createUrlTree([ERouters.checkin], {
+        queryParams: { redirected: true },
+      });
+    }
     // // console.log('[PayloadGuard] ALLOWED');
     return true;
   }
