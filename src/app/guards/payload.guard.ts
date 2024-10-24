@@ -37,21 +37,28 @@ export class PermissionsService {
 
     const payload = this.payloadService.payload;
 
-    if (!payload || !payload?.verified) {
-      // // console.log('[PayloadGuard] BLOCKED => REDIRECT');
+    if (!payload) {
+      // console.log('[PayloadGUARD] BLOCKED => GO TO LOGIN');
       return this.router.createUrlTree([ERouters.login], {
+        queryParams: { redirected: true },
+      });
+    }
+    
+    if (payload.verified === false) {
+      // console.log('[PayloadGUARD] BLOCKED2 => GO TO CONFIRM');
+      return this.router.createUrlTree([ERouters.confirm], {
         queryParams: { redirected: true },
       });
     }
 
     const institutionId = payload.institutionId;
     if (!institutionId) {
-      // console.log('[PayloadGuard] BLOCKED2 => GO TO CHECKIN');
+      // console.log('[PayloadGUARD] BLOCKED3 => GO TO CHECKIN');
       return this.router.createUrlTree([ERouters.checkin], {
         queryParams: { redirected: true },
       });
     }
-    // // console.log('[PayloadGuard] ALLOWED');
+    // console.log('[PayloadGUARD] ALLOWED');
     return true;
   }
 

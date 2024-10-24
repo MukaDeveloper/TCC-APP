@@ -92,23 +92,6 @@ export class LoginPage extends BaseComponent implements OnInit {
             this.localStorageAuthService.val = res?.item;
           }
           this.formGroup?.reset();
-
-          if (this.payloadService.payload?.verified) {
-            this.toast(
-              'Seu e-mail não está verificado. (EM DESENVOLVIMENTO)',
-              'Oops!',
-              'seconday',
-              'bottom'
-            );
-            this.router.navigate([ERouters.confirm], {
-              queryParams: {
-                redirected: true,
-              },
-              replaceUrl: true,
-            });
-            return;
-          }
-
           this.router.navigate([ERouters.checkin], {
             replaceUrl: true,
           });

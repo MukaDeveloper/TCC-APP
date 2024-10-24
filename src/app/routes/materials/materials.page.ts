@@ -17,6 +17,7 @@ import { IMaterialStatus } from '../../../services/materials/interfaces/i-materi
 import { CartStorageService } from 'src/services/localstorage/cart-local.service';
 import { ICart } from 'src/services/cart/interfaces/i-cart';
 import { ECartItemStatus } from 'src/services/cart/interfaces/enums/cart-item-status.enum';
+import { CartService } from '../../../services/cart/cart.service';
 
 @Component({
   selector: 'app-materials',
@@ -31,6 +32,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
   public payload: IPayload | null = null;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;
+  public cart: ICart | null = null;
 
   // #endregion Properties (3)
 
@@ -40,7 +42,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
     private readonly payloadService: PayloadService,
     private readonly warehousesService: WarehousesService,
     private readonly materialsService: MaterialsService,
-    private readonly cartStorageService: CartStorageService,
+    private readonly cartService: CartService,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -61,71 +63,102 @@ export class MaterialsPage extends BaseComponent implements OnInit {
 
   public ngOnInit() {
     this.subs.push(
-      this.payloadService.payload$.subscribe((res: IPayload | null) => (this.payload = res)),
-      this.materialsService.filtered$.subscribe((res: IMaterial[] | null) => (this.filtered = res))
+      this.payloadService.payload$.subscribe(
+        (res: IPayload | null) => (this.payload = res)
+      ),
+      this.materialsService.filtered$.subscribe(
+        (res: IMaterial[] | null) => (this.filtered = res)
+      ),
+      this.cartService.cart$.subscribe((res) => (this.cart = res))
     );
     this.onGetAll();
   }
 
   public onRequest(material: IMaterial) {
-    const availables = material.status.find(o => o.status === EMaterialStatus.AVAILABLE);
-    this.alertController.create({
-      cssClass: 'custom-alert',
-      header: material.name,
-      backdropDismiss: true,
-      message: "Quantos materiais deseja solicitar?",
-      inputs: [
-        {
-          name: "Quantidade",
-          placeholder: "5",
-          type: "number",
-          value: 1,
-          min: 1,
-          max: availables?.quantity || 99
-        }
-      ],
-      buttons: [
-        {
-          text: "Cancelar",
-          role: "cancel"
-        },
-        {
-          text: "Adicionar",
-          role: "add",
-          handler: (data) => {
-            const quantity = data.value;
-            // Aqui você pode manipular o valor da entrada (data.name)
-          }
-        }
-      ]
-    })
+    const availables = material.status.find(
+      (o) => o.status === EMaterialStatus.AVAILABLE
+    );
+    this.alertController
+      .create({
+        cssClass: 'custom-alert',
+        header: material.name,
+        backdropDismiss: true,
+        message: 'Quantos materiais deseja solicitar?',
+        inputs: [
+          {
+            name: 'value',
+            placeholder: '5',
+            type: 'number',
+            value: 1,
+            min: 1,
+            max: (availables?.quantity as number) || 99,
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              return false;
+            },
+          },
+          {
+            text: 'Adicionar',
+            role: 'add',
+            handler: (data) => {
+              const quantity = data.value;
+              this.request(material, quantity);
+              return false;
+            },
+          },
+        ],
+      })
+      .then((alert) => alert.present());
   }
 
-  public request(materialId: number, quantity: number): void {
-    let cart = JSON.parse(this.cartStorageService.val) as ICart;
+  public request(material: IMaterial, quantity: number): void {
+    const cart = this.cartService.cart;
+    const availables =
+      material?.status.find((o) => o.status === EMaterialStatus.AVAILABLE)
+        ?.quantity || 0;
 
     if (!cart) {
-      cart = {
+      this.cartService.nextCart({
+        userId: this.payload?.id as number,
+        items: [
+          {
+            materialId: material.id,
+            quantity,
+            status: ECartItemStatus.PENDING,
+            quantityAccepted: 0,
+            quantityDeclined: 0,
+          },
+        ],
         sended: false,
-        items: [],
-      } as ICart;
+      } as ICart);
+      return;
     }
 
-    if (cart.items.length) {
-      const item = cart.items.find(o => o.materialId === materialId);
+    if (cart?.items.length) {
+      const item = cart?.items.find((o) => o.materialId === material.id);
       if (item) {
         item.quantity += quantity;
+        if (item.quantity > availables) {
+          item.quantity = availables;
+        }
+        this.cartService.nextCart(cart);
         return;
       }
     }
 
     cart.items.push({
-      materialId,
+      materialId: material.id,
       quantity,
       status: ECartItemStatus.PENDING,
       quantityAccepted: 0,
-      quantityDeclined: 0
+      quantityDeclined: 0,
     });
+    this.cartService.nextCart(cart);
   }
 
   public resolveAvailableStatus(status: IMaterialStatus[]): string {

@@ -61,6 +61,9 @@ export class PayloadService {
       this.payloadSubject.next(null);
       return;
     }
+    if (this.localStorageAuthService.val) {
+      this.localStorageAuthService.val = token;
+    }
     this.sessionStorageAuthService.val = token;
     const payload = this.decodeJWT(token);
     this.payloadSubject.next(payload || null);
@@ -72,9 +75,17 @@ export class PayloadService {
 
   private decodeJWT(token: string): IPayload | null {
     try {
-      const decoded = jwtDecode<IPayload>(token);
+      const decoded = jwtDecode<any>(token);
       if (decoded) {
-        console.log('[PAYLOAD]', decoded);
+        decoded.verified = decoded.verified.toLowerCase() === 'true';
+        decoded.active = decoded.active.toLowerCase() === 'true';
+        decoded.id = parseInt(decoded.id);
+        decoded.institutionId = parseInt(decoded.institutionId);
+
+        if (decoded.exp < Math.floor(Date.now() / 1000)) {
+          return null;
+        }
+
         return decoded as IPayload;
       }
       return null;

@@ -29,7 +29,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     const session = this.sessionStorageAuthService.val || '';
     const local = this.localStorageAuthService.val || '';
     const dupReq = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${local || session}`),
+      headers: req.headers.set('Authorization', `Bearer ${session || local}`),
     });
     return next.handle(dupReq);
   }

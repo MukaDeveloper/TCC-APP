@@ -7,6 +7,7 @@ import { CredentialsDto } from './dto/credentials.dto';
 import { RegisterDto } from './dto/register.dto';
 import { IMember } from './interfaces/i-member';
 import { AddUserInstitutionDto } from './dto/add-user-institution.dto';
+import { SelectInstitutionDto } from './dto/select-institution.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -48,8 +49,8 @@ export class UsersService {
       .pipe(tap((res: IEnvelope<any>) => res));
   }
 
-  public selectInstitution(id: number): Observable<IEnvelope<string>> {
-    return this.apiUsersService.selectInstitution(id).pipe(
+  public selectInstitution(data: SelectInstitutionDto): Observable<IEnvelope<string>> {
+    return this.apiUsersService.selectInstitution(data).pipe(
       map((res: IEnvelope<string>) => {
         if (res?.item) {
           this.payloadService.nextPayload(res.item);

@@ -19,5 +19,27 @@
         <ion-spinner name="circular"></ion-spinner>
       </ion-label>
     </div>
+    <section *ngIf="!isLoading">
+      <div class="d-flex justify-content-center">
+        <img src="assets/imgs/logo.png" alt="" style="width: 250px" />
+      </div>
+      <br />
+      <div style="text-align: center">
+        <ion-label>
+          <h1>Olá {{ payload?.name }}</h1>
+          <h2>Selecione qual instituição deseja acessar.</h2>
+        </ion-label>
+      </div>
+      <ion-list>
+        <ion-item
+          *ngFor="let institution of institutions; let k = index"
+          (click)="onSelectInstitution(institution)"
+          button
+          detail
+        >
+          <ion-label>{{ institution.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
   </div>
 </ion-content>

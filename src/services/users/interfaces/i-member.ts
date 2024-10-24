@@ -1,9 +1,10 @@
 import { EUserRole } from "../../payload/interfaces/enum/EUserRole";
 
 export interface IMember {
-  id: string;
+  id: number;
   name: string;
   email: string;
   photoUrl: string;
-  role?: EUserRole;
+  role: EUserRole;
+  verified: boolean;
 }

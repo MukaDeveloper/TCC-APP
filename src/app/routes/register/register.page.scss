@@ -25,6 +25,11 @@ ion-card-header {
   color: var(--ion-color-light-fixed);
 }
 
+.clear-borders {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 .content {
   max-width: 28.125rem;
 }
@@ -54,7 +59,3 @@ ion-button {
   color: #ffffff;
 }
 
-.clear-borders {
-  border: none !important;
-  box-shadow: none !important;
-}

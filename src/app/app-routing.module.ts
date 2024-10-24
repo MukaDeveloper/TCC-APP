@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { ERouters } from '../shared/utils/e-routers';
+import { institutionGuard } from './guards/institution.guard';
 import { payloadGuard } from './guards/payload.guard';
 import { toHomeGuard } from './guards/to-home.guard';
+import { checkinGuard } from './guards/token.guard';
 import { LayoutPage } from './layout/layout.page';
-import { institutionGuard } from './guards/institution.guard';
-import { tokenGuard } from './guards/token.guard';
 
 const routes: Routes = [
   {
@@ -24,7 +24,10 @@ const routes: Routes = [
   {
     path: ERouters.confirm,
     canActivate: [],
-    loadChildren: () => import('./routes/confirm/confirm.module').then( m => m.ConfirmPageModule)
+    loadChildren: () =>
+      import('./routes/confirm/confirm.module').then(
+        (m) => m.ConfirmPageModule
+      ),
   },
   {
     path: ERouters.login,
@@ -34,7 +37,7 @@ const routes: Routes = [
   },
   {
     path: ERouters.checkin,
-    canActivateChild: [tokenGuard],
+    canActivateChild: [checkinGuard],
     loadChildren: () =>
       import('./routes/checkin/checkin.module').then(
         (m) => m.CheckinPageModule
@@ -43,7 +46,9 @@ const routes: Routes = [
   {
     path: ERouters.forgotPassword,
     loadChildren: () =>
-      import('./routes/forgot-password/forgot-password.module').then((m) => m.ForgotPasswordPageModule),
+      import('./routes/forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordPageModule
+      ),
   },
   {
     path: ERouters.app,
@@ -90,8 +95,8 @@ const routes: Routes = [
       {
         path: ERouters.members,
         loadChildren: () =>
-          import('./routes/membros/membros.module').then(
-            (m) => m.MembrosPageModule
+          import('./routes/members/members.module').then(
+            (m) => m.MembersPageModule
           ),
       },
     ],

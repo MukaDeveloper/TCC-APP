@@ -52,6 +52,17 @@ export class InstitutionService {
     );
   }
 
+  public getById(id: number): Observable<IEnvelope<IInstitution>> {
+    return this.apiInstitutionService.getById(id).pipe(
+      map((res: IEnvelope<IInstitution>) => {
+        if (res?.item) {
+          this.institutionSubject.next(res.item);
+        }
+        return res;
+      })
+    );
+  }
+  
   public getCurrent(): Observable<IEnvelope<IInstitution>> {
     return this.apiInstitutionService.getCurrent().pipe(
       map((res: IEnvelope<IInstitution>) => {

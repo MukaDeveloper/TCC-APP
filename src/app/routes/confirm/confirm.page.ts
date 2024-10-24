@@ -17,6 +17,7 @@ import { ERouters } from '../../../shared/utils/e-routers';
 })
 export class ConfirmPage extends BaseComponent implements OnInit {
   public payload: IPayload | null = null;
+  public uid: number | null = null;
   public token: string | null = null;
   public isLoading: boolean = true;
 
@@ -43,11 +44,43 @@ export class ConfirmPage extends BaseComponent implements OnInit {
       this.payloadService.payload$.subscribe((res) => (this.payload = res))
     );
     this.token = this.route.snapshot.queryParams['token'];
-    const redirected = this.route.snapshot.queryParams['redirected'];
+    this.uid = this.route.snapshot.queryParams['uid'] as number;
+    // SE NÃO TIVER TOKEN NEM PAYLOAD, ENTÃO A PESSOA CAIU DE PARAQUEDAS. MANDA DE VOLTA PRO LOGIN
     if (!this.token && !this.payload) {
       this.goBack();
       return;
     }
+
+    if (!this.token && this.payload) {
+      // NESSE CASO ESSA PÁGINA FOI ACESSADA PELO REGISTER OU CHECKIN
+
+      /**
+       * TENHO QUE EXIBIR NO FRONT AS OPÇÕES DE 
+       *    "JÁ CONFIRMEI", QUE ASSIM VAI CONSULTAR NA API, SE VIER COM VERIFIED TRUE ENTÃO TÁ CERTO, SE NÃO, IGNORA.
+       *    "ENVIAR NOVAMENTE", TENHO QUE COLOCAR EM PAUTA DE DEIXAR ESSA OPÇÃO DESATIVADA SE O TEMPO DO ÚLTIMO ENVIO FOR MENOR QUE 1 HORA.
+       */
+    }
+
+    if (this.token) {
+      // NESSE CASO ESSA PÁGINA FOI ACESSADA PELO E-MAIL OU COM ALGUM PARAMQUERY MANUAL
+
+      // PRECISO ENVIAR PRA API O TOKEN E O USERID (SE TIVER PAYLOAD)
+      if (this.payload?.id) {
+        if (this.uid) {
+          if (this.uid !== this.payload.id) {
+            this.alert("Houve um erro pra confirmar seu e-mail, tente novamente", "Atenção!");
+            return;
+          }
+          // SE CAIR AQUI, O PAYLOAD.ID É O MESMO QUE O UID
+        }
+        // CONSEQUENTEMENTE, SE CAIR AQUI, NÃO NECESSARIAMENTE ELE TEM UM UID, MAS TEM O PAYLOAD.ID,
+        // ENTÃO POSSO USAR O PAYLOAD.ID
+
+        // this.usersService.confirmEmail(token, this.payload.id).subscribe({ next: (res) => { console.log(res); }, error: (error) => { console.error(error); } });
+        // SE RETORNAR UM ACCESSTOKEN, ENTÃO MANDA PRA PÁGINA DE CHECKIN. QUALQUER EXCEÇÃO VAI CAIR NA TRATATIVA DE ERRO
+      }
+    }
+
     this.isLoading = false;
   }
 }

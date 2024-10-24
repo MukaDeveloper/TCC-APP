@@ -1,22 +1,23 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {
-  ToastController,
   AlertController,
   LoadingController,
+  ToastController,
 } from '@ionic/angular';
+import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
+import { IPayload } from '../../../services/payload/interfaces/i-payload';
+import { PayloadService } from '../../../services/payload/payload.service';
+import { UsersService } from '../../../services/users/users.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import { ERouters } from '../../../shared/utils/e-routers';
-import { PayloadService } from '../../../services/payload/payload.service';
-import { IPayload } from '../../../services/payload/interfaces/i-payload';
-import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
-import { UsersService } from '../../../services/users/users.service';
+import { IMember } from '../../../services/users/interfaces/i-member';
 
 @Component({
-  selector: 'app-membros',
-  templateUrl: './membros.page.html',
-  styleUrls: ['./membros.page.scss'],
+  selector: 'app-members',
+  templateUrl: './members.page.html',
+  styleUrls: ['./members.page.scss'],
 })
-export class MembrosPage
+export class MembersPage
   extends BaseComponent
   implements OnInit, AfterViewInit
 {
@@ -29,7 +30,7 @@ export class MembrosPage
   public eUser = EUserRole.USER;
   public eSupport = EUserRole.SUPPORT;
   public eWarehouseman = EUserRole.WAREHOUSEMAN;
-  public members: any[] | null = [];
+  public members: IMember[] | null = [];
 
   constructor(
     private readonly usersService: UsersService,
@@ -114,8 +115,7 @@ export class MembrosPage
       .then((alert) => alert.present());
   }
 
-  private onRemove(memberId: number) {
-  }
+  private onRemove(memberId: number) {}
 
   private onGetAll() {
     this.isLoading = true;
