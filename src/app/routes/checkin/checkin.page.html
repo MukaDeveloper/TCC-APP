@@ -1,0 +1,45 @@
+<ion-header class="clear-borders">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="wrapper">
+    <div *ngIf="isLoading">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <ion-label>
+        <ion-spinner name="circular"></ion-spinner>
+      </ion-label>
+    </div>
+    <section *ngIf="!isLoading">
+      <div class="d-flex justify-content-center">
+        <img src="assets/imgs/logo.png" alt="" style="width: 250px" />
+      </div>
+      <br />
+      <div style="text-align: center">
+        <ion-label>
+          <h1>Olá {{ payload?.name }}</h1>
+          <h2>Selecione qual instituição deseja acessar.</h2>
+        </ion-label>
+      </div>
+      <ion-list>
+        <ion-item
+          *ngFor="let institution of institutions; let k = index"
+          (click)="onSelectInstitution(institution)"
+          button
+          detail
+        >
+          <ion-label>{{ institution.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
+  </div>
+</ion-content>

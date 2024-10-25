@@ -67,6 +67,7 @@
           <h4 class="m-0 mb-1">{{ member.name ? member.name : 'ANÔNIMO' }}</h4>
           <small class="m-0">{{ member.email }}</small>
         </ion-text>
+        <ion-chip style="margin-left: 24px;" color="danger" *ngIf="!member.verified">Não verificado</ion-chip>
         <ion-label
           slot="end"
           *ngIf="payload?.role !== eUser && payload?.role !== eWarehouseman"

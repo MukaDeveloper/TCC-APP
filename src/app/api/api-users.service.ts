@@ -8,6 +8,7 @@ import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { CredentialsDto } from '../../services/users/dto/credentials.dto';
 import { IMember } from '../../services/users/interfaces/i-member';
 import { AddUserInstitutionDto } from '../../services/users/dto/add-user-institution.dto';
+import { SelectInstitutionDto } from '../../services/users/dto/select-institution.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +38,10 @@ export class ApiUsersService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  public selectInstitution(id: number): Observable<IEnvelope<string>> {
-    const url = `${this.apiUrl}/Users/select-institution/${id}`;
+  public selectInstitution(data: SelectInstitutionDto): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/select-institution`;
     return this.http
-      .patch<IEnvelope<string>>(url, null)
+      .patch<IEnvelope<string>>(url, data)
       .pipe(catchError(HandleError.handler));
   }
 
@@ -62,6 +63,13 @@ export class ApiUsersService extends ApiBaseService {
     const url = `${this.apiUrl}/Users/add-institution-member`;
     return this.http
       .post<IEnvelope<string>>(url, data)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public resendEmail(): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/resend-email`;
+    return this.http
+      .post<IEnvelope<string>>(url, {})
       .pipe(catchError(HandleError.handler));
   }
 

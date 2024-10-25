@@ -19,7 +19,7 @@ export class CartStorageService {
   // #region Public Getters And Setters (2)
 
   public get val(): string {
-    const val = sessionStorage.getItem(this.key);
+    const val = localStorage.getItem(this.key);
     if (!val) {
       return '';
     }
@@ -28,9 +28,9 @@ export class CartStorageService {
 
   public set val(val: string) {
     if (!val) {
-      sessionStorage.setItem(this.key, '');
+      localStorage.setItem(this.key, '');
     } else {
-      sessionStorage.setItem(this.key, val);
+      localStorage.setItem(this.key, val);
     }
   }
 

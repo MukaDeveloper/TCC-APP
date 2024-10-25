@@ -27,6 +27,13 @@ export class ApiInstitutionService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
+  public getById(id: number): Observable<IEnvelope<IInstitution>> {
+    const url = `${this.apiUrl}/Institution/by-id/${id}`;
+    return this.http
+      .get<IEnvelope<IInstitution>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
+
   public getCurrent(): Observable<IEnvelope<IInstitution>> {
     const url = `${this.apiUrl}/Institution/get-current`;
     return this.http

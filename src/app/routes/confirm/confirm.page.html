@@ -1,0 +1,66 @@
+<ion-header class="clear-borders">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="wrapper">
+    <div *ngIf="isLoading">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <ion-label>
+        <ion-spinner name="circular"></ion-spinner>
+      </ion-label>
+    </div>
+    <section *ngIf="!isLoading">
+      <div *ngIf="isVerified">
+        <ion-label>
+          Sua conta foi confirmada com sucesso! Faça login agora.
+        </ion-label>
+      </div>
+      <section *ngIf="!isVerified">
+        <div *ngIf="token">
+          <div *ngIf="isChecking" style="text-align: center">
+            <ion-label>
+              <ion-spinner
+                name="circular"
+                style="--color: #fdfdfd"
+              ></ion-spinner>
+            </ion-label>
+          </div>
+          <div *ngIf="!isChecking">
+            Se você está vendo essa mensagem, é porque deu ruim =(
+          </div>
+        </div>
+        <div *ngIf="!token" style="text-align: center">
+          <ion-label style="color: #fdfdfd">
+            <ion-text>
+              Sua conta ainda não foi verificada. Um e-mail de confirmação
+            </ion-text>
+            <br />
+            <ion-text>foi enviado para {{ payload?.email }}</ion-text>
+          </ion-label>
+          <br />
+          <br />
+          <ion-button
+            fill="solid"
+            color="tertiary"
+            expand="block"
+            [disabled]="!canResend"
+            (click)="resendEmail()"
+            ><ion-label style="color: #fdfdfd"
+              ><ion-text>Reenviar e-mail</ion-text></ion-label
+            ></ion-button
+          >
+        </div>
+      </section>
+    </section>
+  </div>
+</ion-content>

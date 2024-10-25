@@ -6,6 +6,7 @@ import {
 } from '@ionic/angular';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { EUserRole } from '../../services/payload/interfaces/enum/EUserRole';
 
 @Component({
   template: '',
@@ -18,6 +19,11 @@ export class BaseComponent implements OnDestroy {
     cssClass: 'custom-alert',
   };
   public darkMode: boolean;
+
+  public eUserRole = EUserRole.USER;
+  public eWarehousemanRole = EUserRole.WAREHOUSEMAN;
+  public eCoordinatorRole = EUserRole.COORDINATOR;
+  public eSupportRole = EUserRole.SUPPORT;
   // #endregion Properties (2)
 
   // #region Constructors (1)

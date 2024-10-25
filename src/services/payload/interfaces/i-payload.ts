@@ -5,8 +5,10 @@ export interface IPayload {
   id: number;
   name: string;
   email: string;
-  photoUrl: string;
-  institutionId: number;
-  role: EUserRole;
+  photoUrl: string | null;
+  institutionId: number | null;
+  role: EUserRole | null;
+
   verified: boolean;
+  verifiedScheduled: Date;
 }

@@ -1,0 +1,25 @@
+ion-toolbar {
+  --background: transparent;
+  --ion-background-color: transparent;
+  --ion-toolbar-background: transparent;
+  box-shadow: none; /* Remove a sombra padrão, se houver */
+}
+
+.clear-borders {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+ion-content {
+  --background: var(--ion-color-primary);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-list {
+  --background: var(--ion-color-primary);
+}

@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MembrosPageRoutingModule } from './membros-routing.module';
+import { MembersPageRoutingModule } from './members-routing.module';
 
-import { MembrosPage } from './membros.page';
 import { AddMemberComponent } from './add-member/add-member.component';
+import { MembersPage } from './members.page';
 
 @NgModule({
   imports: [
@@ -15,8 +15,8 @@ import { AddMemberComponent } from './add-member/add-member.component';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    MembrosPageRoutingModule
+    MembersPageRoutingModule,
   ],
-  declarations: [MembrosPage, AddMemberComponent]
+  declarations: [MembersPage, AddMemberComponent],
 })
-export class MembrosPageModule {}
+export class MembersPageModule {}

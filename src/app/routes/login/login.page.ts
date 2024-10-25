@@ -69,41 +69,37 @@ export class LoginPage extends BaseComponent implements OnInit {
   }
 
   public onSubmit() {
-    const loading = this.loadingShow('Autenticando...');
     const email = this.formGroup?.get('email')?.value;
     const passwordString = this.formGroup?.get('password')?.value;
-    const institutionId = this.formGroup?.get('institutionId')?.value;
-    if (!email || !passwordString || !institutionId) {
+    // const institutionId = this.formGroup?.get('institutionId')?.value;
+    // || !institutionId
+    if (!email || !passwordString) {
       this.alert('Preencha os campos corretamente', 'Aviso!');
-      loading.then((l) => l.dismiss());
       return;
     }
-    if (email && passwordString && institutionId) {
+    // && institutionId
+    this.isLoading = true;
+    if (email && passwordString) {
       const credentials = {
         email,
         passwordString,
-        institutionId,
+        // institutionId,
       } as CredentialsDto;
       this.usersService.auth(credentials).subscribe({
         next: (res: IEnvelope<string>) => {
-          loading.then((l) => l.dismiss());
+          this.isLoading = false;
           if (this.formGroup?.get('keepIn')?.value) {
             this.localStorageAuthService.val = res?.item;
           }
           this.formGroup?.reset();
-
-          if (this.payloadService.payload?.verified) {
-            this.toast('Seu e-mail não está verificado. (EM DESENVOLVIMENTO)', "Oops!", "warning", "middle");
-            return;
-          }
-
-          this.router.navigate([`${ERouters.app}/${ERouters.home}`], {
+          this.router.navigate([ERouters.checkin], {
             replaceUrl: true,
           });
         },
         error: (error: any) => {
-          this.alert(error?.message, 'Aviso!');
-          loading.then((l) => l.dismiss());
+          this.isLoading = false;
+          this.toast(error?.message, 'Aviso!', 'secondary', 'bottom');
+          this.formGroup?.get('password')?.reset();
         },
       });
     }
@@ -114,14 +110,12 @@ export class LoginPage extends BaseComponent implements OnInit {
   // #region Private Methods (1)
 
   private createForm() {
-    const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      institutionId: new FormControl('', [Validators.required]),
+      // institutionId: new FormControl('', [Validators.required]),
       keepIn: new FormControl(false),
     });
-    loading.then((l) => l.dismiss());
     this.isLoading = false;
   }
 
