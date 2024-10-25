@@ -8,7 +8,6 @@ export interface IPayload {
   photoUrl: string | null;
   institutionId: number | null;
   role: EUserRole | null;
-
   verified: boolean;
   verifiedScheduled: Date;
 }

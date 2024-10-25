@@ -47,7 +47,7 @@ export class ConfirmPage extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.subs.push(
-      this.payloadService.payload$.subscribe((res) => {
+      this.payloadService.payload$.subscribe((res: IPayload) => {
         this.payload = res;
         if (res) {
           this.checkPayloadOrToken();
@@ -62,11 +62,11 @@ export class ConfirmPage extends BaseComponent implements OnInit {
   public resendEmail() {
     this.isLoading = true;
     this.usersService.resendEmail().subscribe({
-      next: (res) => {
+      next: () => {
         this.emailResent = true;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error(error);
         this.isLoading = false;
       },
