@@ -9,6 +9,7 @@ import { CredentialsDto } from '../../services/users/dto/credentials.dto';
 import { IMember } from '../../services/users/interfaces/i-member';
 import { AddUserInstitutionDto } from '../../services/users/dto/add-user-institution.dto';
 import { SelectInstitutionDto } from '../../services/users/dto/select-institution.dto';
+import { ConfirmEmailDto } from '../../services/users/dto/confirm-email.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -66,10 +67,18 @@ export class ApiUsersService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
+
   public resendEmail(): Observable<IEnvelope<string>> {
     const url = `${this.apiUrl}/Users/resend-email`;
     return this.http
       .post<IEnvelope<string>>(url, {})
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public confirmEmail(data: ConfirmEmailDto): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/confirm-email`;
+    return this.http
+      .post<IEnvelope<string>>(url, data)
       .pipe(catchError(HandleError.handler));
   }
 

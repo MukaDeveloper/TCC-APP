@@ -8,6 +8,7 @@ import { RegisterDto } from './dto/register.dto';
 import { IMember } from './interfaces/i-member';
 import { AddUserInstitutionDto } from './dto/add-user-institution.dto';
 import { SelectInstitutionDto } from './dto/select-institution.dto';
+import { ConfirmEmailDto } from './dto/confirm-email.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -91,6 +92,19 @@ export class UsersService {
 
   public resendEmail(): Observable<IEnvelope<string>> {
     return this.apiUsersService.resendEmail().pipe(
+      map((res: IEnvelope<string>) => {
+        if (res?.item) {
+          this.payloadService.nextPayload(res.item);
+        } else {
+          this.payloadService.nextPayload(null);
+        }
+        return res;
+      })
+    );
+  }
+
+  public confirmEmail(data: ConfirmEmailDto): Observable<IEnvelope<string>> {
+    return this.apiUsersService.confirmEmail(data).pipe(
       map((res: IEnvelope<string>) => {
         if (res?.item) {
           this.payloadService.nextPayload(res.item);

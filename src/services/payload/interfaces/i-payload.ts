@@ -9,5 +9,5 @@ export interface IPayload {
   institutionId: number | null;
   role: EUserRole | null;
   verified: boolean;
-  verifiedScheduled: Date;
+  verifiedScheduled: Date | string | null;
 }
