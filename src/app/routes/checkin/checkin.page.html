@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="goBack()">
-        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+        <ion-icon name="arrow-back" slot="icon-only" class="color-white"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -25,19 +25,31 @@
       </div>
       <br />
       <div style="text-align: center">
-        <ion-label>
+        <ion-label *ngIf="institutions?.length" class="color-white">
           <h1>Olá {{ payload?.name }}</h1>
           <h2>Selecione qual instituição deseja acessar.</h2>
         </ion-label>
+        <ion-label *ngIf="!institutions?.length" class="color-white">
+          <h1>Olá {{ payload?.name }}</h1>
+          <br />
+          <h2>Você atualmente não foi atribuído a nenhuma instutição.</h2>
+          <h2>
+            Solicite para um responsável da sua instituição para lhe adicionar.
+          </h2>
+        </ion-label>
       </div>
-      <ion-list>
+      <ion-list class="institutions-list background">
         <ion-item
+          lines="none"
+          class="institutions-item background"
           *ngFor="let institution of institutions; let k = index"
           (click)="onSelectInstitution(institution)"
-          button
           detail
         >
-          <ion-label>{{ institution.name }}</ion-label>
+          <ion-label class="color-white">
+            <small>{{institution.accessCode}}</small><br />
+            {{ institution.name }}
+          </ion-label>
         </ion-item>
       </ion-list>
     </section>

@@ -85,7 +85,7 @@ export class ConfirmPage extends BaseComponent implements OnInit {
       return;
     }
 
-    if (this.redirected) {
+    if (this.redirected || this.payload) {
       // NESSE CASO ESSA PÁGINA FOI ACESSADA PELO REGISTER OU CHECKIN (login)
 
       /**
@@ -94,7 +94,9 @@ export class ConfirmPage extends BaseComponent implements OnInit {
        *    "ENVIAR NOVAMENTE", TENHO QUE COLOCAR EM PAUTA DE DEIXAR ESSA OPÇÃO DESATIVADA SE O TEMPO DO ÚLTIMO ENVIO FOR MENOR QUE 1 HORA.
        */
       if (this.payload?.verified) {
-        this.isVerified = true;
+        this.router.navigate([ERouters.checkin], {
+          replaceUrl: true,
+        });
         return;
       }
 
@@ -133,8 +135,9 @@ export class ConfirmPage extends BaseComponent implements OnInit {
       console.log('Tem token!');
       // PRECISO ENVIAR PRA API O TOKEN E O USERID (SE TIVER PAYLOAD)
       if (this.payload && this.payload?.id) {
-        console.log('Tem payloadId!');
+        console.log('Tem payloadId!', this.payload?.id);
         if (this.uid) {
+          console.log('Tem uid na query', this.uid);
           if (this.uid !== this.payload.id) {
             this.alert(
               'Houve um erro pra confirmar seu e-mail, tente novamente',
@@ -167,18 +170,21 @@ export class ConfirmPage extends BaseComponent implements OnInit {
         token: this.token,
         userId: this.uid,
       } as ConfirmEmailDto;
+      console.log('ConfirmEmailDto', data);
       this.usersService.confirmEmail(data).subscribe({
         next: (res) => {
           console.log(res);
           this.isChecking = false;
-          // if (res.item) {
-          //   this.router.navigate([ERouters.checkin], {
-          //     replaceUrl: true,
-          //   });
-          // }
+          this.toast("Conta confirmada com sucesso!", "Sucesso", "success", "top");
+          if (res.item) {
+            this.router.navigate([ERouters.checkin], {
+              replaceUrl: true,
+            });
+          }
         },
         error: (error) => {
           this.isChecking = false;
+          this.alert(error?.message, 'Atenção!');
           console.error(error);
         },
       });

@@ -13,6 +13,7 @@ import { SharedModule } from '../../../../shared/shared.module';
     FormsModule,
     IonicModule,
   ],
+  exports: [ModalCartComponent],
   declarations: [ModalCartComponent]
 })
-export class ConfirmPageModule {}
+export class ModalCartModule {}

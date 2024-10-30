@@ -8,6 +8,7 @@ import { MaterialsPageRoutingModule } from './materials-routing.module';
 
 import { MaterialsPage } from './materials.page';
 import { AddMaterialComponent } from './add-material/add-material.component';
+import { ModalCartModule } from '../components/modal-cart/modal-cart.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AddMaterialComponent } from './add-material/add-material.component';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    MaterialsPageRoutingModule
+    MaterialsPageRoutingModule,
+    ModalCartModule,
   ],
   declarations: [MaterialsPage, AddMaterialComponent]
 })

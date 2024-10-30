@@ -1,7 +1,7 @@
-import { BehaviorSubject, Observable } from "rxjs";
-import { ICart } from "./interfaces/i-cart";
-import { CartStorageService } from "../localstorage/cart-local.service";
-import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ICart } from './interfaces/i-cart';
+import { CartStorageService } from '../localstorage/cart-local.service';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -9,49 +9,37 @@ import { Injectable } from "@angular/core";
 export class CartService {
   // #region Properties (2)
 
-  private cartSubject: BehaviorSubject<ICart | null>;
-
-  public cart$: Observable<ICart | null>;
+  private cart$: WritableSignal<ICart | null> = signal(null);
 
   // #endregion Properties (2)
 
   // #region Constructors (1)
 
-  constructor(
-    readonly cartStorageService: CartStorageService,
-  ) {
-    this.cartSubject = new BehaviorSubject<ICart | null>(null);
-    this.cart$ = this.cartSubject.asObservable();
-  }
+  constructor(readonly cartStorageService: CartStorageService) {}
 
   // #endregion Constructors (1)
 
   // #region Public Getters And Setters (1)
 
   public get cart(): ICart | null {
-    let cart = this.cartSubject.value;
+    let cart = this.cart$();
     if (!cart) {
-      const cartObj = JSON.parse(this.cartStorageService.val) as ICart;
+      const cartObj = this.cartStorageService.val;
       if (cartObj) {
-        this.cartSubject.next(cart || null);
+        this.cart$.set((JSON.parse(cartObj) as ICart) || null);
         return cart;
       }
       return null;
     }
-    return this.cartSubject.value;
+    return cart;
+  }
+
+  public set cart(value: ICart | null) {
+    this.cartStorageService.val = JSON.stringify(value || '');
+    this.cart$.set(value);
   }
 
   // #endregion Public Getters And Setters (1)
 
-  // #region Public Methods (1)
-
-  public nextCart(obj: ICart | null): void {
-    if (!obj) {
-      this.cartStorageService.val = '';
-      this.cartSubject.next(null);
-      return;
-    }
-    this.cartStorageService.val = JSON.stringify(obj);
-    this.cartSubject.next(obj || null);
-  }
+  // #region Public Methods (1) 
 }

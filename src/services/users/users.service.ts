@@ -31,6 +31,12 @@ export class UsersService {
 
   // #region Public Methods (2)
 
+  public getById(id: number): Observable<IEnvelope<IMember>> {
+    return this.apiUsersService
+      .getById(id)
+      .pipe(map((res: IEnvelope<IMember>) => res));
+  }
+
   public auth(credentials: CredentialsDto): Observable<IEnvelope<string>> {
     return this.apiUsersService.auth(credentials).pipe(
       map((res: IEnvelope<string>) => {

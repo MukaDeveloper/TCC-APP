@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit, ViewChild } from '@angular/core';
 import { BaseComponent } from '../../../../shared/utils/base.component';
 import {
   ToastController,
   AlertController,
   LoadingController,
+  IonModal,
 } from '@ionic/angular';
-import { CartStorageService } from '../../../../services/localstorage/cart-local.service';
 import { ICart } from '../../../../services/cart/interfaces/i-cart';
 import { CartService } from '../../../../services/cart/cart.service';
 
@@ -16,6 +16,7 @@ import { CartService } from '../../../../services/cart/cart.service';
 })
 export class ModalCartComponent extends BaseComponent implements OnInit {
 
+  @ViewChild(IonModal) public modal!: IonModal;
   public cart: ICart | null = null;
 
   constructor(
@@ -25,11 +26,18 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+
+    effect(() => {
+      const newValue = this.cartService.cart;
+      if (newValue) {
+        this.cart = newValue;
+      }
+    });
   }
 
-  ngOnInit() {
-    this.subs.push(
-      this.cartService.cart$.subscribe((res) => (this.cart = res))
-    )
+  ngOnInit() {}
+
+  public onOpenModal() {
+    this.modal.present();
   }
 }

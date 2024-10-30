@@ -36,7 +36,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngIf="!movimentations?.length" style="text-align: center;">
+        <ion-item *ngIf="!movimentations?.length" style="text-align: center">
           <ion-label>
             <p>Nenhum evento registrado ainda.</p>
           </ion-label>
@@ -61,7 +61,7 @@
         class="expand-button"
       >
         <ion-button (click)="expandMovimentations()"
-          ><ion-label style="color: var(--ion-color-light-fixed)">Ver Mais +</ion-label></ion-button
+          ><ion-label class="color-white">Ver Mais +</ion-label></ion-button
         >
       </div>
     </ion-card-content>

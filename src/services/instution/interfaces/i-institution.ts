@@ -6,6 +6,7 @@ export interface IInstitution {
   complement: string;
   id: number;
   name: string;
+  accessCode: string;
   neightboor: string;
   nickname: string;
   state: string;

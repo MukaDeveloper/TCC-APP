@@ -1,5 +1,5 @@
 import { WarehousesService } from './../../../services/warehouses/warehouses.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import {
   ToastController,
@@ -48,6 +48,16 @@ export class MaterialsPage extends BaseComponent implements OnInit {
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+
+    effect(
+      () => {
+        const newValue = this.cartService.cart;
+        if (newValue) {
+          this.cart = newValue;
+        }
+      },
+      { allowSignalWrites: true } // Habilitando a escrita dentro do effect
+    );
   }
 
   // #endregion Constructors (1)
@@ -68,8 +78,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
       ),
       this.materialsService.filtered$.subscribe(
         (res: IMaterial[] | null) => (this.filtered = res)
-      ),
-      this.cartService.cart$.subscribe((res) => (this.cart = res))
+      )
     );
     this.onGetAll();
   }
@@ -83,7 +92,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         cssClass: 'custom-alert',
         header: material.name,
         backdropDismiss: true,
-        message: 'Quantos materiais deseja solicitar?',
+        message: 'Quantos materiais solicitar?',
         inputs: [
           {
             name: 'value',
@@ -108,7 +117,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
             handler: (data) => {
               const quantity = data.value;
               this.request(material, quantity);
-              return false;
+              return true;
             },
           },
         ],
@@ -123,7 +132,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         ?.quantity || 0;
 
     if (!cart) {
-      this.cartService.nextCart({
+      this.cartService.cart = {
         userId: this.payload?.id as number,
         items: [
           {
@@ -135,7 +144,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
           },
         ],
         sended: false,
-      } as ICart);
+      } as ICart;
       return;
     }
 
@@ -146,7 +155,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         if (item.quantity > availables) {
           item.quantity = availables;
         }
-        this.cartService.nextCart(cart);
+        this.cartService.cart = cart;
         return;
       }
     }
@@ -158,7 +167,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
       quantityAccepted: 0,
       quantityDeclined: 0,
     });
-    this.cartService.nextCart(cart);
+    this.cartService.cart = cart;
   }
 
   public resolveAvailableStatus(status: IMaterialStatus[]): string {

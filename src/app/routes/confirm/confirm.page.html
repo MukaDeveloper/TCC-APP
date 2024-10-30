@@ -31,7 +31,7 @@
             <ion-label>
               <ion-spinner
                 name="circular"
-                style="--color: #fdfdfd"
+                class="color-white"
               ></ion-spinner>
             </ion-label>
           </div>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div *ngIf="!token" style="text-align: center">
-          <ion-label style="color: #fdfdfd">
+          <ion-label class="color-white">
             <ion-text>
               Sua conta ainda não foi verificada. Verifique o e-mail
             </ion-text>
@@ -55,7 +55,7 @@
             expand="block"
             [disabled]="!canResend || emailResent"
             (click)="resendEmail()"
-            ><ion-label style="color: #fdfdfd"
+            ><ion-label class="color-white"
               ><ion-text>Reenviar e-mail</ion-text></ion-label
             ></ion-button
           >

@@ -25,6 +25,13 @@ export class ApiUsersService extends ApiBaseService {
 
   // #region Public Methods (2)
 
+  public getById(id: number): Observable<IEnvelope<IMember>> {
+    const url = `${this.apiUrl}/Users/get-by-uid/${id}`;
+    return this.http
+      .get<IEnvelope<IMember>>(url)
+      .pipe(catchError(HandleError.handler));
+  }
+
   public auth(credentials: CredentialsDto): Observable<IEnvelope<string>> {
     const url = `${this.apiUrl}/Users/auth`;
     return this.http
@@ -39,7 +46,9 @@ export class ApiUsersService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  public selectInstitution(data: SelectInstitutionDto): Observable<IEnvelope<string>> {
+  public selectInstitution(
+    data: SelectInstitutionDto
+  ): Observable<IEnvelope<string>> {
     const url = `${this.apiUrl}/Users/select-institution`;
     return this.http
       .patch<IEnvelope<string>>(url, data)
@@ -60,13 +69,14 @@ export class ApiUsersService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  public addInstitutionMember(data: AddUserInstitutionDto): Observable<IEnvelope<string>> {
+  public addInstitutionMember(
+    data: AddUserInstitutionDto
+  ): Observable<IEnvelope<string>> {
     const url = `${this.apiUrl}/Users/add-institution-member`;
     return this.http
       .post<IEnvelope<string>>(url, data)
       .pipe(catchError(HandleError.handler));
   }
-
 
   public resendEmail(): Observable<IEnvelope<string>> {
     const url = `${this.apiUrl}/Users/resend-email`;

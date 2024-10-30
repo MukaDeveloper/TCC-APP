@@ -9,14 +9,8 @@
     </ion-buttons>
     <ion-title>Materiais</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon
-          slot="icon-only"
-          name="cart-outline"
-          style="--color: var(--ion-color-dark)"
-        ></ion-icon>
-      </ion-button>
-      <ion-chip *ngIf="payload?.role !== eUserRole"
+      <ion-chip
+        *ngIf="payload?.role !== eUserRole"
         outline="true"
         (click)="AddMaterial.onOpenModal()"
         style="--color: var(--ion-color-dark)"
@@ -34,7 +28,10 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar [disabled]="isLoading" placeholder="Procure um material..."></ion-searchbar>
+    <ion-searchbar
+      [disabled]="isLoading"
+      placeholder="Procure um material..."
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -73,7 +70,9 @@
           </p>
         </ion-label>
         <ion-chip color="secondary" (click)="onRequest(material)" button>
-          <ion-label style="--color: #FDFDFD">SOLICITAR</ion-label>
+          <ion-label style="--color: var(--ion-color-dark)"
+            >SOLICITAR</ion-label
+          >
         </ion-chip>
         <ion-chip color="success">
           <ion-label>{{ resolveAvailableStatus(material.status) }}</ion-label>
@@ -97,5 +96,14 @@
       </ion-item>
     </ion-list>
   </section>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="ModalCart.onOpenModal()">
+      <ion-icon
+        name="cart-outline"
+        class="color-white"
+      ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   <app-add-material #AddMaterial></app-add-material>
+  <app-modal-cart #ModalCart></app-modal-cart>
 </ion-content>
