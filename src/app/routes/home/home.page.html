@@ -28,4 +28,10 @@
       <ion-label>Suas solicitações:</ion-label>
     </div>
   </section>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="ModalCart.onOpenModal()">
+      <ion-icon name="cart-outline" class="color-white"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <app-modal-cart #ModalCart></app-modal-cart>
 </ion-content>

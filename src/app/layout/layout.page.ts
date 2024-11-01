@@ -17,6 +17,7 @@ import { WarehousesService } from '../../services/warehouses/warehouses.service'
 import { ERouters } from '../../shared/utils/e-routers';
 import { IMember } from 'src/services/users/interfaces/i-member';
 import { UsersService } from 'src/services/users/users.service';
+import { CartService } from 'src/services/cart/cart.service';
 
 @Component({
   selector: 'app-layout',
@@ -36,6 +37,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Constructors (1)
 
   constructor(
+    private readonly cartService: CartService,
     private readonly usersService: UsersService,
     private readonly resetService: ResetService,
     private readonly payloadService: PayloadService,
@@ -107,6 +109,8 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
     if (!this.members?.length) {
       this.usersService.getAllFromInstitution().subscribe();
     }
+
+    this.cartService.cart = this.cartService.getCart();
   }
 
   // #endregion Private Methods (1)

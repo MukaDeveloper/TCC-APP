@@ -50,6 +50,8 @@
       >
         <ion-label> Nenhum material encontrado. </ion-label>
       </ion-item>
+      <!-- Fazer o item de baixo como um botão se a resolução for menor que 490 -->
+      <!-- Para abrir o modal de edição do produto e colocar um botão pra excluir -->
       <ion-item lines="full" *ngFor="let material of filtered; let j = index">
         <ion-thumbnail slot="start">
           <ion-img [src]="getMaterialIcon(material)"></ion-img>
@@ -69,14 +71,21 @@
             <small>{{ material.manufactorer }}</small>
           </p>
         </ion-label>
-        <ion-chip color="secondary" (click)="onRequest(material)" button>
-          <ion-label style="--color: var(--ion-color-dark)"
-            >SOLICITAR</ion-label
-          >
-        </ion-chip>
-        <ion-chip color="success">
-          <ion-label>{{ resolveAvailableStatus(material.status) }}</ion-label>
-        </ion-chip>
+        <div
+          [ngStyle]="{
+          display: flexColumn ? 'flex' : 'block',
+          'flex-direction': flexColumn ? 'column' : 'row'
+        }"
+        >
+          <ion-chip color="secondary" (click)="onRequest(material)" button>
+            <ion-label style="--color: var(--ion-color-dark)"
+              >SOLICITAR</ion-label
+            >
+          </ion-chip>
+          <ion-chip color="success">
+            <ion-label>{{ resolveAvailableStatus(material.status) }}</ion-label>
+          </ion-chip>
+        </div>
         <ion-buttons slot="end" *ngIf="canEdit(material)">
           <ion-button fill="none">
             <ion-icon
@@ -98,12 +107,9 @@
   </section>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="ModalCart.onOpenModal()">
-      <ion-icon
-        name="cart-outline"
-        class="color-white"
-      ></ion-icon>
+      <ion-icon name="cart-outline" class="color-white"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <app-add-material #AddMaterial></app-add-material>
   <app-modal-cart #ModalCart></app-modal-cart>
+  <app-add-material #AddMaterial></app-add-material>
 </ion-content>

@@ -2,6 +2,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ICart } from './interfaces/i-cart';
 import { CartStorageService } from '../localstorage/cart-local.service';
 import { Injectable, signal, WritableSignal } from '@angular/core';
+import { PayloadService } from '../payload/payload.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,10 @@ export class CartService {
 
   // #region Constructors (1)
 
-  constructor(readonly cartStorageService: CartStorageService) {}
+  constructor(
+    readonly cartStorageService: CartStorageService,
+    readonly payloadService: PayloadService
+  ) {}
 
   // #endregion Constructors (1)
 
@@ -24,22 +28,33 @@ export class CartService {
   public get cart(): ICart | null {
     let cart = this.cart$();
     if (!cart) {
-      const cartObj = this.cartStorageService.val;
-      if (cartObj) {
-        this.cart$.set((JSON.parse(cartObj) as ICart) || null);
-        return cart;
-      }
       return null;
     }
     return cart;
   }
 
   public set cart(value: ICart | null) {
-    this.cartStorageService.val = JSON.stringify(value || '');
+    this.cartStorageService.val = JSON.stringify(value) || null;
     this.cart$.set(value);
+  }
+
+  public getCart(): ICart | null {
+    const cartObj = this.cartStorageService.val;
+    if (!cartObj) {
+      const cart: ICart = {
+        userId: this.payloadService.payload?.id as number,
+        items: [],
+        sended: false,
+      };
+      this.cart$.set(cart);
+      return cart;
+    }
+    const parsed = (JSON.parse(cartObj) as ICart) || null;
+    this.cart$.set(parsed);
+    return parsed;
   }
 
   // #endregion Public Getters And Setters (1)
 
-  // #region Public Methods (1) 
+  // #region Public Methods (1)
 }

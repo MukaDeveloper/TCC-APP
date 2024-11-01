@@ -1,0 +1,25 @@
+ion-thumbnail {
+  --box-shadow: none !important;
+  --border-radius: 10px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+
+  .container {
+    width: 100%;
+    max-width: 450px;
+  }
+}
+
+.no-cart {
+  margin-top: 2rem;
+  flex-direction: column;
+}

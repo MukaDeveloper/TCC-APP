@@ -15,7 +15,88 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      
+      <div class="wrapper">
+        <div class="container">
+          <section>
+            <div class="no-cart center" *ngIf="!cart?.items?.length || !cart">
+              <ion-label>
+                Você ainda não adicionou nenhum item no carrinho.
+              </ion-label>
+              <div>
+                <ion-button
+                  color="dark"
+                  size="small"
+                  fill="clear"
+                  (click)="GoToMaterials()"
+                >
+                  <ion-icon name="add-outline"></ion-icon>
+                  <ion-label>ADICIONAR ITEM</ion-label>
+                </ion-button>
+              </div>
+            </div>
+            <ion-list *ngIf="cart?.items?.length">
+              <ion-list-header lines="none">
+                <ion-label
+                  ><h1><b> Itens do pedido </b></h1></ion-label
+                >
+                <ion-button fill="none" (click)="clearCart()">
+                  <ion-label color="danger">
+                    <small> Limpar </small>
+                  </ion-label>
+                </ion-button>
+              </ion-list-header>
+              <div *ngIf="cart">
+                <ion-item lines="none" *ngFor="let item of cart.items">
+                  <ion-thumbnail
+                    slot="start"
+                    *ngIf="item.imageURL"
+                    size="256px"
+                  >
+                    <ion-img [src]="item.imageURL"></ion-img>
+                  </ion-thumbnail>
+                  <ion-thumbnail
+                    slot="start"
+                    *ngIf="!item.imageURL"
+                    size="256px"
+                  >
+                    <ion-img src="assets/imgs/dummy.jpg"></ion-img>
+                  </ion-thumbnail>
+                  <ion-text>
+                    <p>
+                      <b>{{ item?.name }}</b>
+                    </p>
+                    <p>{{ item?.quantity }}x</p>
+                  </ion-text>
+                  <ion-button
+                    fill="none"
+                    slot="end"
+                    color="none"
+                    (click)="onDeleteItem(item.materialId)"
+                  >
+                    <ion-icon
+                      name="trash-outline"
+                      color="danger"
+                      slot="icon-only"
+                    ></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </div>
+
+              <div class="center">
+                <ion-button
+                  class="color-white"
+                  size="small"
+                  fill="clear"
+                  (click)="GoToMaterials()"
+                >
+                  <ion-icon name="add-outline"></ion-icon>
+                  <ion-label>ADICIONAR ITEM</ion-label>
+                </ion-button>
+              </div>
+            </ion-list>
+          </section>
+        </div>
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>

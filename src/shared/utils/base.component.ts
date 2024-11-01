@@ -127,6 +127,7 @@ export class BaseComponent implements OnDestroy {
     position: 'bottom' | 'top' | 'middle' = 'bottom'
   ) {
     const toast = await this.toastController.create({
+      cssClass: 'custom-toast',
       header,
       message,
       position,

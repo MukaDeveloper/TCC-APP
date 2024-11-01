@@ -1,5 +1,11 @@
 import { WarehousesService } from './../../../services/warehouses/warehouses.service';
-import { Component, effect, OnInit } from '@angular/core';
+import {
+  Component,
+  effect,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import {
   ToastController,
@@ -27,12 +33,14 @@ import { CartService } from '../../../services/cart/cart.service';
 export class MaterialsPage extends BaseComponent implements OnInit {
   // #region Properties (3)
 
+  @ViewChild('ModalCart') public modalCart: any;
   public filtered: IMaterial[] | null = [];
   public isLoading = true;
   public payload: IPayload | null = null;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;
   public cart: ICart | null = null;
+  public flexColumn = false;
 
   // #endregion Properties (3)
 
@@ -58,6 +66,14 @@ export class MaterialsPage extends BaseComponent implements OnInit {
       },
       { allowSignalWrites: true } // Habilitando a escrita dentro do effect
     );
+    this.onResize();
+  }
+
+  @HostListener('window:resize')
+  public onResize() {
+    this.flexColumn =
+      window.innerWidth <= 490 ||
+      (window.innerWidth >= 575 && window.innerWidth <= 890);
   }
 
   // #endregion Constructors (1)
@@ -83,49 +99,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
     this.onGetAll();
   }
 
-  public onRequest(material: IMaterial) {
-    const availables = material.status.find(
-      (o) => o.status === EMaterialStatus.AVAILABLE
-    );
-    this.alertController
-      .create({
-        cssClass: 'custom-alert',
-        header: material.name,
-        backdropDismiss: true,
-        message: 'Quantos materiais solicitar?',
-        inputs: [
-          {
-            name: 'value',
-            placeholder: '5',
-            type: 'number',
-            value: 1,
-            min: 1,
-            max: (availables?.quantity as number) || 99,
-          },
-        ],
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            handler: () => {
-              return false;
-            },
-          },
-          {
-            text: 'Adicionar',
-            role: 'add',
-            handler: (data) => {
-              const quantity = data.value;
-              this.request(material, quantity);
-              return true;
-            },
-          },
-        ],
-      })
-      .then((alert) => alert.present());
-  }
-
-  public request(material: IMaterial, quantity: number): void {
+  public onRequest(material: IMaterial): void {
     const cart = this.cartService.cart;
     const availables =
       material?.status.find((o) => o.status === EMaterialStatus.AVAILABLE)
@@ -136,8 +110,10 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         userId: this.payload?.id as number,
         items: [
           {
+            name: material.name,
+            imageURL: material.imageURL,
             materialId: material.id,
-            quantity,
+            quantity: 1,
             status: ECartItemStatus.PENDING,
             quantityAccepted: 0,
             quantityDeclined: 0,
@@ -145,29 +121,37 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         ],
         sended: false,
       } as ICart;
+      this.cart = cart;
+      this.modalCart.onOpenModal();
       return;
     }
 
     if (cart?.items.length) {
       const item = cart?.items.find((o) => o.materialId === material.id);
       if (item) {
-        item.quantity += quantity;
+        item.quantity += 1;
         if (item.quantity > availables) {
           item.quantity = availables;
         }
         this.cartService.cart = cart;
+        this.cart = cart;
+        this.modalCart.onOpenModal();
         return;
       }
     }
 
     cart.items.push({
+      name: material.name,
+      imageURL: material.imageURL,
       materialId: material.id,
-      quantity,
+      quantity: 1,
       status: ECartItemStatus.PENDING,
       quantityAccepted: 0,
       quantityDeclined: 0,
     });
     this.cartService.cart = cart;
+    this.cart = cart;
+    this.modalCart.onOpenModal();
   }
 
   public resolveAvailableStatus(status: IMaterialStatus[]): string {
@@ -191,6 +175,12 @@ export class MaterialsPage extends BaseComponent implements OnInit {
   }
 
   public canEdit(material: IMaterial): boolean {
+    if (window.innerWidth < 790) {
+      if (window.innerWidth > 575 || window.innerWidth < 490) {
+        return false;
+      }
+    }
+
     if (this.payload?.role === EUserRole.USER) {
       return false;
     }
