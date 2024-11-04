@@ -20,7 +20,6 @@ import { ERouters } from '../../../shared/utils/e-routers';
 import { EUserRole } from 'src/services/payload/interfaces/enum/EUserRole';
 import { EMaterialStatus } from '../../../services/materials/interfaces/enum/material-status.enum';
 import { IMaterialStatus } from '../../../services/materials/interfaces/i-material-status';
-import { CartStorageService } from 'src/services/localstorage/cart-local.service';
 import { ICart } from 'src/services/cart/interfaces/i-cart';
 import { ECartItemStatus } from 'src/services/cart/interfaces/enums/cart-item-status.enum';
 import { CartService } from '../../../services/cart/cart.service';
@@ -57,15 +56,9 @@ export class MaterialsPage extends BaseComponent implements OnInit {
   ) {
     super(toastController, alertController, loadingController);
 
-    effect(
-      () => {
-        const newValue = this.cartService.cart;
-        if (newValue) {
-          this.cart = newValue;
-        }
-      },
-      { allowSignalWrites: true } // Habilitando a escrita dentro do effect
-    );
+    effect(() => {
+      this.cart = this.cartService.cart;
+    });
     this.onResize();
   }
 
@@ -108,6 +101,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
     if (!cart) {
       this.cartService.cart = {
         userId: this.payload?.id as number,
+        institutionId: this.payloadService.payload?.institutionId as number,
         items: [
           {
             name: material.name,
@@ -115,14 +109,15 @@ export class MaterialsPage extends BaseComponent implements OnInit {
             materialId: material.id,
             quantity: 1,
             status: ECartItemStatus.PENDING,
+            quantityAvailable: availables,
             quantityAccepted: 0,
             quantityDeclined: 0,
           },
         ],
         sended: false,
-      } as ICart;
+      };
       this.cart = cart;
-      this.modalCart.onOpenModal();
+      this.toast('Adicionado ao carrinho', 'Sucesso!', 'success', 'top');
       return;
     }
 
@@ -132,10 +127,11 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         item.quantity += 1;
         if (item.quantity > availables) {
           item.quantity = availables;
+        } else {
+          this.toast('Adicionado ao carrinho', 'Sucesso!', 'success', 'top');
         }
         this.cartService.cart = cart;
         this.cart = cart;
-        this.modalCart.onOpenModal();
         return;
       }
     }
@@ -146,12 +142,13 @@ export class MaterialsPage extends BaseComponent implements OnInit {
       materialId: material.id,
       quantity: 1,
       status: ECartItemStatus.PENDING,
+      quantityAvailable: availables,
       quantityAccepted: 0,
       quantityDeclined: 0,
     });
     this.cartService.cart = cart;
     this.cart = cart;
-    this.modalCart.onOpenModal();
+    this.toast('Adicionado ao carrinho', 'Sucesso!', 'success', 'top');
   }
 
   public resolveAvailableStatus(status: IMaterialStatus[]): string {

@@ -40,7 +40,10 @@ export class PermissionsService {
       return true;
     } else {
       // console.log('[InstitutionGUARD] PASS => GO TO CHECKIN');
-      return this.router.navigate([ERouters.checkin], { replaceUrl: true });
+      return this.router.navigate([ERouters.checkin], {
+        queryParams: { redirected: true },
+        replaceUrl: true,
+      });
     }
   }
 

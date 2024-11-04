@@ -7,6 +7,7 @@ export interface ICartItems {
   materialId: number;
   quantity: number;
   status: ECartItemStatus;
+  quantityAvailable: number;
   quantityAccepted: number;
   quantityDeclined: number;
 }

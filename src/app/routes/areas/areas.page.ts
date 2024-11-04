@@ -103,7 +103,7 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
         this.isLoading = false;
       },
       error: (err) => {
-        console.log('[AREAERR]', err);
+        // console.log('[AREAERR]', err);
         this.alert(err?.message, 'Atenção!');
         this.isLoading = false;
       },
@@ -115,7 +115,7 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
   }
 
   public selectArea(area: any) {
-    console.log('[AREA]', area);
+    // console.log('[AREA]', area);
   }
 
   // #endregion Public Methods (6)

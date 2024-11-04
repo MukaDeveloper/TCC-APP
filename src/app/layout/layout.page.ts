@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   AlertController,
@@ -18,6 +18,7 @@ import { ERouters } from '../../shared/utils/e-routers';
 import { IMember } from 'src/services/users/interfaces/i-member';
 import { UsersService } from 'src/services/users/users.service';
 import { CartService } from 'src/services/cart/cart.service';
+import { ICart } from 'src/services/cart/interfaces/i-cart';
 
 @Component({
   selector: 'app-layout',
@@ -31,6 +32,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   public isMenuOpen = false;
   public payload: IPayload | null = null;
   public members: IMember[] | null = null;
+  public cart: ICart | null = null;
 
   // #endregion Properties (3)
 
@@ -50,6 +52,10 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+
+    effect(() => {
+      this.cart = this.cartService.cart;
+    });
   }
 
   // #endregion Constructors (1)
@@ -86,17 +92,43 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   private onPayload() {
     if (!this.institutionService.institution) {
-      const loading = this.loadingShow('Carregando...');
       this.institutionService.getCurrent().subscribe({
         next: (res) => {
-          loading.then((l) => l.dismiss());
           this.isLoading = false;
+
+          let cart = this.cartService.getCart();
+
+          if (cart) {
+            if (cart?.userId !== this.payload?.id) {
+              cart = null;
+            }
+
+            if (cart?.institutionId !== res.item.id) {
+              cart = null;
+            }
+          }
+
+          // console.log('onPayload => getCart', cart);
+          this.cartService.cart = cart;
         },
         error: (err) => {
-          loading.then((l) => l.dismiss());
           this.isLoading = false;
         },
       });
+    } else {
+      let cart = this.cartService.getCart();
+
+      if (cart) {
+        if (cart?.userId !== this.payload?.id) {
+          cart = null;
+        }
+
+        if (cart?.institutionId !== this.institutionService.institution.id) {
+          cart = null;
+        }
+      }
+
+      this.cartService.cart = cart;
     }
 
     if (this.payload?.role !== 'USER') {
@@ -109,8 +141,6 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
     if (!this.members?.length) {
       this.usersService.getAllFromInstitution().subscribe();
     }
-
-    this.cartService.cart = this.cartService.getCart();
   }
 
   // #endregion Private Methods (1)

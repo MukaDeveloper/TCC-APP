@@ -62,7 +62,7 @@
       </ion-row>
       <ion-row>
         <ion-col [size]="columnSize" *ngFor="let item of filtered">
-          <ion-card (click)="goToWarehouse(item)" button>
+          <ion-card (click)="AppEditWarehouse.onOpenModal(item)" button>
             <ion-card-header title="{{ item.name }}">
               <ion-card-title class="card-header-content">
                 <div class="card-header-text">
@@ -71,9 +71,9 @@
                   </ion-label>
                 </div>
                 <ion-buttons class="ion-no-padding">
-                  <ion-button (click)="AppEditWarehouse.onOpenModal(item)">
+                  <!-- <ion-button (click)="AppEditWarehouse.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
-                  </ion-button>
+                  </ion-button> -->
                   <ion-button (click)="onDeleteWarehouse(item)">
                     <ion-icon color="danger" name="trash-outline"></ion-icon>
                   </ion-button>

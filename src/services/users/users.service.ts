@@ -122,5 +122,18 @@ export class UsersService {
     );
   }
 
+  public changeInstitution(): Observable<IEnvelope<string>> {
+    return this.apiUsersService.changeInstitution().pipe(
+      map((res: IEnvelope<string>) => {
+        if (res?.item) {
+          this.payloadService.nextPayload(res.item);
+        } else {
+          this.payloadService.nextPayload(null);
+        }
+        return res;
+      })
+    );
+  }
+
   // #endregion Public Methods (2)
 }

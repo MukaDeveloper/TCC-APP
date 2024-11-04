@@ -92,5 +92,12 @@ export class ApiUsersService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
+  public changeInstitution(): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/change-institution`;
+    return this.http
+      .patch<IEnvelope<string>>(url, {})
+      .pipe(catchError(HandleError.handler));
+  }
+
   // #endregion Public Methods (2)
 }

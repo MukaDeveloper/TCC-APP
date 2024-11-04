@@ -46,7 +46,7 @@
       </ion-row>
       <ion-row>
         <ion-col [size]="columnSize" *ngFor="let item of areas">
-          <ion-card (click)="selectArea(item)" button>
+          <ion-card (click)="AppEditArea.onOpenModal(item)" button>
             <ion-card-header title="{{ item.name }}">
               <ion-card-title class="card-header-content">
                 <div class="card-header-text">
@@ -55,9 +55,9 @@
                   </ion-label>
                 </div>
                 <ion-buttons class="ion-no-padding">
-                  <ion-button (click)="AppEditArea.onOpenModal(item)">
+                  <!-- <ion-button (click)="AppEditArea.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
-                  </ion-button>
+                  </ion-button> -->
                   <ion-button (click)="onDeleteArea(item)">
                     <ion-icon color="danger" name="trash-outline"></ion-icon>
                   </ion-button>

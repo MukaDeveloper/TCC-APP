@@ -83,7 +83,7 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
   public getEvent(event: EMovimentationEvent): string {
     switch (event) {
       case EMovimentationEvent.ENTRY:
-        return 'ADIÇÃO';
+        return 'INSERÇÃO';
       case EMovimentationEvent.EDIT:
         return 'EDIÇÃO';
       case EMovimentationEvent.EXIT:
@@ -96,7 +96,7 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
       case EMovimentationType.USER:
         return 'USUÁRIO';
       case EMovimentationType.AREA:
-        return 'AREA';
+        return 'ÁREA';
       case EMovimentationType.GENERAL:
         return 'NÃO MAPEADA';
       case EMovimentationType.WAREHOUSE:

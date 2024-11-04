@@ -1,9 +1,10 @@
 import { PayloadService } from 'src/services/payload/payload.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   AlertController,
+  IonInput,
   LoadingController,
   ToastController,
 } from '@ionic/angular';
@@ -25,6 +26,7 @@ export class LoginPage extends BaseComponent implements OnInit {
   public formGroup: FormGroup | null = null;
   public isLoading: boolean = true;
   public keepMeLogIn: boolean = false;
+  @ViewChild('passwordInput') public passwordInput!: IonInput;
 
   // #endregion Properties (3)
 
@@ -93,6 +95,7 @@ export class LoginPage extends BaseComponent implements OnInit {
           }
           this.formGroup?.reset();
           this.router.navigate([ERouters.checkin], {
+            queryParams: { redirected: true },
             replaceUrl: true,
           });
         },
@@ -100,6 +103,9 @@ export class LoginPage extends BaseComponent implements OnInit {
           this.isLoading = false;
           this.toast(error?.message, 'Aviso!', 'secondary', 'bottom');
           this.formGroup?.get('password')?.reset();
+          setTimeout(() => {
+            this.passwordInput.setFocus();
+          }, 50);
         },
       });
     }

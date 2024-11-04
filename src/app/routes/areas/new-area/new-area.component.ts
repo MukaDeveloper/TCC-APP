@@ -65,18 +65,15 @@ export class NewAreaComponent extends BaseComponent implements OnInit {
       this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
       return;
     }
-    const loading = this.loadingShow('Adicionando...');
     const data = this.formGroup?.value as NewAreaDto;
     this.areasService.addNew(data).subscribe({
       next: (_) => {
-        loading.then((l) => l.dismiss());
         this.modal.dismiss();
         this.reload.emit();
       },
       error: (err) => {
         console.error(err);
         this.alert(err.message, 'Atenção!');
-        loading.then((l) => l.dismiss());
       },
     });
   }
@@ -86,13 +83,11 @@ export class NewAreaComponent extends BaseComponent implements OnInit {
   // #region Private Methods (1)
 
   private createForm() {
-    const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl(''),
       intitutionId: new FormControl(this.payload?.institutionId),
     });
-    loading.then((l) => l.dismiss());
     this.isLoading = false;
   }
 

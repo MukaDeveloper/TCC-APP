@@ -41,12 +41,12 @@
       <ion-list class="institutions-list background">
         <ion-item
           lines="none"
-          class="institutions-item background"
+          class="institutions-item background color-white"
           *ngFor="let institution of institutions; let k = index"
           (click)="onSelectInstitution(institution)"
           detail
         >
-          <ion-label class="color-white">
+          <ion-label>
             <small>{{institution.accessCode}}</small><br />
             {{ institution.name }}
           </ion-label>

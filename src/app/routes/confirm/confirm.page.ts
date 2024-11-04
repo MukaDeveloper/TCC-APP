@@ -59,7 +59,7 @@ export class ConfirmPage extends BaseComponent implements OnInit {
     this.token = this.route.snapshot.queryParams['token'];
     this.uid = parseInt(this.route.snapshot.queryParams['uid']);
     this.redirected = this.route.snapshot.queryParams['redirected'] === 'true';
-    console.log('QUERY =>', this.route.snapshot.queryParams);
+    // console.log('QUERY =>', this.route.snapshot.queryParams);
     this.checkPayloadOrToken();
   }
 
@@ -100,7 +100,7 @@ export class ConfirmPage extends BaseComponent implements OnInit {
         return;
       }
 
-      console.log('VERIFIED SCHEDULED =>', this.payload?.verifiedScheduled);
+      // console.log('VERIFIED SCHEDULED =>', this.payload?.verifiedScheduled);
 
       let scheduled: Date | null = null;
       if (this.payload?.verifiedScheduled) {
@@ -115,29 +115,29 @@ export class ConfirmPage extends BaseComponent implements OnInit {
       if (scheduled && !isNaN(scheduled.getTime())) {
         // Verifica se a data é válida
         const now = new Date();
-        console.log('SCHEDULED =>', scheduled);
+        // console.log('SCHEDULED =>', scheduled);
 
         const diff = Math.abs(
           (now.getTime() - scheduled.getTime()) / (1000 * 60)
         );
 
-        console.log('DIFF =>', diff);
+        // console.log('DIFF =>', diff);
         if (diff < 45) {
           this.canResend = false;
         }
       } else {
-        console.log('Data inválida');
+        // console.log('Data inválida');
       }
     }
 
     // NESSE CASO ESSA PÁGINA FOI ACESSADA PELO E-MAIL OU COM ALGUM PARAMQUERY MANUAL
     if (this.token) {
-      console.log('Tem token!');
+      // console.log('Tem token!');
       // PRECISO ENVIAR PRA API O TOKEN E O USERID (SE TIVER PAYLOAD)
       if (this.payload && this.payload?.id) {
-        console.log('Tem payloadId!', this.payload?.id);
+        // console.log('Tem payloadId!', this.payload?.id);
         if (this.uid) {
-          console.log('Tem uid na query', this.uid);
+          // console.log('Tem uid na query', this.uid);
           if (this.uid !== this.payload.id) {
             this.alert(
               'Houve um erro pra confirmar seu e-mail, tente novamente',
@@ -150,12 +150,12 @@ export class ConfirmPage extends BaseComponent implements OnInit {
         this.uid = this.payload.id;
         // CONSEQUENTEMENTE, SE CAIR AQUI, NÃO NECESSARIAMENTE ELE TEM UM UID, MAS TEM O PAYLOAD.ID,
         // ENTÃO POSSO USAR O PAYLOAD.ID
-        console.log('O payloadId é o mesmo que o userId na query');
+        // console.log('O payloadId é o mesmo que o userId na query');
         this.isChecking = true;
         // SE RETORNAR UM ACCESSTOKEN, ENTÃO MANDA PRA PÁGINA DE CHECKIN. QUALQUER EXCEÇÃO VAI CAIR NA TRATATIVA DE ERRO
         return;
       } else {
-        console.log('Não tem payloadId!');
+        // console.log('Não tem payloadId!');
         if (!this.uid) {
           this.alert(
             'Houve um erro pra confirmar seu e-mail, tente novamente',
@@ -170,10 +170,10 @@ export class ConfirmPage extends BaseComponent implements OnInit {
         token: this.token,
         userId: this.uid,
       } as ConfirmEmailDto;
-      console.log('ConfirmEmailDto', data);
+      // console.log('ConfirmEmailDto', data);
       this.usersService.confirmEmail(data).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.isChecking = false;
           this.toast("Conta confirmada com sucesso!", "Sucesso", "success", "top");
           if (res.item) {

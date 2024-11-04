@@ -176,7 +176,10 @@ export class WarehousesPage
       ),
       this.usersService.members$.subscribe((res: any) => {
         this.warehousemans = res?.filter(
-          (u: any) => u.role === EUserRole.WAREHOUSEMAN
+          (u: any) =>
+            (u.role === EUserRole.WAREHOUSEMAN ||
+              u.role === EUserRole.COORDINATOR) &&
+            u.active
         ) as IMember[];
       }),
       this.areasService.areas$.subscribe((res: any) => (this.areas = res)),

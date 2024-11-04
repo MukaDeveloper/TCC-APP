@@ -7,6 +7,8 @@ import {
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EUserRole } from '../../services/payload/interfaces/enum/EUserRole';
+import { ICart } from 'src/services/cart/interfaces/i-cart';
+import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
 
 @Component({
   template: '',
@@ -137,7 +139,17 @@ export class BaseComponent implements OnDestroy {
     return toast.present();
   }
 
-  public detectColorSchemeChanges() {}
+  public getCartItemsQuantity(items: ICartItems[] | undefined): number | null {
+    if (!items) {
+      return null;
+    }
+
+    let quantity = 0;
+    items.forEach((item) => {
+      quantity += item.quantity;
+    });
+    return quantity;
+  }
 
   // #endregion Public Methods (5)
 }

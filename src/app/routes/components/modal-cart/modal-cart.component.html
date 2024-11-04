@@ -65,20 +65,37 @@
                     <p>
                       <b>{{ item?.name }}</b>
                     </p>
-                    <p>{{ item?.quantity }}x</p>
                   </ion-text>
-                  <ion-button
-                    fill="none"
-                    slot="end"
-                    color="none"
-                    (click)="onDeleteItem(item.materialId)"
-                  >
-                    <ion-icon
-                      name="trash-outline"
-                      color="danger"
-                      slot="icon-only"
-                    ></ion-icon>
-                  </ion-button>
+                  <ion-buttons slot="end">
+                    <ion-button
+                      fill="none"
+                      color="none"
+                      (click)="onDecrementItem(item)"
+                    >
+                      <ion-icon
+                        size="large"
+                        name="remove-outline"
+                        color="danger"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                    <ion-button style="width: 32px">
+                      <ion-label>{{ item?.quantity }}</ion-label>
+                    </ion-button>
+                    <ion-button
+                      [disabled]="item.quantity >= item.quantityAvailable"
+                      fill="none"
+                      color="none"
+                      (click)="onIncrementItem(item)"
+                    >
+                      <ion-icon
+                        size="large"
+                        name="add-outline"
+                        color="danger"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
                 </ion-item>
               </div>
 
@@ -98,5 +115,10 @@
         </div>
       </div>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar style="padding-right: 16px;">
+        <ion-button slot="end" fill="solid" color="success"> SOLICITAR </ion-button>
+      </ion-toolbar>
+    </ion-footer>
   </ng-template>
 </ion-modal>

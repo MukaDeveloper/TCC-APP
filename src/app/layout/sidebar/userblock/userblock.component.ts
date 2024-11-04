@@ -11,6 +11,8 @@ import { IPayload } from '../../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../../services/payload/payload.service';
 import { ResetService } from '../../../../services/reset/reset.service';
 import { BaseComponent } from '../../../../shared/utils/base.component';
+import { UsersService } from 'src/services/users/users.service';
+import { ERouters } from 'src/shared/utils/e-routers';
 
 @Component({
   selector: 'app-userblock',
@@ -28,9 +30,10 @@ export class UserblockComponent extends BaseComponent implements OnInit {
   // #region Constructors (1)
 
   constructor(
-    private readonly resetService: ResetService,
+    private readonly usersService: UsersService,
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
+    private readonly resetService: ResetService,
     private router: Router,
     toastController: ToastController,
     alertController: AlertController,
@@ -58,6 +61,25 @@ export class UserblockComponent extends BaseComponent implements OnInit {
 
   public onImgError(event: any) {
     event.target.src = 'assets/imgs/user-dummy.png';
+  }
+
+  public changeInstitution() {
+    this.usersService.changeInstitution().subscribe({
+      next: (_) => {
+        this.resetService.resetAll();
+        this.router.navigate([ERouters.checkin], {
+          replaceUrl: true,
+        })
+      },
+      error: (err) => {
+        console.error(err);
+        this.alert(err?.message, "Atenção!");
+        this.resetService.resetAll();
+        this.router.navigate([ERouters.checkin], {
+          replaceUrl: true,
+        })
+      }
+    })
   }
 
   // #endregion Public Methods (3)

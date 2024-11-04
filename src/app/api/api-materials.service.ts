@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { catchError, firstValueFrom, Observable } from 'rxjs';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
-import { IEnvelopeArray } from '../../shared/utils/envelope';
+import { IEnvelope, IEnvelopeArray } from '../../shared/utils/envelope';
 import { HandleError } from '../../shared/middlewares/error.handler';
 import { IMaterial } from '../../services/materials/interfaces/i-material';
 
@@ -19,6 +19,12 @@ export class ApiMaterialsService extends ApiBaseService {
   // #endregion Constructors (1)
 
   // #region Public Methods (2)
+
+  public async getByIdAsync(id: number): Promise<IEnvelope<IMaterial>> {
+    const url = `${this.apiUrl}/Materials/get-by-id/${id}`;
+    return await firstValueFrom(this.http
+      .get<IEnvelope<IMaterial>>(url))
+  }
 
   public getAll(
     lastDocId: number,

@@ -42,6 +42,7 @@ export class CartService {
     const cartObj = this.cartStorageService.val;
     if (!cartObj) {
       const cart: ICart = {
+        institutionId: this.payloadService.payload?.institutionId as number,
         userId: this.payloadService.payload?.id as number,
         items: [],
         sended: false,
@@ -52,6 +53,10 @@ export class CartService {
     const parsed = (JSON.parse(cartObj) as ICart) || null;
     this.cart$.set(parsed);
     return parsed;
+  }
+
+  public reset() {
+    this.cart = null;
   }
 
   // #endregion Public Getters And Setters (1)

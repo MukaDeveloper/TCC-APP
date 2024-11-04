@@ -6,7 +6,6 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { SharedModule } from '../../../shared/shared.module';
-import { ModalCartModule } from '../components/modal-cart/modal-cart.module';
 
 @NgModule({
   imports: [
@@ -15,7 +14,6 @@ import { ModalCartModule } from '../components/modal-cart/modal-cart.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    ModalCartModule,
   ],
   declarations: [HomePage]
 })

@@ -1,7 +1,8 @@
 <div *ngIf="payload">
   <ion-avatar class="mx-auto user-avatar">
     <ion-img [src]="getPayloadImage()" (error)="onImgError($event)"></ion-img>
-  </ion-avatar> <br />
+  </ion-avatar>
+  <br />
   <ion-label class="color-white">
     <ion-text class="ion-text-center">
       <h1>
@@ -13,9 +14,15 @@
     </ion-text>
   </ion-label>
   <ion-label>
-    <ion-badge class="d-flex justify-content-center ion-text-center" style="--background: var(--ion-color-light-fixed)">
+    <ion-button
+      expand="block"
+      class="d-flex justify-content-center ion-text-center"
+      style="--background: var(--ion-color-light-fixed)"
+      (click)="changeInstitution()"
+    >
       {{ institution?.name }}
-    </ion-badge>
+      <ion-icon slot="end" name="shuffle-outline"></ion-icon>
+    </ion-button>
   </ion-label>
-  <br>
+  <br />
 </div>

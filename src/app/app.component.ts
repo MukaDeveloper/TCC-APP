@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '../shared/utils/base.component';
-import { ToastController, AlertController, LoadingController } from '@ionic/angular';
+import {
+  ToastController,
+  AlertController,
+  LoadingController,
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +12,6 @@ import { ToastController, AlertController, LoadingController } from '@ionic/angu
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent extends BaseComponent {
-  // #region Constructors (1)
-
   constructor(
     toastController: ToastController,
     alertController: AlertController,

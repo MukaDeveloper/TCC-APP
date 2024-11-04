@@ -89,18 +89,15 @@ export class EditAreaComponent extends BaseComponent implements OnInit {
       return;
     }
     const data = this.formGroup?.value as UpdateAreaDto;
-    const loading = this.loadingShow('Salvando...');
     this.areasService.updateArea(data).subscribe({
       next: (_) => {
         this.toast('Área atualizada com sucesso!', 'Sucesso!', 'success');
-        loading.then((l) => l.dismiss());
         this.modal.dismiss();
         this.reload.emit();
       },
       error: (err) => {
         console.error(err);
         this.alert(err.message, 'Atenção!');
-        loading.then((l) => l.dismiss());
       },
     });
   }
@@ -110,14 +107,12 @@ export class EditAreaComponent extends BaseComponent implements OnInit {
   // #region Private Methods (1)
 
   private createForm() {
-    const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
       id: new FormControl(this.area?.id, [Validators.required]),
       name: new FormControl(this.area?.name, [Validators.required]),
       description: new FormControl(this.area?.description || ''),
       intitutionId: new FormControl(this.payload?.institutionId),
     });
-    loading.then((l) => l.dismiss());
     this.isLoading = false;
   }
 

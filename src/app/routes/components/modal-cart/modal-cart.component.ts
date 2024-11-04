@@ -10,6 +10,9 @@ import { ICart } from '../../../../services/cart/interfaces/i-cart';
 import { CartService } from '../../../../services/cart/cart.service';
 import { Router } from '@angular/router';
 import { ERouters } from 'src/shared/utils/e-routers';
+import { EMaterialStatus } from 'src/services/materials/interfaces/enum/material-status.enum';
+import { MaterialsService } from 'src/services/materials/materials.service';
+import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
 
 @Component({
   selector: 'app-modal-cart',
@@ -30,10 +33,7 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
     super(toastController, alertController, loadingController);
 
     effect(() => {
-      const newValue = this.cartService.cart;
-      if (newValue) {
-        this.cart = newValue;
-      }
+      this.cart = this.cartService.cart;
     });
   }
 
@@ -45,42 +45,47 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
 
   public GoToMaterials() {
     this.modal.dismiss();
-    console.log('this url', this.router.url);
+    // console.log('this url', this.router.url);
     if (this.router.url !== `/${ERouters.app}/${ERouters.materials}`) {
       this.router.navigate([`${ERouters.app}/${ERouters.materials}`]);
     }
   }
 
-  public onAddItem(materialId: number) {
-    if (!this.cart?.items.length) {
-      this.toast(
-        'Houve um erro com sua solicitação, adicione um item novamente',
-        'Atenção'
-      );
-      this.GoToMaterials();
-      return;
-    }
-    const materialIndex = this.cart?.items?.findIndex(
-      (item) => item.materialId === materialId
-    );
-    if (materialIndex > -1) {
-    }
-  }
-
-  public onDeleteItem(materialId: number) {
+  public async onIncrementItem(item: ICartItems) {
     if (!this.cart?.items.length) {
       this.modal.dismiss();
       return;
     }
 
     const materialIndex = this.cart?.items?.findIndex(
-      (item) => item.materialId === materialId
+      (item) => item.materialId === item.materialId
     );
 
     if (materialIndex > -1) {
-      this.cart.items[materialIndex].quantity--;
-      if (this.cart.items[materialIndex].quantity === 0) {
+      item.quantity++;
+      if (item.quantity >= item.quantityAvailable) {
+        item.quantity = item.quantityAvailable;
+      }
+      this.cart.items[materialIndex] = item;
+    }
+  }
+
+  public onDecrementItem(item: ICartItems) {
+    if (!this.cart?.items.length) {
+      this.modal.dismiss();
+      return;
+    }
+
+    const materialIndex = this.cart?.items?.findIndex(
+      (item) => item.materialId === item.materialId
+    );
+
+    if (materialIndex > -1) {
+      item.quantity--;
+      if (item.quantity <= 0) {
         this.cart.items.splice(materialIndex, 1);
+      } else {
+        this.cart.items[materialIndex] = item;
       }
 
       if (!this.cart.items.length) {
@@ -90,6 +95,7 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   }
 
   public clearCart() {
+    this.cart = null;
     this.cartService.cart = null;
     this.modal.dismiss();
   }

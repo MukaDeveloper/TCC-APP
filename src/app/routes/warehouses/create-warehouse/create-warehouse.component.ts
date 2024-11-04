@@ -64,18 +64,15 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
       this.alert('Preencha todos os campos obrigatórios.', 'Atenção!');
       return;
     }
-    const loading = this.loadingShow('Adicionando...');
     const data = this.formGroup?.value as NewWarehouseDto;
     this.warehousesService.create(data).subscribe({
       next: (_: any) => {
-        loading.then((l) => l.dismiss());
         this.modal.dismiss();
         this.reload.emit();
       },
       error: (err: any) => {
         console.error(err);
         this.alert(err.message, 'Atenção!');
-        loading.then((l) => l.dismiss());
       },
     });
   }
@@ -108,14 +105,12 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
   // #region Private Methods (1)
 
   private createForm() {
-    const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
       areaId: new FormControl('', [Validators.required]),
       warehousemans: new FormArray([]),
       description: new FormControl(''),
     });
-    loading.then((l) => l.dismiss());
     this.isLoading = false;
   }
 

@@ -25,13 +25,18 @@
       </ion-label>
       <br />
       <br />
-      <ion-label>Suas solicitações:</ion-label>
+      <ion-label>Você ainda não fez nenhuma solicitação.</ion-label>
+      <div>
+        <ion-button
+          color="dark"
+          size="small"
+          fill="clear"
+          (click)="GoToMaterials()"
+        >
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+          <ion-label>VER MATERIAIS DISPONÍVEIS</ion-label>
+        </ion-button>
+      </div>
     </div>
   </section>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="ModalCart.onOpenModal()">
-      <ion-icon name="cart-outline" class="color-white"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  <app-modal-cart #ModalCart></app-modal-cart>
 </ion-content>

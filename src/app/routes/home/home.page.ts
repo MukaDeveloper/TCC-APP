@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import {
   AlertController,
   LoadingController,
@@ -15,6 +15,10 @@ import { IMovimentations } from '../../../services/movimentations/interfaces/i-m
 import { MovimentationsService } from '../../../services/movimentations/movimentations.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
+import { CartService } from 'src/services/cart/cart.service';
+import { ICart } from 'src/services/cart/interfaces/i-cart';
+import { Router } from '@angular/router';
+import { ERouters } from 'src/shared/utils/e-routers';
 
 @Component({
   selector: 'app-home',
@@ -37,6 +41,7 @@ export class HomePage extends BaseComponent implements OnInit {
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
     private readonly warehousesService: WarehousesService,
+    private router: Router,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -59,6 +64,10 @@ export class HomePage extends BaseComponent implements OnInit {
       )
     );
     this.isLoading = false;
+  }
+
+  public GoToMaterials() {
+    this.router.navigate([`${ERouters.app}/${ERouters.materials}`]);
   }
 
   // #endregion Public Methods (1)

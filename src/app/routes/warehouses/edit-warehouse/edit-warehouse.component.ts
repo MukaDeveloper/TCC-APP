@@ -76,7 +76,6 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
       return;
     }
     const data = this.formGroup?.value as UpdateWarehouseDto;
-    const loading = this.loadingShow('Salvando...');
     this.warehousesService.updateWarehouse(data).subscribe({
       next: (_: any) => {
         this.toast(
@@ -84,14 +83,12 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
           'Sucesso!',
           'success'
         );
-        loading.then((l) => l.dismiss());
         this.modal.dismiss();
         this.reload.emit();
       },
       error: (err: any) => {
         console.error(err);
         this.alert(err.message, 'Atenção!');
-        loading.then((l) => l.dismiss());
       },
     });
   }
@@ -126,7 +123,6 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
   // #region Private Methods (1)
 
   private createForm() {
-    const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
       id: new FormControl(this.warehouse?.id, [Validators.required]),
       name: new FormControl(this.warehouse?.name || '', [Validators.required]),
@@ -153,7 +149,6 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
       });
     }
 
-    loading.then((l) => l.dismiss());
     this.isLoading = false;
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { ApiMaterialsService } from '../../app/api/api-materials.service';
-import { IEnvelopeArray } from '../../shared/utils/envelope';
+import { IEnvelope, IEnvelopeArray } from '../../shared/utils/envelope';
 import { IMaterial } from './interfaces/i-material';
 
 @Injectable({
@@ -26,6 +26,10 @@ export class MaterialsService {
   // #endregion Constructors (1)
 
   // #region Public Methods (2)
+
+  public async getByIdAsync(materialId: number): Promise<IEnvelope<IMaterial>> {
+    return this.apiMaterialsService.getByIdAsync(materialId);
+  }
 
   public getAll(
     lastDocId: number,
