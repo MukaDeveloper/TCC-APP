@@ -7,10 +7,10 @@ import {
 import { EUserRole } from '../../../services/payload/interfaces/enum/EUserRole';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
+import { IMember } from '../../../services/users/interfaces/i-member';
 import { UsersService } from '../../../services/users/users.service';
 import { BaseComponent } from '../../../shared/utils/base.component';
 import { ERouters } from '../../../shared/utils/e-routers';
-import { IMember } from '../../../services/users/interfaces/i-member';
 
 @Component({
   selector: 'app-members',
@@ -115,7 +115,12 @@ export class MembersPage
       .then((alert) => alert.present());
   }
 
-  private onRemove(memberId: number) {}
+  private onRemove(memberId: number) {
+    this.usersService.removeInstitutionMember(memberId).subscribe({
+      next: (res: any) => {},
+      error: (error: any) => {},
+    });
+  }
 
   private onGetAll() {
     this.isLoading = true;

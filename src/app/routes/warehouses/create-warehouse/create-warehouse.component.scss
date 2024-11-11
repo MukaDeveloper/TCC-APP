@@ -5,3 +5,8 @@
 .input-name {
   --placeholder-opacity: 0.5;
 }
+
+.border {
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 32px;
+}

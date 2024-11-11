@@ -3,12 +3,12 @@ import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { ApiUsersService } from 'src/app/api/api-users.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { PayloadService } from './../payload/payload.service';
+import { AddUserInstitutionDto } from './dto/add-user-institution.dto';
+import { ConfirmEmailDto } from './dto/confirm-email.dto';
 import { CredentialsDto } from './dto/credentials.dto';
 import { RegisterDto } from './dto/register.dto';
-import { IMember } from './interfaces/i-member';
-import { AddUserInstitutionDto } from './dto/add-user-institution.dto';
 import { SelectInstitutionDto } from './dto/select-institution.dto';
-import { ConfirmEmailDto } from './dto/confirm-email.dto';
+import { IMember } from './interfaces/i-member';
 
 @Injectable({
   providedIn: 'root',
@@ -16,18 +16,22 @@ import { ConfirmEmailDto } from './dto/confirm-email.dto';
 export class UsersService {
   // #region Constructors (1)
 
-  private membersSubject: BehaviorSubject<any[] | null>;
-  public members$: Observable<any[] | null>;
+  private membersSubject: BehaviorSubject<IMember[] | null>;
+  public members$: Observable<IMember[] | null>;
 
   constructor(
     public apiUsersService: ApiUsersService,
     public payloadService: PayloadService
   ) {
-    this.membersSubject = new BehaviorSubject<any[] | null>([]);
+    this.membersSubject = new BehaviorSubject<IMember[] | null>([]);
     this.members$ = this.membersSubject.asObservable();
   }
 
   // #endregion Constructors (1)
+
+  public get members(): IMember[] | null {
+    return this.membersSubject.value;
+  }
 
   // #region Public Methods (2)
 
@@ -90,9 +94,27 @@ export class UsersService {
 
   public addInstitutionMember(
     data: AddUserInstitutionDto
+  ): Observable<IEnvelope<IMember>> {
+    return this.apiUsersService.addInstitutionMember(data).pipe(
+      map((res: IEnvelope<IMember>) => {
+        if (res.item) {
+          let memberList = this.membersSubject.value;
+          if (!memberList?.length) {
+            memberList = [];
+          }
+          memberList.push(res.item);
+          this.membersSubject.next(memberList);
+        }
+        return res;
+      })
+    );
+  }
+
+  public removeInstitutionMember(
+    memberId: number
   ): Observable<IEnvelope<string>> {
     return this.apiUsersService
-      .addInstitutionMember(data)
+      .removeInstitutionMember(memberId)
       .pipe(map((res: IEnvelope<string>) => res));
   }
 

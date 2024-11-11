@@ -39,7 +39,6 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
   public search: string = '';
   @ViewChild(IonSearchbar) public searchbar!: IonSearchbar;
   public selectedMember: IMember | null = null;
-  @Output() public reload = new EventEmitter<null>();
 
   // #endregion Properties (8)
 
@@ -125,10 +124,9 @@ export class AddMemberComponent extends BaseComponent implements OnInit {
       next: (res) => {
         this.isLoading = false;
         this.onDismiss();
-        if (res.item === 'OK') {
+        if (res.item) {
           this.toast('Membro adicionado com sucesso!', 'Atenção!', 'success');
         }
-        this.reload.emit();
       },
       error: (error) => {
         this.isLoading = false;

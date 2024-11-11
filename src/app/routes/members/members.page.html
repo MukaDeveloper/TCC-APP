@@ -29,17 +29,6 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <!-- <ion-toolbar *ngIf="members.length">
-    <ion-searchbar
-      [(ngModel)]="search"
-      placeholder="Faça uma busca aqui..."
-      clearIcon
-      debounce="1500"
-      (ionInput)="onSearch()"
-      class="searchbar-circle"
-    >
-    </ion-searchbar>
-  </ion-toolbar> -->
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -103,7 +92,6 @@
   <ion-list *ngIf="!isLoading"> </ion-list>
   <app-add-member
     [payload]="payload"
-    (reload)="onReload()"
     #AppAddMember
   ></app-add-member>
 </ion-content>

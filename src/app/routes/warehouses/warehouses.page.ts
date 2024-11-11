@@ -31,6 +31,7 @@ export class WarehousesPage
 
   @ViewChild('searchbarInput') searchbar!: IonSearchbar;
   @ViewChild('AppCreateWarehouse') createWarehouseModal!: any;
+  @ViewChild('AppEditWarehouse') editWarehouseModal!: any;
   public isLoading = true;
   public payload: IPayload | null = null;
   public warehouses: IWarehouse[] | null = [];
@@ -83,6 +84,14 @@ export class WarehousesPage
     this.onGetAll();
   }
 
+  public onEdit(warehouse: IWarehouse) {
+    const role = this.payload?.role;
+    if (role !== EUserRole.SUPPORT && role !== EUserRole.COORDINATOR) {
+      return;
+    }
+
+    this.editWarehouseModal.onOpenModal(warehouse);
+  }
   public onDeleteWarehouse(wh: IWarehouse) {
     this.alertController
       .create({
@@ -177,9 +186,8 @@ export class WarehousesPage
       this.usersService.members$.subscribe((res: any) => {
         this.warehousemans = res?.filter(
           (u: any) =>
-            (u.role === EUserRole.WAREHOUSEMAN ||
-              u.role === EUserRole.COORDINATOR) &&
-            u.active
+            u.role === EUserRole.WAREHOUSEMAN ||
+            u.role === EUserRole.COORDINATOR
         ) as IMember[];
       }),
       this.areasService.areas$.subscribe((res: any) => (this.areas = res)),

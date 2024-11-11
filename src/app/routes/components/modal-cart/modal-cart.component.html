@@ -116,8 +116,15 @@
       </div>
     </ion-content>
     <ion-footer>
-      <ion-toolbar style="padding-right: 16px;">
-        <ion-button slot="end" fill="solid" color="success"> SOLICITAR </ion-button>
+      <ion-toolbar style="padding-right: 16px">
+        <ion-buttons slot="start">
+          <ion-button (click)="ModalCart.dismiss()">Cancelar</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button slot="end" fill="solid" color="success">
+            SOLICITAR
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-footer>
   </ng-template>

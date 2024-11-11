@@ -2,3 +2,31 @@
   text-align: center;
   margin-top: 10px;
 }
+
+/* Estilizar o fundo da barra de rolagem */
+::-webkit-scrollbar {
+  width: 8px;
+  /* Largura da barra */
+}
+
+/* Cor de fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Cor do fundo da barra */
+  border-radius: 10px;
+  /* Bordas arredondadas para um efeito suave */
+}
+
+/* Estilização da 'bolinha' (parte que se move) da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  /* Cor da bolinha */
+  border-radius: 10px;
+  /* Bordas arredondadas */
+}
+
+/* Cor da 'bolinha' ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  /* Cor da bolinha ao passar o mouse */
+}

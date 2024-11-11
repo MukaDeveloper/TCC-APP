@@ -563,6 +563,18 @@
   }
 }
 
+.custom-select {
+  color: var(--ion-color-dark);
+
+  .select-wrapper {
+    color: var(--ion-color-dark);
+
+    .select-message {
+      color: var(--ion-color-dark);
+    }
+  }
+}
+
 .badge {
   position: absolute;
   top: -5px;

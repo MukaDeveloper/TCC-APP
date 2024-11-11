@@ -29,6 +29,7 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
   public payload: IPayload | null = null;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;
+  public availableHeight: number = 0;
 
   // #endregion Properties (5)
 
@@ -57,7 +58,11 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #region Public Methods (5)
 
-  public expandMovimentations() {}
+  public expandMovimentations() {
+    const addItems = Math.floor(this.availableHeight / 200);
+
+    this.maxItemsToShow += addItems;
+  }
 
   public ionViewDidEnter(): void {
     this.onGetAll();
@@ -145,9 +150,9 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
     const itemHeight = 100;
     const padding = 40;
 
-    const availableHeight =
+    this.availableHeight =
       screenHeight - headerHeight - cardHeaderHeight * 2 - padding;
-    const itemsPerList = Math.floor(availableHeight / (itemHeight * 2));
+    const itemsPerList = Math.floor(this.availableHeight / (itemHeight * 2));
 
     this.maxItemsToShow = itemsPerList > 0 ? itemsPerList + 1 : 1;
   }

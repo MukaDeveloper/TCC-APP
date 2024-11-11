@@ -5,11 +5,11 @@ import { RegisterDto } from 'src/services/users/dto/register.dto';
 import { HandleError } from 'src/shared/middlewares/error.handler';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
-import { CredentialsDto } from '../../services/users/dto/credentials.dto';
-import { IMember } from '../../services/users/interfaces/i-member';
 import { AddUserInstitutionDto } from '../../services/users/dto/add-user-institution.dto';
-import { SelectInstitutionDto } from '../../services/users/dto/select-institution.dto';
 import { ConfirmEmailDto } from '../../services/users/dto/confirm-email.dto';
+import { CredentialsDto } from '../../services/users/dto/credentials.dto';
+import { SelectInstitutionDto } from '../../services/users/dto/select-institution.dto';
+import { IMember } from '../../services/users/interfaces/i-member';
 
 @Injectable({
   providedIn: 'root',
@@ -71,10 +71,19 @@ export class ApiUsersService extends ApiBaseService {
 
   public addInstitutionMember(
     data: AddUserInstitutionDto
-  ): Observable<IEnvelope<string>> {
+  ): Observable<IEnvelope<IMember>> {
     const url = `${this.apiUrl}/Users/add-institution-member`;
     return this.http
-      .post<IEnvelope<string>>(url, data)
+      .post<IEnvelope<IMember>>(url, data)
+      .pipe(catchError(HandleError.handler));
+  }
+
+  public removeInstitutionMember(
+    memberId: number
+  ): Observable<IEnvelope<string>> {
+    const url = `${this.apiUrl}/Users/remove-institution-member/${memberId}`;
+    return this.http
+      .post<IEnvelope<string>>(url, {})
       .pipe(catchError(HandleError.handler));
   }
 

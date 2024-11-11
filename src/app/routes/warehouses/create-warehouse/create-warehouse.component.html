@@ -65,23 +65,44 @@
             </ion-select>
           </ion-item>
           <br />
-          <ion-item lines="none" color="light">
+          <ion-item
+            lines="none"
+            color="light"
+            class="border ion-margin-horizontal"
+          >
+            <ion-label>
+              <ion-text>
+                <p class="ion-text-wrap">
+                  <ion-text color="medium" *ngIf="!warehousemansList?.length">
+                    <i>Nenhum responsável selecionado</i>
+                  </ion-text>
+                </p>
+                <div *ngIf="warehousemansList?.length">
+                  <ion-chip
+                    *ngFor="
+                      let user of warehousemansList?.controls;
+                      let i = index
+                    "
+                    (click)="onRemoveWarehouseman(i)"
+                  >
+                    <ion-label>{{ user?.get("name")?.value }}</ion-label>
+                    <ion-icon name="close-circle"></ion-icon>
+                  </ion-chip>
+                </div>
+              </ion-text>
+            </ion-label>
             <ion-select
-              label="Responsáveis"
-              labelPlacement="start"
-              justify="space-around"
-              fill="outline"
-              shape="round"
-              formArrayName="warehousemans"
-              multiple="true"
-              okText="Confirmar"
-              cancelText="Cancelar"
-              placeholder="Selecione o(s) almoxarife(s)."
+              mode="md"
+              class="custom-select"
+              label=""
+              slot="end"
+              placeholder="Selecionar"
+              okText="Selecionar"
               (ionChange)="onUserChange($event)"
-              [interfaceOptions]="customSelectOptions"
             >
               <ion-select-option
                 *ngFor="let user of warehousemans"
+                [disabled]="disableWarehouseman(user.id)"
                 [value]="user.id"
               >
                 {{ user.name }}
@@ -90,7 +111,7 @@
           </ion-item>
         </form>
       </section>
-      <!-- <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre> -->
+      <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
     </ion-content>
     <ion-footer>
       <ion-toolbar>
@@ -106,9 +127,7 @@
             [disabled]="!formGroup?.valid"
             color="primary"
           >
-            <ion-label class="color-white"
-              >ADICIONAR</ion-label
-            >
+            <ion-label class="color-white">ADICIONAR</ion-label>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>

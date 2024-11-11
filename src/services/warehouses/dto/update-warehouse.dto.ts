@@ -3,4 +3,5 @@ export class UpdateWarehouseDto {
   public name?: string | null = '';
   public description?: string | null = '';
   public areaId: number | null = null;
+  public warehousemans: number[] = [];
 }

@@ -62,7 +62,7 @@
       </ion-row>
       <ion-row>
         <ion-col [size]="columnSize" *ngFor="let item of filtered">
-          <ion-card (click)="AppEditWarehouse.onOpenModal(item)" button>
+          <ion-card (click)="onEdit(item)" button>
             <ion-card-header title="{{ item.name }}">
               <ion-card-title class="card-header-content">
                 <div class="card-header-text">
