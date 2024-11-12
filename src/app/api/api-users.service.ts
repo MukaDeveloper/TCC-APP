@@ -79,11 +79,11 @@ export class ApiUsersService extends ApiBaseService {
   }
 
   public removeInstitutionMember(
-    memberId: number
+    member: IMember
   ): Observable<IEnvelope<string>> {
-    const url = `${this.apiUrl}/Users/remove-institution-member/${memberId}`;
+    const url = `${this.apiUrl}/Users/remove-institution-member`;
     return this.http
-      .post<IEnvelope<string>>(url, {})
+      .post<IEnvelope<string>>(url, member)
       .pipe(catchError(HandleError.handler));
   }
 

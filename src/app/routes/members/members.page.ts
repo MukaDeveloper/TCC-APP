@@ -89,8 +89,8 @@ export class MembersPage
     }
   }
 
-  public async onShowRemove(memberId: number) {
-    if (this.payload?.id === memberId) {
+  public async onShowRemove(member: IMember) {
+    if (this.payload?.id === member.id) {
       this.toast('Você não pode remover a si mesmo.', 'Atenção!', 'danger');
       return;
     }
@@ -107,7 +107,7 @@ export class MembersPage
           {
             text: 'Excluir',
             handler: () => {
-              this.onRemove(memberId);
+              this.onRemove(member);
             },
           },
         ],
@@ -115,10 +115,18 @@ export class MembersPage
       .then((alert) => alert.present());
   }
 
-  private onRemove(memberId: number) {
-    this.usersService.removeInstitutionMember(memberId).subscribe({
-      next: (res: any) => {},
-      error: (error: any) => {},
+  private onRemove(member: IMember) {
+    this.usersService.removeInstitutionMember(member).subscribe({
+      next: (res: any) => {
+        if (res.item === 'Ok') {
+          this.toast('Membro removido com sucesso!', 'Atenção!', 'success');
+        }
+        this.onReload();
+      },
+      error: (error: any) => {
+        this.alert(error?.message, 'Atenção!', 'danger');
+        console.error(error);
+      },
     });
   }
 

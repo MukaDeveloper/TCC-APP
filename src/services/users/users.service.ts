@@ -111,10 +111,10 @@ export class UsersService {
   }
 
   public removeInstitutionMember(
-    memberId: number
+    member: IMember
   ): Observable<IEnvelope<string>> {
     return this.apiUsersService
-      .removeInstitutionMember(memberId)
+      .removeInstitutionMember(member)
       .pipe(map((res: IEnvelope<string>) => res));
   }
 

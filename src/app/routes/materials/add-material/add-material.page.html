@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button
+        shape="round"
+        style="width: 48px; height: 48px"
+        (click)="onBack()"
+        fill="clear"
+      >
+        <ion-icon
+          name="arrow-back"
+          slot="icon-only"
+          style="width: 24px; height: 24px"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Adicionar Material</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment mode="md" [(ngModel)]="action">
+      <ion-segment-button type="button" value="SINGLE">
+        <ion-label>Único</ion-label>
+      </ion-segment-button>
+      <ion-segment-button type="button" value="MULTIPLE">
+        <ion-label>Em massa</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <section *ngIf="action === 'SINGLE'">
+    <ion-list>
+      <ion-list-header>
+        <ion-label class="ion-padding-start"
+          ><h1>Cadastro de material</h1></ion-label
+        >
+      </ion-list-header>
+      <form *ngIf="formGroup" [formGroup]="formGroup">
+        <br />
+        <ion-item lines="none">
+          <ion-input
+            label="Nome"
+            labelPlacement="fixed"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="Ex: Notebook"
+          ></ion-input>
+        </ion-item>
+        <br />
+        <ion-item lines="none">
+          <ion-textarea
+            label="Descrição"
+            labelPlacement="fixed"
+            formControlName="description"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="Descrição do material"
+            autoGrow="true"
+            maxlength="120"
+            spellcheck="true"
+            wrap="soft"
+          ></ion-textarea>
+        </ion-item>
+        <br />
+        <ion-item lines="none">
+          <ion-input
+            label="Registro"
+            labelPlacement="fixed"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="Número de registro"
+            type="number"
+            inputmode="numeric"
+            formControlName="recordNumber"
+          >
+          </ion-input>
+        </ion-item>
+        <br />
+        <ion-item lines="none">
+          <ion-input
+            label="Fabricante"
+            labelPlacement="fixed"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="Identificação do fabricante. Ex: Lenovo"
+            type="text"
+            inputmode="text"
+            formControlName="manufactorer"
+          >
+          </ion-input>
+        </ion-item>
+        <br />
+        <ion-item lines="none">
+          <ion-input
+            label="Medida"
+            labelPlacement="fixed"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="UN ou KG"
+            formControlName="measure"
+          >
+          </ion-input>
+        </ion-item>
+      </form>
+    </ion-list>
+  </section>
+
+  <section *ngIf="action === 'MULTIPLE'">
+    <ion-list>
+      <ion-list-header>
+        <ion-label class="ion-padding-start"
+          ><h1>Cadastro de materiais</h1></ion-label
+        >
+      </ion-list-header>
+    </ion-list>
+  </section>
+</ion-content>
+<ion-footer *ngIf="action === 'SINGLE'">
+  <ion-toolbar style="padding-right: 16px">
+    <ion-buttons slot="start">
+      <ion-button>Cancelar</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button slot="end" fill="solid" color="success">
+        ADICIONAR
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -23,6 +23,7 @@ import { IMaterialStatus } from '../../../services/materials/interfaces/i-materi
 import { ICart } from 'src/services/cart/interfaces/i-cart';
 import { ECartItemStatus } from 'src/services/cart/interfaces/enums/cart-item-status.enum';
 import { CartService } from '../../../services/cart/cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-materials',
@@ -50,6 +51,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
     private readonly warehousesService: WarehousesService,
     private readonly materialsService: MaterialsService,
     private readonly cartService: CartService,
+    private router: Router,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -200,6 +202,23 @@ export class MaterialsPage extends BaseComponent implements OnInit {
 
     // if (material.materialWarehouses.includes)
     return true;
+  }
+
+  public addMaterial() {
+    this.router.navigate(
+      [`${ERouters.app}/${ERouters.materials}/${ERouters.addMaterial}`],
+      {
+        replaceUrl: true,
+      }
+    );
+  }
+
+  public editMaterial(material: IMaterial, button: boolean) {
+    if (window.innerWidth >= 790 && !button) {
+      return;
+    }
+    
+    // Redirecionar para página de edição
   }
 
   // #endregion Public Methods (2)

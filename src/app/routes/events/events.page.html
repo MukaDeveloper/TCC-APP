@@ -30,17 +30,42 @@
         ></ion-spinner> </ion-text
     ></ion-label>
   </ion-item>
-  <ion-card *ngIf="!isLoading">
-    <ion-card-header>
-      <ion-card-title>Últimos eventos da instituição</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item *ngIf="!movimentations?.length" style="text-align: center">
-          <ion-label>
-            <p>Nenhum evento registrado ainda.</p>
-          </ion-label>
-        </ion-item>
+  <section class="ion-padding-horizontal" *ngIf="!isLoading">
+    <ion-list>
+      <ion-list-header>
+        <ion-title>Últimos eventos da instituição</ion-title>
+      </ion-list-header>
+      <ion-item *ngIf="!movimentations?.length" style="text-align: center">
+        <ion-label>
+          <p>Nenhum evento registrado ainda.</p>
+        </ion-label>
+      </ion-item>
+
+      <ng-container *ngIf="!mobileShow; else listView">
+        <ion-grid *ngIf="movimentationsFilter?.length">
+          <ion-row class="header-row">
+            <ion-col style="text-align: left" size="3">Nome</ion-col>
+            <ion-col size="2">Evento</ion-col>
+            <ion-col size="2">Tipo</ion-col>
+            <ion-col size="2">Data</ion-col>
+            <ion-col size="3">Movimentado por</ion-col>
+          </ion-row>
+          <ion-row
+            class="list-rows"
+            *ngFor="let movimentacao of movimentationsFilter | slice:0:maxItemsToShow"
+          >
+            <ion-col style="text-align: left" size="3"
+              >{{ movimentacao.name }}</ion-col
+            >
+            <ion-col size="2">{{ getEvent(movimentacao.event) }}</ion-col>
+            <ion-col size="2">{{ getType(movimentacao.type) }}</ion-col>
+            <ion-col size="2">{{ getDate(movimentacao.date) }}</ion-col>
+            <ion-col size="3">{{ movimentacao.movimentationBy }}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-container>
+
+      <ng-template #listView>
         <ion-item
           *ngFor="let movimentacao of movimentationsFilter | slice:0:maxItemsToShow"
         >
@@ -55,15 +80,15 @@
             </p>
           </ion-label>
         </ion-item>
-      </ion-list>
-      <div
-        *ngIf="movimentationsFilter?.length! > maxItemsToShow"
-        class="expand-button"
+      </ng-template>
+    </ion-list>
+    <div
+      *ngIf="movimentationsFilter?.length! > maxItemsToShow"
+      class="expand-button"
+    >
+      <ion-button (click)="expandMovimentations()"
+        ><ion-label class="color-white">Ver Mais +</ion-label></ion-button
       >
-        <ion-button (click)="expandMovimentations()"
-          ><ion-label class="color-white">Ver Mais +</ion-label></ion-button
-        >
-      </div>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </section>
 </ion-content>

@@ -1,20 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { BaseComponent } from '../../../../shared/utils/base.component';
-import { ToastController, AlertController, LoadingController, IonModal } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import {
+  ToastController,
+  AlertController,
+  LoadingController,
+} from '@ionic/angular';
+import { BaseComponent } from 'src/shared/utils/base.component';
+import { ERouters } from 'src/shared/utils/e-routers';
 
 @Component({
   selector: 'app-add-material',
-  templateUrl: './add-material.component.html',
-  styleUrls: ['./add-material.component.scss'],
+  templateUrl: './add-material.page.html',
+  styleUrls: ['./add-material.page.scss'],
 })
-export class AddMaterialComponent extends BaseComponent implements OnInit {
-
-  @ViewChild(IonModal) public modal!: IonModal;
+export class AddMaterialPage extends BaseComponent implements OnInit {
   public formGroup: FormGroup | null = null;
   public action: 'SINGLE' | 'MULTIPLE' = 'SINGLE';
 
   constructor(
+    private router: Router,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -22,11 +27,14 @@ export class AddMaterialComponent extends BaseComponent implements OnInit {
     super(toastController, alertController, loadingController);
   }
 
-  ngOnInit() {}
-
-  public onOpenModal() {
+  ngOnInit() {
     this.onCreateForm();
-    this.modal.present();
+  }
+
+  public onBack() {
+    this.router.navigate([`${ERouters.app}/${ERouters.materials}`], {
+      replaceUrl: true,
+    });
   }
 
   private onCreateForm() {

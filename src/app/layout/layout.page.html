@@ -26,7 +26,7 @@
     </ion-menu>
     <ion-router-outlet id="main"></ion-router-outlet>
   </ion-split-pane>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab *ngIf="canShow" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="ModalCart.onOpenModal()">
       <ion-icon name="cart-outline" class="color-white"></ion-icon>
     </ion-fab-button>

@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-breadcrumbs [maxItems]="4">
     <ion-breadcrumb [routerLink]="homeURL">Home</ion-breadcrumb>
     <ion-breadcrumb>Materiais</ion-breadcrumb>
@@ -12,8 +12,8 @@
       <ion-chip
         *ngIf="payload?.role !== eUserRole"
         outline="true"
-        (click)="AddMaterial.onOpenModal()"
         style="--color: var(--ion-color-dark)"
+        (click)="addMaterial()"
       >
         <ion-label style="--color: var(--ion-color-dark)">Adicionar</ion-label>
         <ion-icon name="add-outline"></ion-icon>
@@ -52,7 +52,12 @@
       </ion-item>
       <!-- Fazer o item de baixo como um botão se a resolução for menor que 490 -->
       <!-- Para abrir o modal de edição do produto e colocar um botão pra excluir -->
-      <ion-item lines="full" *ngFor="let material of filtered; let j = index">
+      <ion-item
+        lines="full"
+        *ngFor="let material of filtered; let j = index"
+        (click)="editMaterial(material, false)"
+        [button]="!canEdit(material) ? 'true' : 'false'"
+      >
         <ion-thumbnail slot="start">
           <ion-img [src]="getMaterialIcon(material)"></ion-img>
         </ion-thumbnail>
@@ -77,17 +82,23 @@
           'flex-direction': flexColumn ? 'column' : 'row'
         }"
         >
-          <ion-chip color="secondary" (click)="onRequest(material)" button>
-            <ion-label style="--color: var(--ion-color-dark)"
-              >SOLICITAR</ion-label
-            >
+          <ion-chip
+            color="secondary"
+            style="text-align: center"
+            (click)="onRequest(material); $event.stopPropagation();"
+            button
+          >
+            <ion-label color="dark">SOLICITAR</ion-label>
           </ion-chip>
           <ion-chip color="success">
             <ion-label>{{ resolveAvailableStatus(material.status) }}</ion-label>
           </ion-chip>
         </div>
         <ion-buttons slot="end" *ngIf="canEdit(material)">
-          <ion-button fill="none">
+          <ion-button
+            fill="none"
+            (click)="editMaterial(material, true); $event.stopPropagation();"
+          >
             <ion-icon
               color="dark"
               name="create-outline"
@@ -105,5 +116,4 @@
       </ion-item>
     </ion-list>
   </section>
-  <app-add-material #AddMaterial></app-add-material>
 </ion-content>

@@ -22,3 +22,11 @@ ion-thumbnail {
   margin-top: 2rem;
   flex-direction: column;
 }
+
+ion-toolbar {
+  padding: 8px 16px 16px 16px;
+}
+
+ion-modal {
+  --height: 90%;
+}

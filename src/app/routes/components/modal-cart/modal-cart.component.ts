@@ -1,4 +1,10 @@
-import { Component, effect, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { BaseComponent } from '../../../../shared/utils/base.component';
 import {
   ToastController,
@@ -22,10 +28,11 @@ import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
 export class ModalCartComponent extends BaseComponent implements OnInit {
   @ViewChild(IonModal) public modal!: IonModal;
   public cart: ICart | null = null;
+  public mobileView = false;
 
   constructor(
     private readonly cartService: CartService,
-    private readonly router: Router,
+    private router: Router,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -35,6 +42,12 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
     effect(() => {
       this.cart = this.cartService.cart;
     });
+    this.onResize();
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.mobileView = window.innerWidth < 768;
   }
 
   ngOnInit() {}

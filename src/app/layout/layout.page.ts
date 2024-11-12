@@ -33,6 +33,9 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   public payload: IPayload | null = null;
   public members: IMember[] | null = null;
   public cart: ICart | null = null;
+  public blackList: string[] = [
+    `/${ERouters.app}/${ERouters.materials}/${ERouters.addMaterial}`,
+  ];
 
   // #endregion Properties (3)
 
@@ -46,7 +49,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
     private readonly institutionService: InstitutionService,
     private readonly areasService: AreasService,
     private readonly warehousesService: WarehousesService,
-    private router: Router,
+    public router: Router,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -59,6 +62,13 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   }
 
   // #endregion Constructors (1)
+
+  public get canShow(): boolean {
+    if (this.blackList.includes(this.router.url)) {
+      return false;
+    }
+    return true;
+  }
 
   // #region Public Methods (4)
 
@@ -136,10 +146,10 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
         .getAll()
         .pipe(mergeMap((_) => this.warehousesService.getAll()))
         .subscribe();
-    }
 
-    if (!this.members?.length) {
-      this.usersService.getAllFromInstitution().subscribe();
+      if (!this.members?.length) {
+        this.usersService.getAllFromInstitution().subscribe();
+      }
     }
   }
 

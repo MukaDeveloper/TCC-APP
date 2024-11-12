@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { MaterialsPageRoutingModule } from './materials-routing.module';
 
 import { MaterialsPage } from './materials.page';
-import { AddMaterialComponent } from './add-material/add-material.component';
 
 @NgModule({
   imports: [
@@ -17,6 +16,6 @@ import { AddMaterialComponent } from './add-material/add-material.component';
     ReactiveFormsModule,
     MaterialsPageRoutingModule,
   ],
-  declarations: [MaterialsPage, AddMaterialComponent]
+  declarations: [MaterialsPage]
 })
 export class MaterialsPageModule {}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import {
   AlertController,
   LoadingController,
@@ -30,6 +30,7 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;
   public availableHeight: number = 0;
+  public mobileShow = false;
 
   // #endregion Properties (5)
 
@@ -45,14 +46,15 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
   ) {
     super(toastController, alertController, loadingController);
     this.updateMaxItemsToShow();
-    this.renderer.listen('window', 'resize', () => {
-      this.updateMaxItemsToShow();
-    });
+    this.onResize();
   }
 
   // #endregion Constructors (1)
 
-  // #region Public Getters And Setters (2)
+  @HostListener('window:resize')
+  public onResize() {
+    this.mobileShow = window.innerWidth <= 878;
+  }
 
   // #endregion Public Getters And Setters (2)
 
@@ -145,9 +147,9 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   private updateMaxItemsToShow() {
     const screenHeight = window.innerHeight;
-    const headerHeight = 56;
-    const cardHeaderHeight = 50;
-    const itemHeight = 100;
+    const headerHeight = 92;
+    const cardHeaderHeight = 45;
+    const itemHeight = 25;
     const padding = 40;
 
     this.availableHeight =

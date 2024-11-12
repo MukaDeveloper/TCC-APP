@@ -75,7 +75,7 @@
               </ion-chip>
               <ion-button
                 [disabled]="member.id === payload?.id || member.role === eSupport"
-                (click)="onShowRemove(member.id)"
+                (click)="onShowRemove(member)"
               >
                 <ion-icon
                   name="trash-outline"
