@@ -19,6 +19,7 @@ import { IMember } from 'src/services/users/interfaces/i-member';
 import { UsersService } from 'src/services/users/users.service';
 import { CartService } from 'src/services/cart/cart.service';
 import { ICart } from 'src/services/cart/interfaces/i-cart';
+import { EUserRole } from 'src/services/payload/interfaces/enum/EUserRole';
 
 @Component({
   selector: 'app-layout',
@@ -141,14 +142,14 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
       this.cartService.cart = cart;
     }
 
-    if (this.payload?.role !== 'USER') {
-      this.areasService
-        .getAll()
-        .pipe(mergeMap((_) => this.warehousesService.getAll()))
-        .subscribe();
+    if (this.payload?.role !== EUserRole.USER) {
+      this.warehousesService.getAll().subscribe();
+      if (this.payload?.role !== EUserRole.WAREHOUSEMAN) {
+        this.areasService.getAll().subscribe();
 
-      if (!this.members?.length) {
-        this.usersService.getAllFromInstitution().subscribe();
+        if (!this.members?.length) {
+          this.usersService.getAllFromInstitution().subscribe();
+        }
       }
     }
   }

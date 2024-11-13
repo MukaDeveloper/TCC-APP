@@ -6,6 +6,8 @@ import {
   AlertController,
   LoadingController,
 } from '@ionic/angular';
+import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
+import { WarehousesService } from 'src/services/warehouses/warehouses.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { ERouters } from 'src/shared/utils/e-routers';
 
@@ -17,8 +19,10 @@ import { ERouters } from 'src/shared/utils/e-routers';
 export class AddMaterialPage extends BaseComponent implements OnInit {
   public formGroup: FormGroup | null = null;
   public action: 'SINGLE' | 'MULTIPLE' = 'SINGLE';
+  public warehouses: IWarehouse[] = [];
 
   constructor(
+    private readonly warehousesService: WarehousesService,
     private router: Router,
     toastController: ToastController,
     alertController: AlertController,
@@ -28,6 +32,11 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subs.push(
+      this.warehousesService.warehouses$.subscribe(
+        (res) => (this.warehouses = res)
+      )
+    );
     this.onCreateForm();
   }
 
@@ -38,13 +47,22 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
   }
 
   private onCreateForm() {
+    let wh: number | null = null;
+    if (this.warehouses.length === 1) {
+      wh = this.warehouses[0].id;
+    }
+
     this.formGroup = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
       recordNumber: new FormControl(''),
       manufactorer: new FormControl(''),
       quantity: new FormControl('', Validators.required),
-      measure: new FormControl('', Validators.required),
+      measure: new FormControl('UN', Validators.required),
+      warehouseId: new FormControl(
+        { value: wh, disabled: this.warehouses?.length === 1 ? true : false },
+        [Validators.required]
+      ),
       imageURL: new FormControl(''),
     });
   }

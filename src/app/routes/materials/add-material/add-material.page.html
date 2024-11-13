@@ -16,7 +16,7 @@
     </ion-buttons>
     <ion-title>Adicionar Material</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <!-- <ion-toolbar>
     <ion-segment mode="md" [(ngModel)]="action">
       <ion-segment-button type="button" value="SINGLE">
         <ion-label>Único</ion-label>
@@ -25,7 +25,7 @@
         <ion-label>Em massa</ion-label>
       </ion-segment-button>
     </ion-segment>
-  </ion-toolbar>
+  </ion-toolbar> -->
 </ion-header>
 <ion-content>
   <section *ngIf="action === 'SINGLE'">
@@ -98,18 +98,41 @@
           </ion-input>
         </ion-item>
         <br />
-        <ion-item lines="none">
-          <ion-input
-            label="Medida"
-            labelPlacement="fixed"
-            fill="outline"
-            inputmode="text"
-            shape="round"
-            type="text"
-            placeholder="UN ou KG"
-            formControlName="measure"
+        <ion-item class="border ion-margin-horizontal" lines="none">
+          <ion-label position="fixed" style="min-width: 112px"
+            >Medida</ion-label
           >
-          </ion-input>
+          <ion-select
+            aria-label=""
+            fill="none"
+            inputmode="text"
+            placeholder="Selecione a medida"
+            formControlName="measure"
+            interface="popover"
+            [interfaceOptions]="customSelectOptions"
+          >
+            <ion-select-option value="UN">Unidade</ion-select-option>
+            <ion-select-option value="KG">Quilo</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <br />
+        <ion-item class="border ion-margin-horizontal" lines="none">
+          <ion-label position="fixed" style="min-width: 112px"
+            >Almoxarifado</ion-label
+          >
+          <ion-select
+            aria-label=""
+            aria-labelPlacement="fixed"
+            fill="none"
+            formControlName="warehouseId"
+            placeholder="Selecione o almoxarifado"
+            [interfaceOptions]="customSelectOptions"
+            style="margin-left: 6px"
+          >
+            <ion-select-option *ngFor="let wh of warehouses" [value]="wh.id"
+              >{{ wh.name }}</ion-select-option
+            >
+          </ion-select>
         </ion-item>
       </form>
     </ion-list>
