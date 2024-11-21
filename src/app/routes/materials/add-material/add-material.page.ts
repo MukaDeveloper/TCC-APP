@@ -46,6 +46,13 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
     });
   }
 
+  public onSubmit() {
+    const obj = this.formGroup?.value;
+
+    delete obj.hasRecord;
+    delete obj.hasQuantity;
+  }
+
   private onCreateForm() {
     let wh: number | null = null;
     if (this.warehouses.length === 1) {
@@ -53,17 +60,25 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
     }
 
     this.formGroup = new FormGroup({
+      materialType: new FormControl(null, Validators.required),
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
-      recordNumber: new FormControl(''),
       manufactorer: new FormControl(''),
-      quantity: new FormControl('', Validators.required),
       measure: new FormControl('UN', Validators.required),
       warehouseId: new FormControl(
         { value: wh, disabled: this.warehouses?.length === 1 ? true : false },
         [Validators.required]
       ),
       imageURL: new FormControl(''),
+      recordNumber: new FormControl(''),
+      hasRecord: new FormControl(false),
+      quantity: new FormControl(''),
+      hasQuantity: new FormControl(false),
     });
+
+    this.formGroup.valueChanges.subscribe(obj => {
+      // VERIFICAR SE HOUVE MUDANÇA NO MATERIALTYPE PARA ATRIBUIR/REMOVER
+      // OS VALIDATORS DE ACORDO COM A REGRA
+    })
   }
 }
