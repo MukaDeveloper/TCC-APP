@@ -19,6 +19,7 @@ import { ERouters } from 'src/shared/utils/e-routers';
 import { EMaterialStatus } from 'src/services/materials/interfaces/enum/material-status.enum';
 import { MaterialsService } from 'src/services/materials/materials.service';
 import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-modal-cart',
@@ -26,9 +27,12 @@ import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
   styleUrls: ['./modal-cart.component.scss'],
 })
 export class ModalCartComponent extends BaseComponent implements OnInit {
+
   @ViewChild(IonModal) public modal!: IonModal;
+  public isLoading = true;
   public cart: ICart | null = null;
   public mobileView = false;
+  public formGroup: FormGroup | null = null;
 
   constructor(
     private readonly cartService: CartService,
@@ -53,6 +57,7 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   ngOnInit() {}
 
   public onOpenModal() {
+    this.createForm();
     this.modal.present();
   }
 
@@ -111,5 +116,13 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
     this.cart = null;
     this.cartService.cart = null;
     this.modal.dismiss();
+  }
+
+  private createForm() {
+    this.formGroup = new FormGroup({
+
+    });
+
+    this.isLoading = false;
   }
 }

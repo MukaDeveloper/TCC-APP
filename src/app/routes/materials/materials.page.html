@@ -83,6 +83,7 @@
         }"
         >
           <ion-chip
+            [disabled]="resolveAvailableStatus(material.status) === 'Nenhum disponível'"
             color="secondary"
             style="text-align: center"
             (click)="onRequest(material); $event.stopPropagation();"

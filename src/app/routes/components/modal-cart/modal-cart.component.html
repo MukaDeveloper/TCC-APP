@@ -121,7 +121,7 @@
           <ion-button (click)="ModalCart.dismiss()">Cancelar</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button slot="end" fill="solid" color="success">
+          <ion-button [disabled]="!cart?.items?.length" slot="end" fill="solid" color="success">
             SOLICITAR
           </ion-button>
         </ion-buttons>

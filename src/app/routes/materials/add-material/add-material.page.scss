@@ -17,3 +17,7 @@ ion-segment-button {
   width: 100%; /* Ocupa a largura total do item */
   margin-right: 16px; /* Aplica um margin extra à direita */
 }
+
+ion-checkbox {
+  --checkbox-background-checked: var(--ion-color-dark);
+}

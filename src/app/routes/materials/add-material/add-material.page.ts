@@ -6,6 +6,7 @@ import {
   AlertController,
   LoadingController,
 } from '@ionic/angular';
+import { MaterialsService } from 'src/services/materials/materials.service';
 import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 import { WarehousesService } from 'src/services/warehouses/warehouses.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
@@ -17,12 +18,14 @@ import { ERouters } from 'src/shared/utils/e-routers';
   styleUrls: ['./add-material.page.scss'],
 })
 export class AddMaterialPage extends BaseComponent implements OnInit {
+  public isLoading = true;
   public formGroup: FormGroup | null = null;
   public action: 'SINGLE' | 'MULTIPLE' = 'SINGLE';
   public warehouses: IWarehouse[] = [];
 
   constructor(
     private readonly warehousesService: WarehousesService,
+    private readonly materialsService: MaterialsService,
     private router: Router,
     toastController: ToastController,
     alertController: AlertController,
@@ -49,8 +52,28 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
   public onSubmit() {
     const obj = this.formGroup?.value;
 
+    if (!this.formGroup?.valid) {
+      this.toast('Preencha todos os campos obrigatórios', 'Atenção!');
+      return;
+    }
+    this.isLoading = true;
+
     delete obj.hasRecord;
     delete obj.hasQuantity;
+
+    console.log('onSubmit', obj);
+    this.materialsService.addNew(obj).subscribe({
+      next: (res) => {
+        this.toast("Material adicionado com sucesso!", "Sucesso!", "success", "top");
+        this.onBack();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.alert(error?.message, 'Erro!');
+        this.isLoading = false;
+      },
+    });
   }
 
   private onCreateForm() {
@@ -76,9 +99,68 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
       hasQuantity: new FormControl(false),
     });
 
-    this.formGroup.valueChanges.subscribe(obj => {
-      // VERIFICAR SE HOUVE MUDANÇA NO MATERIALTYPE PARA ATRIBUIR/REMOVER
-      // OS VALIDATORS DE ACORDO COM A REGRA
-    })
+    this.formMonitor();
+    this.isLoading = false;
+  }
+
+  private formMonitor() {
+    this.formGroup
+      ?.get('materialType')
+      ?.valueChanges.subscribe((value: string) => {
+        const recordNumberControl = this.formGroup?.get('recordNumber');
+        const quantityControl = this.formGroup?.get('quantity');
+        console.log('materialType value changed', value);
+
+        if (value === 'LOAN') {
+          recordNumberControl?.enable();
+          recordNumberControl?.setValidators([Validators.required]);
+          quantityControl?.clearValidators();
+          this.formGroup?.get('recordNumber')?.enable();
+          this.formGroup?.get('hasRecord')?.setValue(true);
+          this.formGroup?.get('hasQuantity')?.setValue(false);
+        }
+        if (value === 'CONSUMPTION') {
+          quantityControl?.enable();
+          quantityControl?.setValidators([Validators.required]);
+          recordNumberControl?.clearValidators();
+          this.formGroup?.get('hasRecord')?.setValue(false);
+          this.formGroup?.get('hasQuantity')?.setValue(true);
+        }
+      });
+
+    // Monitorar diretamente as checkboxes
+    this.formGroup
+      ?.get('hasQuantity')
+      ?.valueChanges.subscribe((checked: boolean) => {
+        const materialType = this.formGroup?.get('materialType')?.value;
+        const quantityControl = this.formGroup?.get('quantity');
+        if (materialType === 'LOAN') {
+          if (checked) {
+            quantityControl?.enable();
+            quantityControl?.setValidators([Validators.required]);
+          } else {
+            quantityControl?.disable();
+            quantityControl?.clearValidators();
+          }
+          quantityControl?.updateValueAndValidity();
+        }
+      });
+
+    this.formGroup
+      ?.get('hasRecord')
+      ?.valueChanges.subscribe((checked: boolean) => {
+        const materialType = this.formGroup?.get('materialType')?.value;
+        const recordNumberControl = this.formGroup?.get('recordNumber');
+        if (materialType === 'CONSUMPTION') {
+          if (checked) {
+            recordNumberControl?.enable();
+            recordNumberControl?.setValidators([Validators.required]);
+          } else {
+            recordNumberControl?.disable();
+            recordNumberControl?.clearValidators();
+          }
+          recordNumberControl?.updateValueAndValidity();
+        }
+      });
   }
 }

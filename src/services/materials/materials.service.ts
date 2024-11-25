@@ -46,6 +46,18 @@ export class MaterialsService {
     );
   }
 
+  public addNew(data: any): Observable<IEnvelope<IMaterial>> {
+    return this.apiMaterialsService.addNew(data).pipe(
+      map((res: IEnvelope<IMaterial>) => {
+        if (res?.item) {
+          this.materials$.next([res.item, ...(this.materials$.value || [])]);
+          // this.filtered$.next([res.item, ...(this.filtered$.value || [])]);
+        }
+        return res;
+      })
+    );
+  }
+
   public reset() {
     this.materials$.next(null);
     this.filtered$.next(null);

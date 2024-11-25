@@ -119,7 +119,11 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   public getDate(toFormat: Date): string {
     const date = new Date(toFormat);
-    return date.toLocaleString();
+    const formattedDate = date.toLocaleString();
+
+    const [datePart, timePart] = formattedDate.split(', ');
+    const timeWithoutSeconds = timePart.split(':').slice(0, 2).join(':');
+    return `${datePart}\n${timeWithoutSeconds}`;
   }
 
   public onReload() {
