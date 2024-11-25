@@ -20,6 +20,7 @@ import { EMaterialStatus } from 'src/services/materials/interfaces/enum/material
 import { MaterialsService } from 'src/services/materials/materials.service';
 import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
 import { FormGroup } from '@angular/forms';
+import { SolicitationsService } from 'src/services/solicitations/solicitations.service';
 
 @Component({
   selector: 'app-modal-cart',
@@ -27,7 +28,6 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./modal-cart.component.scss'],
 })
 export class ModalCartComponent extends BaseComponent implements OnInit {
-
   @ViewChild(IonModal) public modal!: IonModal;
   public isLoading = true;
   public cart: ICart | null = null;
@@ -35,6 +35,7 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   public formGroup: FormGroup | null = null;
 
   constructor(
+    private readonly solicitationsService: SolicitationsService,
     private readonly cartService: CartService,
     private router: Router,
     toastController: ToastController,
@@ -112,6 +113,29 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
     }
   }
 
+  public onSubmit() {
+    const mock = {
+      description: 'blablabla',
+      items: [
+        {
+          quantity: 3,
+          materialId: 1,
+        },
+      ],
+      expectReturnAt: '2024-11-26T23:25:21.703Z',
+    };
+
+    this.solicitationsService.create(mock).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (error) => {
+        this.alert(error?.message, "Atenção!");
+        console.error(error);
+      }
+    })
+  }
+
   public clearCart() {
     this.cart = null;
     this.cartService.cart = null;
@@ -119,9 +143,7 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   }
 
   private createForm() {
-    this.formGroup = new FormGroup({
-
-    });
+    this.formGroup = new FormGroup({});
 
     this.isLoading = false;
   }
