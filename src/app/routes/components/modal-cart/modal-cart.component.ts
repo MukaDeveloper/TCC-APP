@@ -19,7 +19,7 @@ import { ERouters } from 'src/shared/utils/e-routers';
 import { EMaterialStatus } from 'src/services/materials/interfaces/enum/material-status.enum';
 import { MaterialsService } from 'src/services/materials/materials.service';
 import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SolicitationsService } from 'src/services/solicitations/solicitations.service';
 
 @Component({
@@ -46,8 +46,13 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
 
     effect(() => {
       this.cart = this.cartService.cart;
+      console.log('CART =>', this.cart);
     });
     this.onResize();
+  }
+
+  public get items(): FormArray {
+    return this.formGroup?.get('items') as FormArray;
   }
 
   @HostListener('window:resize', [])
@@ -130,10 +135,10 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
         console.log(res);
       },
       error: (error) => {
-        this.alert(error?.message, "Atenção!");
+        this.alert(error?.message, 'Atenção!');
         console.error(error);
-      }
-    })
+      },
+    });
   }
 
   public clearCart() {
@@ -143,8 +148,27 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   }
 
   private createForm() {
-    this.formGroup = new FormGroup({});
+    const date = new Date();
+    this.formGroup = new FormGroup({
+      description: new FormControl(''),
+      items: new FormArray([]),
+      expectReturnAt: new FormControl(date.setDate(date.getDate() + 7)),
+    });
+
+    this.patchItems();
 
     this.isLoading = false;
+  }
+
+  private patchItems() {
+    if (this.cart?.items.length) {
+      this.cart.items.forEach((item) => {
+        const formGroup = new FormGroup({
+          quantity: new FormControl(item.quantity),
+          materialId: new FormControl(item.materialId),
+        });
+        this.items.push(formGroup);
+      });
+    }
   }
 }
