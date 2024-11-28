@@ -32,6 +32,7 @@ export class HomePage extends BaseComponent implements OnInit {
   public isLoading = true;
   public payload: IPayload | null = null;
   public warehouses: IWarehouse[] | null = [];
+  public solicitations: any[] = [];
 
   // #endregion Properties (4)
 
@@ -47,6 +48,10 @@ export class HomePage extends BaseComponent implements OnInit {
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+
+    effect(() => {
+      // Aqui receber as atualizações de solicitations
+    })
   }
 
   // #endregion Constructors (1)
