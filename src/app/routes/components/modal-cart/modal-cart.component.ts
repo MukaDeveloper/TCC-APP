@@ -21,6 +21,7 @@ import { MaterialsService } from 'src/services/materials/materials.service';
 import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SolicitationsService } from 'src/services/solicitations/solicitations.service';
+import { NewSolicitationDto } from 'src/services/solicitations/dto/new-solicitation.dto';
 
 @Component({
   selector: 'app-modal-cart',
@@ -46,7 +47,6 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
 
     effect(() => {
       this.cart = this.cartService.cart;
-      console.log('CART =>', this.cart);
     });
     this.onResize();
   }
@@ -119,7 +119,10 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   }
 
   public onSubmit() {
-    const mock = {
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+
+    const mock: NewSolicitationDto = {
       description: 'blablabla',
       items: [
         {
@@ -127,12 +130,12 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
           materialId: 1,
         },
       ],
-      expectReturnAt: '2024-11-26T23:25:21.703Z',
+      expectReturnAt: date,
     };
 
     this.solicitationsService.create(mock).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log('Solicitação criadao', res);
       },
       error: (error) => {
         this.alert(error?.message, 'Atenção!');

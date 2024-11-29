@@ -4,6 +4,7 @@ import { catchError, Observable } from 'rxjs';
 import { ApiBaseService } from 'src/shared/utils/api-base.service';
 import { IEnvelope, IEnvelopeArray } from '../../shared/utils/envelope';
 import { HandleError } from '../../shared/middlewares/error.handler';
+import { NewSolicitationDto } from 'src/services/solicitations/dto/new-solicitation.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,7 @@ export class ApiSolicitationsService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  public create(data: any): Observable<IEnvelope<any>> {
+  public create(data: NewSolicitationDto): Observable<IEnvelope<any>> {
     const url = `${this.apiUrl}/Solicitations`;
     return this.http
       .post<IEnvelope<any>>(url, data)

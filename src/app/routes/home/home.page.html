@@ -25,7 +25,51 @@
       </ion-label>
       <br />
       <br />
-      <ion-label>Você ainda não fez nenhuma solicitação.</ion-label>
+      <ion-label *ngIf="!solicitations?.length"
+        >Nenhuma solicitação a ser exibida.</ion-label
+      >
+      <div *ngIf="solicitations?.length">
+        <ion-label
+          >Exibindo {{ solicitations.length }} solicitaç{{ solicitations.length
+          == 1 ? 'ão' : 'ões' }}</ion-label
+        >
+        <br />
+        <swiper-container
+          slides-per-view="3.5"
+          space-between="10"
+          pagination="false"
+          navigation="false"
+          class="prd-swiper"
+        >
+          <!-- <swiper-container [slides-per-view]="slideSize"> -->
+          <swiper-slide
+            class="slide"
+            *ngFor="let sol of solicitations; let j = index"
+          >
+            <ion-card>
+              <ion-card-header>
+                <ion-title>Solicitação #{{ sol.id }}</ion-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-label>
+                  <small>{{ sol.description }}</small>
+                </ion-label>
+                <br />
+                <ion-label>
+                  <p>
+                    {{ sol.items.length }} ite{{ sol.items.length === 1 ? 'm' :
+                    'ns' }}.
+                  </p>
+                  <p>Clique para detalhes ></p>
+                </ion-label>
+                <br />
+                <ion-label [color]="resolveStatusColor(sol.status)">{{ sol.status }}</ion-label>
+              </ion-card-content>
+            </ion-card>
+          </swiper-slide>
+        </swiper-container>
+      </div>
+
       <div>
         <ion-button
           color="dark"
@@ -33,8 +77,8 @@
           fill="clear"
           (click)="GoToMaterials()"
         >
-          <ion-icon name="arrow-forward-outline"></ion-icon>
-          <ion-label>VER MATERIAIS DISPONÍVEIS</ion-label>
+        <ion-label>VER MATERIAIS DISPONÍVEIS</ion-label>
+        <ion-icon name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div>
     </div>

@@ -2,19 +2,21 @@ import { Observable, map } from 'rxjs';
 import { IEnvelope, IEnvelopeArray } from 'src/shared/utils/envelope';
 import { ApiSolicitationsService } from '../../app/api/api-solicitations.service';
 import { Injectable, signal, WritableSignal } from '@angular/core';
+import { ISolicitation } from './interfaces/i-solicitation';
+import { NewSolicitationDto } from './dto/new-solicitation.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SolicitationsService {
 
-  private solicitations$: WritableSignal<any[]> = signal([]);
+  private solicitations$: WritableSignal<ISolicitation[]> = signal([]);
 
   constructor(
     private readonly apiSolicitationsService: ApiSolicitationsService
   ) {}
 
-  public get solicitations(): any[] {
+  public get solicitations(): ISolicitation[] {
     let solicitations = this.solicitations$();
     if (!solicitations) {
       return [];
@@ -22,13 +24,13 @@ export class SolicitationsService {
     return solicitations;
   }
 
-  public set solicitations(value: any[]) {
+  public set solicitations(value: ISolicitation[]) {
     this.solicitations$.set(value);
   }
 
-  public get(): Observable<IEnvelopeArray<any>> {
+  public get(): Observable<IEnvelopeArray<ISolicitation>> {
     return this.apiSolicitationsService.get().pipe(
-      map((res: IEnvelopeArray<any>) => {
+      map((res: IEnvelopeArray<ISolicitation>) => {
         if (res?.items) {
           this.solicitations = res.items;
         }
@@ -37,9 +39,9 @@ export class SolicitationsService {
     );
   }
 
-  public create(data: any): Observable<IEnvelope<any>> {
+  public create(data: NewSolicitationDto): Observable<IEnvelope<ISolicitation>> {
     return this.apiSolicitationsService.create(data).pipe(
-      map((res: IEnvelope<any>) => {
+      map((res: IEnvelope<ISolicitation>) => {
         if (res?.item) {
           this.solicitations = [...this.solicitations, res.item];
         }

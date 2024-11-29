@@ -20,6 +20,7 @@ import { UsersService } from 'src/services/users/users.service';
 import { CartService } from 'src/services/cart/cart.service';
 import { ICart } from 'src/services/cart/interfaces/i-cart';
 import { EUserRole } from 'src/services/payload/interfaces/enum/EUserRole';
+import { SolicitationsService } from '../../services/solicitations/solicitations.service';
 
 @Component({
   selector: 'app-layout',
@@ -43,6 +44,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Constructors (1)
 
   constructor(
+    private readonly solicitationsService: SolicitationsService,
     private readonly cartService: CartService,
     private readonly usersService: UsersService,
     private readonly resetService: ResetService,
@@ -151,6 +153,12 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
           this.usersService.getAllFromInstitution().subscribe();
         }
       }
+    }
+
+    const solicitations = this.solicitationsService.solicitations;
+    if (!solicitations.length) {
+      console.log('SOLICITATIONS SERVICE GET');
+      this.solicitationsService.get().subscribe();
     }
   }
 
