@@ -135,7 +135,8 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
 
     this.solicitationsService.create(mock).subscribe({
       next: (res) => {
-        console.log('Solicitação criadao', res);
+        console.log('Solicitação criada', res);
+        this.modal.dismiss();
       },
       error: (error) => {
         this.alert(error?.message, 'Atenção!');

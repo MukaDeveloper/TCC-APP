@@ -110,6 +110,25 @@
                   <ion-label>ADICIONAR ITEM</ion-label>
                 </ion-button>
               </div>
+
+              <form style="margin-top: 8px;" [formGroup]="formGroup" *ngIf="formGroup">
+                <ion-item lines="none">
+                  <ion-textarea
+                    label="Descrição"
+                    labelPlacement="fixed"
+                    formControlName="description"
+                    fill="outline"
+                    inputmode="text"
+                    shape="round"
+                    type="text"
+                    placeholder="Insira um breve resumo sobre o motivo da solicitação."
+                    autoGrow="true"
+                    maxlength="120"
+                    spellcheck="true"
+                    wrap="soft"
+                  ></ion-textarea>
+                </ion-item>
+              </form>
             </ion-list>
           </section>
         </div>
@@ -121,7 +140,13 @@
           <ion-button (click)="ModalCart.dismiss()">Cancelar</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="onSubmit()" [disabled]="!cart?.items?.length" slot="end" fill="solid" color="success">
+          <ion-button
+            (click)="onSubmit()"
+            [disabled]="!cart?.items?.length"
+            slot="end"
+            fill="solid"
+            color="success"
+          >
             SOLICITAR
           </ion-button>
         </ion-buttons>
