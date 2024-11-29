@@ -54,9 +54,13 @@ export class HomePage extends BaseComponent implements OnInit {
 
     effect(() => {
       // Aqui receber as atualizações de solicitations
+<<<<<<< HEAD
       this.solicitations = this.solicitationsService.solicitations;
       this.isLoading = false;
     });
+=======
+    })
+>>>>>>> 1c1ffc32976c60ea934cba775860fbe273367cf1
   }
 
   // #endregion Constructors (1)
