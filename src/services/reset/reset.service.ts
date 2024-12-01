@@ -5,6 +5,7 @@ import { MovimentationsService } from '../movimentations/movimentations.service'
 import { WarehousesService } from '../warehouses/warehouses.service';
 import { MaterialsService } from '../materials/materials.service';
 import { CartService } from '../cart/cart.service';
+import { SolicitationsService } from '../solicitations/solicitations.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class ResetService {
     private readonly movimentationsService: MovimentationsService,
     private readonly warehousesService: WarehousesService,
     private readonly materialsService: MaterialsService,
+    private readonly solicitationsService: SolicitationsService,
   ) {}
 
   // #endregion Constructors (1)
@@ -32,6 +34,7 @@ export class ResetService {
     this.warehousesService.reset();
     this.materialsService.reset();
     this.cartService.reset();
+    this.solicitationsService.reset();
   }
 
   // #endregion Public Methods (1)

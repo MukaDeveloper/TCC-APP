@@ -73,8 +73,14 @@
             <ion-label>
               <ion-text>
                 <p class="ion-text-wrap">
-                  <ion-text color="medium" *ngIf="!warehousemansList?.length">
+                  <ion-text
+                    color="medium"
+                    *ngIf="!warehousemansList?.length && warehousemans?.length"
+                  >
                     <i>Nenhum responsável selecionado</i>
+                  </ion-text>
+                  <ion-text color="medium" *ngIf="!warehousemans?.length">
+                    <i>Não há usuários aptos a responsáveis</i>
                   </ion-text>
                 </p>
                 <div *ngIf="warehousemansList?.length">
@@ -92,6 +98,7 @@
               </ion-text>
             </ion-label>
             <ion-select
+              [disabled]="!warehousemans.length"
               mode="md"
               class="custom-select"
               label=""
@@ -111,6 +118,7 @@
           </ion-item>
         </form>
       </section>
+      <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
     </ion-content>
     <ion-footer>
       <ion-toolbar>

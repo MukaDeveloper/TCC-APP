@@ -41,10 +41,14 @@ export class CartService {
   public getCart(): ICart | null {
     const cartObj = this.cartStorageService.val;
     if (!cartObj) {
+      const defaultDate = new Date();
+      defaultDate.setDate(defaultDate.getDate() + 7);
       const cart: ICart = {
         institutionId: this.payloadService.payload?.institutionId as number,
         userId: this.payloadService.payload?.id as number,
+        description: '',
         items: [],
+        expectReturnAt: defaultDate.toISOString(),
         sended: false,
       };
       this.cart$.set(cart);

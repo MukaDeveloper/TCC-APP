@@ -16,8 +16,8 @@ export class WarehousesService {
     new BehaviorSubject<IWarehouse | null>(null);
   public warehouses$: BehaviorSubject<IWarehouse[]> =
     new BehaviorSubject<IWarehouse[]>([]);
-  public filtered$: BehaviorSubject<IWarehouse[] | null> = new BehaviorSubject<
-    IWarehouse[] | null
+  public filtered$: BehaviorSubject<IWarehouse[]> = new BehaviorSubject<
+    IWarehouse[]
   >([]);
 
   // #endregion Properties (2)
@@ -79,7 +79,7 @@ export class WarehousesService {
   public reset() {
     this.warehouses$.next([]);
     this.selectedWarehouse$.next(null);
-    this.filtered$.next(null);
+    this.filtered$.next([]);
   }
 
   public updateWarehouse(

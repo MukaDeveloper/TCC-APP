@@ -27,12 +27,12 @@ import { BaseComponent } from '../../../../shared/utils/base.component';
 export class CreateWarehouseComponent extends BaseComponent implements OnInit {
   // #region Properties (6)
 
-  @Input() public areas: IArea[] | null = [];
+  @Input() public areas: IArea[] = [];
   public formGroup: FormGroup | null = null;
   public isLoading = true;
   @ViewChild(IonModal) public modal!: IonModal;
   @Output() public reload = new EventEmitter();
-  @Input() public warehousemans: IMember[] | null = [];
+  @Input() public warehousemans: IMember[] = [];
 
   // #endregion Properties (6)
 
@@ -127,9 +127,14 @@ export class CreateWarehouseComponent extends BaseComponent implements OnInit {
   // #region Private Methods (1)
 
   private createForm() {
+    let area: number | null = null;
+    if (this.areas.length === 1) {
+      area = this.areas[0].id;
+    }
+
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required]),
-      areaId: new FormControl('', [Validators.required]),
+      areaId: new FormControl(area, [Validators.required]),
       warehousemans: new FormArray([]),
       description: new FormControl(''),
     });

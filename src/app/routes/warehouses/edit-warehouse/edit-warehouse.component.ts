@@ -29,13 +29,13 @@ import { IMember } from 'src/services/users/interfaces/i-member';
 export class EditWarehouseComponent extends BaseComponent implements OnInit {
   // #region Properties (7)
 
-  @Input() public areas: IArea[] | null = [];
+  @Input() public areas: IArea[] = [];
   public formGroup: FormGroup | null = null;
   public isLoading = false;
   @ViewChild(IonModal) public modal!: IonModal;
   @Output() public reload = new EventEmitter();
   public warehouse: IWarehouse | null = null;
-  @Input() public warehousemans: IMember[] | null = [];
+  @Input() public warehousemans: IMember[] = [];
 
   // #endregion Properties (7)
 
@@ -101,6 +101,9 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
       return;
     }
     const data = this.formGroup?.value as UpdateWarehouseDto;
+
+    console.log('this.formGroup.value', this.formGroup.value);
+    console.log('updateWarehouse', data);
     this.warehousesService.updateWarehouse(data).subscribe({
       next: (_: any) => {
         this.toast(
@@ -152,7 +155,7 @@ export class EditWarehouseComponent extends BaseComponent implements OnInit {
       id: new FormControl(this.warehouse?.id, [Validators.required]),
       name: new FormControl(this.warehouse?.name || '', [Validators.required]),
       warehousemans: new FormArray([]),
-      areaId: new FormControl(this.warehouse?.areaId || '', [
+      areaId: new FormControl(this.warehouse?.areaId || null, [
         Validators.required,
       ]),
       description: new FormControl(this.warehouse?.description || ''),

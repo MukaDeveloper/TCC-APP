@@ -1,26 +1,22 @@
-import { Component, effect, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, OnInit, ViewChild } from '@angular/core';
 import {
   AlertController,
   LoadingController,
   ToastController,
-  ViewDidEnter,
 } from '@ionic/angular';
 import { IInstitution } from 'src/services/instution/interfaces/i-institution';
 import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
 import { WarehousesService } from 'src/services/warehouses/warehouses.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 import { InstitutionService } from '../../../services/instution/intitution.service';
-import { EMovimentationEvent } from '../../../services/movimentations/interfaces/enum/movimentation-role.enum';
-import { IMovimentations } from '../../../services/movimentations/interfaces/i-movimentations';
-import { MovimentationsService } from '../../../services/movimentations/movimentations.service';
 import { IPayload } from '../../../services/payload/interfaces/i-payload';
 import { PayloadService } from '../../../services/payload/payload.service';
-import { CartService } from 'src/services/cart/cart.service';
-import { ICart } from 'src/services/cart/interfaces/i-cart';
 import { Router } from '@angular/router';
 import { ERouters } from 'src/shared/utils/e-routers';
 import { SolicitationsService } from 'src/services/solicitations/solicitations.service';
 import { ESolicitationStatus } from 'src/services/solicitations/interfaces/enum/solicitation-status.enum';
+import { TranslateService } from '@ngx-translate/core';
+import { ISolicitation } from 'src/services/solicitations/interfaces/i-solicitation';
 
 @Component({
   selector: 'app-home',
@@ -33,8 +29,9 @@ export class HomePage extends BaseComponent implements OnInit {
   public institution: IInstitution | null = null;
   public isLoading = true;
   public payload: IPayload | null = null;
-  public warehouses: IWarehouse[] | null = [];
-  public solicitations: any[] = [];
+  public warehouses: IWarehouse[] = [];
+  public solicitations: ISolicitation[] = [];
+  public loadingSwiper = true;
 
   // #endregion Properties (4)
 
@@ -45,16 +42,36 @@ export class HomePage extends BaseComponent implements OnInit {
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
     private readonly warehousesService: WarehousesService,
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef,
     private router: Router,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
   ) {
     super(toastController, alertController, loadingController);
+    this.translateService.addLangs(['en', 'pt-BR']);
+    this.translateService.setDefaultLang('pt-BR');
+    const browserLang = this.translateService.getBrowserLang();
+    this.translateService.use(
+      browserLang?.match(/en|pt-BR/) ? browserLang : 'pt-BR'
+    );
 
     effect(() => {
       // Aqui receber as atualizações de solicitations
-      this.solicitations = this.solicitationsService.solicitations;
+      const solicitations = this.solicitationsService.solicitations;
+      if (solicitations != this.solicitations) {
+        this.loadingSwiper = true;
+        // console.log(
+        //   'Atualizando solicitações',
+        //   this.solicitationsService.solicitations
+        // );
+        setTimeout(() => {
+          this.solicitations = this.solicitationsService.solicitations;
+          this.cdr.detectChanges();
+          this.loadingSwiper = false;
+        }, 1500);
+      }
       this.isLoading = false;
     });
   }
@@ -100,7 +117,7 @@ export class HomePage extends BaseComponent implements OnInit {
       case ESolicitationStatus.WITHDRAWN:
         return 'tertiary';
       case ESolicitationStatus.RETURNED:
-        return 'success'
+        return 'success';
     }
   }
 

@@ -34,7 +34,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
   // #region Properties (3)
 
   @ViewChild('ModalCart') public modalCart: any;
-  public filtered: IMaterial[] | null = [];
+  public filtered: IMaterial[] = [];
   public isLoading = true;
   public payload: IPayload | null = null;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
@@ -88,7 +88,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         (res: IPayload | null) => (this.payload = res)
       ),
       this.materialsService.filtered$.subscribe(
-        (res: IMaterial[] | null) => (this.filtered = res)
+        (res: IMaterial[]) => (this.filtered = res)
       )
     );
     this.onGetAll();
@@ -101,9 +101,12 @@ export class MaterialsPage extends BaseComponent implements OnInit {
         ?.quantity || 0;
 
     if (!cart) {
+      const defaultDate = new Date();
+      defaultDate.setDate(defaultDate.getDate() + 7);
       this.cartService.cart = {
         userId: this.payload?.id as number,
         institutionId: this.payloadService.payload?.institutionId as number,
+        description: '',
         items: [
           {
             name: material.name,
@@ -116,6 +119,7 @@ export class MaterialsPage extends BaseComponent implements OnInit {
             quantityDeclined: 0,
           },
         ],
+        expectReturnAt: defaultDate.toISOString(),
         sended: false,
       };
       this.cart = cart;

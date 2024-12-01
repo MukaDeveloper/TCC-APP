@@ -10,11 +10,11 @@ import { IMaterial } from './interfaces/i-material';
 export class MaterialsService {
   // #region Properties (4)
 
-  public materials$: BehaviorSubject<IMaterial[] | null> = new BehaviorSubject<
-    IMaterial[] | null
+  public materials$: BehaviorSubject<IMaterial[]> = new BehaviorSubject<
+    IMaterial[]
   >([]);
-  public filtered$: BehaviorSubject<IMaterial[] | null> = new BehaviorSubject<
-    IMaterial[] | null
+  public filtered$: BehaviorSubject<IMaterial[]> = new BehaviorSubject<
+    IMaterial[]
   >([]);
 
   // #endregion Properties (4)
@@ -59,8 +59,8 @@ export class MaterialsService {
   }
 
   public reset() {
-    this.materials$.next(null);
-    this.filtered$.next(null);
+    this.materials$.next([]);
+    this.filtered$.next([]);
   }
 
   // #endregion Public Methods (2)

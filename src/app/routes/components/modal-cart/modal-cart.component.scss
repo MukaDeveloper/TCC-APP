@@ -1,3 +1,7 @@
+#modal-cart {
+  --height: 90%;
+}
+
 ion-thumbnail {
   --box-shadow: none !important;
   --border-radius: 10px;
@@ -25,8 +29,4 @@ ion-thumbnail {
 
 ion-toolbar {
   padding: 8px 16px 16px 16px;
-}
-
-ion-modal {
-  --height: 90%;
 }

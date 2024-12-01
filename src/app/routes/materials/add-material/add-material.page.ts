@@ -64,7 +64,12 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
     console.log('onSubmit', obj);
     this.materialsService.addNew(obj).subscribe({
       next: (res) => {
-        this.toast("Material adicionado com sucesso!", "Sucesso!", "success", "top");
+        this.toast(
+          'Material adicionado com sucesso!',
+          'Sucesso!',
+          'success',
+          'top'
+        );
         this.onBack();
         this.isLoading = false;
       },
@@ -88,10 +93,7 @@ export class AddMaterialPage extends BaseComponent implements OnInit {
       description: new FormControl(''),
       manufactorer: new FormControl(''),
       measure: new FormControl('UN', Validators.required),
-      warehouseId: new FormControl(
-        { value: wh, disabled: this.warehouses?.length === 1 ? true : false },
-        [Validators.required]
-      ),
+      warehouseId: new FormControl(wh, [Validators.required]),
       imageURL: new FormControl(''),
       recordNumber: new FormControl(''),
       hasRecord: new FormControl(false),

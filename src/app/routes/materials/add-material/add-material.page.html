@@ -218,6 +218,7 @@
       </form>
     </ion-list>
   </section>
+  <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
 
   <section *ngIf="action === 'MULTIPLE'">
     <ion-list>

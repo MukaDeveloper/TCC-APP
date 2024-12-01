@@ -13,16 +13,16 @@
       </h3>
     </ion-text>
   </ion-label>
-  <ion-label>
-    <ion-button
-      expand="block"
-      class="d-flex justify-content-center ion-text-center"
-      style="--background: var(--ion-color-light-fixed)"
-      (click)="changeInstitution()"
-    >
+  <ion-button
+    expand="block"
+    fill="solid"
+    color="light"
+    (click)="changeInstitution()"
+  >
+    <ion-label>
       {{ institution?.name }}
-      <ion-icon slot="end" name="shuffle-outline"></ion-icon>
-    </ion-button>
-  </ion-label>
+    </ion-label>
+    <ion-icon slot="end" name="shuffle-outline"></ion-icon>
+  </ion-button>
   <br />
 </div>

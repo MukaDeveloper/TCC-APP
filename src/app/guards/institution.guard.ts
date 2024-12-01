@@ -33,7 +33,7 @@ export class PermissionsService {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    // // console.log('[InstitutionGUARD] PermissionsService.canActivate');
+    // console.log('[InstitutionGUARD] PermissionsService.canActivate');
     const institution = this.institutionService.institution;
     if (institution) {
       // console.log('[InstitutionGUARD] PASS => GO TO ROUTE');

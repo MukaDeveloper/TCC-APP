@@ -24,8 +24,8 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   public isLoading = true;
   public maxItemsToShow: number = 0;
-  public movimentations: IMovimentations[] | null = [];
-  public movimentationsFilter: IMovimentations[] | null = [];
+  public movimentations: IMovimentations[] = [];
+  public movimentationsFilter: IMovimentations[] = [];
   public payload: IPayload | null = null;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;

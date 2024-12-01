@@ -1,4 +1,4 @@
-<ion-modal #ModalCart>
+<ion-modal #ModalCart id="modal-cart">
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -46,7 +46,10 @@
                 </ion-button>
               </ion-list-header>
               <div *ngIf="cart">
-                <ion-item lines="none" *ngFor="let item of cart.items">
+                <ion-item
+                  lines="none"
+                  *ngFor="let item of cart.items; let j = index"
+                >
                   <ion-thumbnail
                     slot="start"
                     *ngIf="item.imageURL"
@@ -70,7 +73,7 @@
                     <ion-button
                       fill="none"
                       color="none"
-                      (click)="onDecrementItem(item)"
+                      (click)="onDecrementItem(item, j)"
                     >
                       <ion-icon
                         size="large"
@@ -86,7 +89,7 @@
                       [disabled]="item.quantity >= item.quantityAvailable"
                       fill="none"
                       color="none"
-                      (click)="onIncrementItem(item)"
+                      (click)="onIncrementItem(item, j)"
                     >
                       <ion-icon
                         size="large"
@@ -111,7 +114,11 @@
                 </ion-button>
               </div>
 
-              <form style="margin-top: 8px;" [formGroup]="formGroup" *ngIf="formGroup">
+              <form
+                style="margin-top: 8px"
+                [formGroup]="formGroup"
+                *ngIf="formGroup"
+              >
                 <ion-item lines="none">
                   <ion-textarea
                     label="Descrição"
@@ -128,11 +135,42 @@
                     wrap="soft"
                   ></ion-textarea>
                 </ion-item>
+                <br />
+                <ion-item>
+                  <ion-label>Selecione a data de devolução</ion-label>
+                  <ion-datetime-button
+                    datetime="datetime"
+                  ></ion-datetime-button>
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime
+                        id="datetime"
+                        color="secondary"
+                        presentation="date"
+                        [showDefaultButtons]="true"
+                        doneText="Selecionar"
+                        (ionChange)="onDateChange($event)"
+                        [value]="
+                          formGroup.get('expectReturnAt')?.value
+                            | date : 'yyyy-MM-ddTHH:mm:ss'
+                        "
+                        [formatOptions]="{
+                          date: {
+                            weekday: 'short',
+                            month: 'long',
+                            day: '2-digit'
+                          }
+                        }"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
+                </ion-item>
               </form>
             </ion-list>
           </section>
         </div>
       </div>
+      <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
     </ion-content>
     <ion-footer>
       <ion-toolbar style="padding-right: 16px">

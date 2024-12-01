@@ -23,7 +23,7 @@ export class SidebarComponent extends BaseComponent implements OnInit {
   public isLoading = true;
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('isMenuOpen') public isMenuOpen = false;
-  public menus: IMenu[] | null = [];
+  public menus: IMenu[] = [];
   public payload: IPayload | null = null;
 
   // #endregion Properties (4)
@@ -56,7 +56,7 @@ export class SidebarComponent extends BaseComponent implements OnInit {
 
   public ngOnInit() {
     this.subs.push(
-      this.sidebarService.menuItems$.subscribe((res: IMenu[] | null) => (this.menus = res)),
+      this.sidebarService.menuItems$.subscribe((res: IMenu[]) => (this.menus = res)),
       this.payloadService.payload$.subscribe((res: IPayload | null) => (this.payload = res))
     );
   }

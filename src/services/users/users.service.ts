@@ -16,20 +16,20 @@ import { IMember } from './interfaces/i-member';
 export class UsersService {
   // #region Constructors (1)
 
-  private membersSubject: BehaviorSubject<IMember[] | null>;
-  public members$: Observable<IMember[] | null>;
+  private membersSubject: BehaviorSubject<IMember[]>;
+  public members$: Observable<IMember[]>;
 
   constructor(
     public apiUsersService: ApiUsersService,
     public payloadService: PayloadService
   ) {
-    this.membersSubject = new BehaviorSubject<IMember[] | null>([]);
+    this.membersSubject = new BehaviorSubject<IMember[]>([]);
     this.members$ = this.membersSubject.asObservable();
   }
 
   // #endregion Constructors (1)
 
-  public get members(): IMember[] | null {
+  public get members(): IMember[] {
     return this.membersSubject.value;
   }
 

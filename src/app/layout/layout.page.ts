@@ -33,7 +33,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   public isLoading = true;
   public isMenuOpen = false;
   public payload: IPayload | null = null;
-  public members: IMember[] | null = null;
+  public members: IMember[] = [];
   public cart: ICart | null = null;
   public blackList: string[] = [
     `/${ERouters.app}/${ERouters.materials}/${ERouters.addMaterial}`,
@@ -89,6 +89,7 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
   public onLogout() {
     this.resetService.resetAll();
     this.payloadService.nextPayload(null);
+    this.solicitationsService.stopFetching();
     this.router.navigate([ERouters.login], {
       replaceUrl: true,
       queryParams: { redirected: true },
@@ -144,6 +145,12 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
       this.cartService.cart = cart;
     }
 
+    const solicitations = this.solicitationsService.solicitations;
+    if (!solicitations.length) {
+      // console.log('onPayload => startFetch');
+      this.solicitationsService.startFetch();
+    }
+
     if (this.payload?.role !== EUserRole.USER) {
       this.warehousesService.getAll().subscribe();
       if (this.payload?.role !== EUserRole.WAREHOUSEMAN) {
@@ -153,12 +160,6 @@ export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
           this.usersService.getAllFromInstitution().subscribe();
         }
       }
-    }
-
-    const solicitations = this.solicitationsService.solicitations;
-    if (!solicitations.length) {
-      console.log('SOLICITATIONS SERVICE GET');
-      this.solicitationsService.get().subscribe();
     }
   }
 

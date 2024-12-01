@@ -12,9 +12,7 @@ import { UpdateAreaDto } from './dto/update-area.dto';
 export class AreasService {
   // #region Properties (2)
 
-  public areas$: BehaviorSubject<IArea[] | null> = new BehaviorSubject<
-    IArea[] | null
-  >([]);
+  public areas$: BehaviorSubject<IArea[]> = new BehaviorSubject<IArea[]>([]);
   public selectedArea$: BehaviorSubject<IArea | null> =
     new BehaviorSubject<IArea | null>(null);
 
@@ -65,7 +63,7 @@ export class AreasService {
   }
 
   public reset() {
-    this.areas$.next(null);
+    this.areas$.next([]);
     this.selectedArea$.next(null);
   }
 

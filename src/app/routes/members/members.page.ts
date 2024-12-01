@@ -30,7 +30,7 @@ export class MembersPage
   public eUser = EUserRole.USER;
   public eSupport = EUserRole.SUPPORT;
   public eWarehouseman = EUserRole.WAREHOUSEMAN;
-  public members: IMember[] | null = [];
+  public members: IMember[] = [];
 
   constructor(
     private readonly usersService: UsersService,

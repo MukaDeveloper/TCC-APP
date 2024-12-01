@@ -1,8 +1,13 @@
 .container {
+  background-color: var(--ion-color-light);
   margin-top: 2rem;
 }
 
 .slide {
   height: auto;
   // max-width: 25%;
+}
+
+ion-card:hover {
+  --background: var(--ion-color-light-shade);
 }

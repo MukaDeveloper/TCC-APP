@@ -6,7 +6,9 @@ export interface ICart {
   userId: number;
   institutionId: number;
   sended: boolean;
+  description: string;
   items: ICartItems[];
+  expectReturnAt: string | Date | number ;
 
   // #endregion Properties (10)
 }

@@ -8,14 +8,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SessionStorageAuthService } from '../../services/localstorage/auth-session.service';
 import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
+import { Functions } from '../utils/functions';
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
   // #region Constructors (1)
 
   constructor(
-    private readonly localStorageAuthService: LocalStorageAuthService,
-    private readonly sessionStorageAuthService: SessionStorageAuthService
+    private readonly functions: Functions,
   ) {}
 
   // #endregion Constructors (1)
@@ -26,10 +26,11 @@ export class AuthInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const session = this.sessionStorageAuthService.val || '';
-    const local = this.localStorageAuthService.val || '';
+    const token = this.functions.getToken();
     const dupReq = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${session || local}`),
+      headers: req.headers
+        .set('Authorization', `Bearer ${token}`)
+        .set('Access-Control-Allow-Origin', '*'),
     });
     return next.handle(dupReq);
   }

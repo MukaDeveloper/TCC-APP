@@ -2,7 +2,7 @@ export class NewSolicitationDto
 {
     public description: string = '';
     public items: SolicitationMaterialsDto[] = [];
-    public expectReturnAt: Date = new Date();
+    public expectReturnAt: string | Date | number = new Date();
 }
 
 export class SolicitationMaterialsDto

@@ -11,12 +11,12 @@ export class MovimentationsService {
   // #region Properties (4)
 
   private movimentationsFilteredSubject: BehaviorSubject<
-    IMovimentations[] | null
+    IMovimentations[]
   >;
-  private movimentationsSubject: BehaviorSubject<IMovimentations[] | null>;
+  private movimentationsSubject: BehaviorSubject<IMovimentations[]>;
 
-  public movimentations$: Observable<IMovimentations[] | null>;
-  public movimentationsFiltered$: Observable<IMovimentations[] | null>;
+  public movimentations$: Observable<IMovimentations[]>;
+  public movimentationsFiltered$: Observable<IMovimentations[]>;
 
   // #endregion Properties (4)
 
@@ -25,13 +25,13 @@ export class MovimentationsService {
   constructor(
     private readonly apiMovimentationsService: ApiMovimentationsService
   ) {
-    this.movimentationsSubject = new BehaviorSubject<IMovimentations[] | null>(
+    this.movimentationsSubject = new BehaviorSubject<IMovimentations[]>(
       []
     );
     this.movimentations$ = this.movimentationsSubject.asObservable();
 
     this.movimentationsFilteredSubject = new BehaviorSubject<
-      IMovimentations[] | null
+      IMovimentations[]
     >([]);
     this.movimentationsFiltered$ = this.movimentationsSubject.asObservable();
   }
@@ -55,8 +55,8 @@ export class MovimentationsService {
   }
 
   public reset() {
-    this.movimentationsSubject.next(null);
-    this.movimentationsFilteredSubject.next(null);
+    this.movimentationsSubject.next([]);
+    this.movimentationsFilteredSubject.next([]);
   }
 
   // #endregion Public Methods (2)

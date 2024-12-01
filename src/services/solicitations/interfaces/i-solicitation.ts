@@ -9,6 +9,7 @@ export interface ISolicitation {
 
   userId: number,
   institutionId: number,
+  userInstitution: any;
 
   solicitatedAt: Date,
   expectReturnAt: Date,

@@ -22,7 +22,7 @@ import { SelectInstitutionDto } from '../../../services/users/dto/select-institu
 export class CheckinPage extends BaseComponent implements OnInit {
   public payload: IPayload | null = null;
   public isLoading: boolean = true;
-  public institutions: IInstitution[] | null = [];
+  public institutions: IInstitution[] = [];
   public redirected: boolean = false;
 
   constructor(

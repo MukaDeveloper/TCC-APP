@@ -11,10 +11,10 @@ export class InstitutionService {
   // #region Properties (4)
 
   private institutionSubject: BehaviorSubject<IInstitution | null>;
-  private institutionsSubject: BehaviorSubject<IInstitution[] | null>;
+  private institutionsSubject: BehaviorSubject<IInstitution[]>;
 
   public institution$: Observable<IInstitution | null>;
-  public institutions$: Observable<IInstitution[] | null>;
+  public institutions$: Observable<IInstitution[]>;
 
   // #endregion Properties (4)
 
@@ -24,7 +24,7 @@ export class InstitutionService {
     this.institutionSubject = new BehaviorSubject<IInstitution | null>(null);
     this.institution$ = this.institutionSubject.asObservable();
 
-    this.institutionsSubject = new BehaviorSubject<IInstitution[] | null>([]);
+    this.institutionsSubject = new BehaviorSubject<IInstitution[]>([]);
     this.institutions$ = this.institutionsSubject.asObservable();
   }
 

@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { SharedModule } from '../../../shared/shared.module';
+import { ViewSolicitationComponent } from './view-solicitation/view-solicitation.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { SharedModule } from '../../../shared/shared.module';
     IonicModule,
     HomePageRoutingModule,
   ],
-  declarations: [HomePage],
+  declarations: [HomePage, ViewSolicitationComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePageModule {}

@@ -16,12 +16,11 @@ import { ICart } from '../../../../services/cart/interfaces/i-cart';
 import { CartService } from '../../../../services/cart/cart.service';
 import { Router } from '@angular/router';
 import { ERouters } from 'src/shared/utils/e-routers';
-import { EMaterialStatus } from 'src/services/materials/interfaces/enum/material-status.enum';
-import { MaterialsService } from 'src/services/materials/materials.service';
 import { ICartItems } from 'src/services/cart/interfaces/i-cart-items';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SolicitationsService } from 'src/services/solicitations/solicitations.service';
 import { NewSolicitationDto } from 'src/services/solicitations/dto/new-solicitation.dto';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-modal-cart',
@@ -75,41 +74,59 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
     }
   }
 
-  public async onIncrementItem(item: ICartItems) {
+  onDateChange(event: any) {
+    const selected = event.detail.value; // Valor selecionado no ion-datetime
+    const selectedDate = new Date(selected); // Formata para ISO 8601
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Zera as horas para comparar apenas a data
+
+    if (isNaN(selectedDate.getTime()) || selectedDate < today) {
+      this.toast('A data selecionada é inválida.', 'Atenção!', 'danger', 'top');
+      return;
+    }
+
+    if (this.cartService.cart) {
+      this.cartService.cart.expectReturnAt = selectedDate.toISOString(); // Atualiza o valor no carrinho
+    }
+    this.formGroup?.get('expectReturnAt')?.setValue(selectedDate.toISOString()); // Atualiza o valor no formulário
+  }
+
+  public async onIncrementItem(item: ICartItems, index: number) {
     if (!this.cart?.items.length) {
       this.modal.dismiss();
       return;
     }
 
-    const materialIndex = this.cart?.items?.findIndex(
-      (item) => item.materialId === item.materialId
-    );
-
-    if (materialIndex > -1) {
+    if (index > -1) {
       item.quantity++;
       if (item.quantity >= item.quantityAvailable) {
         item.quantity = item.quantityAvailable;
       }
-      this.cart.items[materialIndex] = item;
+      if (this.cartService.cart) {
+        this.cartService.cart.items[index] = item;
+      }
+      this.items.controls[index].get('quantity')?.setValue(item.quantity);
     }
   }
 
-  public onDecrementItem(item: ICartItems) {
+  public onDecrementItem(item: ICartItems, index: number) {
     if (!this.cart?.items.length) {
       this.modal.dismiss();
       return;
     }
 
-    const materialIndex = this.cart?.items?.findIndex(
-      (item) => item.materialId === item.materialId
-    );
-
-    if (materialIndex > -1) {
+    if (index > -1) {
       item.quantity--;
       if (item.quantity <= 0) {
-        this.cart.items.splice(materialIndex, 1);
+        if (this.cartService.cart) {
+          this.cartService.cart.items.splice(index, 1);
+        }
+        this.items.removeAt(index);
       } else {
-        this.cart.items[materialIndex] = item;
+        if (this.cartService.cart) {
+          this.cartService.cart.items[index] = item;
+        }
+        this.items.controls[index].get('quantity')?.setValue(item.quantity);
       }
 
       if (!this.cart.items.length) {
@@ -119,23 +136,16 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   }
 
   public onSubmit() {
-    const date = new Date();
-    date.setDate(date.getDate() + 7);
-
-    const mock: NewSolicitationDto = {
-      description: 'blablabla',
-      items: [
-        {
-          quantity: 3,
-          materialId: 1,
-        },
-      ],
-      expectReturnAt: date,
-    };
-
-    this.solicitationsService.create(mock).subscribe({
+    const obj: NewSolicitationDto = this.formGroup?.value;
+    this.solicitationsService.create(obj).subscribe({
       next: (res) => {
-        console.log('Solicitação criada', res);
+        this.toast(
+          'Solicitação criada com sucesso!',
+          'Sucesso',
+          `success`,
+          `bottom`
+        );
+        this.clearCart();
         this.modal.dismiss();
       },
       error: (error) => {
@@ -152,12 +162,24 @@ export class ModalCartComponent extends BaseComponent implements OnInit {
   }
 
   private createForm() {
-    const date = new Date();
+    const defaultDate = new Date();
+    defaultDate.setDate(defaultDate.getDate() + 7);
     this.formGroup = new FormGroup({
-      description: new FormControl(''),
+      description: new FormControl(this.cart?.description || ''),
       items: new FormArray([]),
-      expectReturnAt: new FormControl(date.setDate(date.getDate() + 7)),
+      expectReturnAt: new FormControl(
+        this.cart?.expectReturnAt || defaultDate.toISOString()
+      ),
     });
+
+    this.formGroup
+      .get('description')
+      ?.valueChanges.pipe(debounceTime(1000)) // Aguarda 1 segundo
+      .subscribe((value) => {
+        if (this.cartService.cart) {
+          this.cartService.cart.description = value; // Atualiza o cart
+        }
+      });
 
     this.patchItems();
 

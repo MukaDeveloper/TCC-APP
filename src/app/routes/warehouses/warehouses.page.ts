@@ -34,10 +34,10 @@ export class WarehousesPage
   @ViewChild('AppEditWarehouse') editWarehouseModal!: any;
   public isLoading = true;
   public payload: IPayload | null = null;
-  public warehouses: IWarehouse[] | null = [];
-  public areas: IArea[] | null = [];
-  public warehousemans: IMember[] | null = [];
-  public filtered: IWarehouse[] | null = [];
+  public warehouses: IWarehouse[] = [];
+  public areas: IArea[] = [];
+  public warehousemans: IMember[] = [];
+  public filtered: IWarehouse[] = [];
   public search: string = '';
   public eUser = EUserRole.USER;
   public eWarehouseman = EUserRole.WAREHOUSEMAN;

@@ -18,7 +18,7 @@ import { ERouters } from '../../../shared/utils/e-routers';
 export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Properties (2)
 
-  public areas: IArea[] | null = [];
+  public areas: IArea[] = [];
   public isLoading = true;
   public homeURL = `/${ERouters.app}/${ERouters.home}`;
   public defaultURL = ERouters.home;

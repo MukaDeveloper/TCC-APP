@@ -13,6 +13,7 @@ import { ResetService } from '../../../../services/reset/reset.service';
 import { BaseComponent } from '../../../../shared/utils/base.component';
 import { UsersService } from 'src/services/users/users.service';
 import { ERouters } from 'src/shared/utils/e-routers';
+import { SolicitationsService } from 'src/services/solicitations/solicitations.service';
 
 @Component({
   selector: 'app-userblock',
@@ -30,6 +31,7 @@ export class UserblockComponent extends BaseComponent implements OnInit {
   // #region Constructors (1)
 
   constructor(
+    private readonly solicitationsService: SolicitationsService,
     private readonly usersService: UsersService,
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
@@ -67,6 +69,7 @@ export class UserblockComponent extends BaseComponent implements OnInit {
     this.usersService.changeInstitution().subscribe({
       next: (_) => {
         this.resetService.resetAll();
+        this.solicitationsService.stopFetching();
         this.router.navigate([ERouters.checkin], {
           replaceUrl: true,
         })
@@ -75,6 +78,7 @@ export class UserblockComponent extends BaseComponent implements OnInit {
         console.error(err);
         this.alert(err?.message, "Atenção!");
         this.resetService.resetAll();
+        this.solicitationsService.stopFetching();
         this.router.navigate([ERouters.checkin], {
           replaceUrl: true,
         })
