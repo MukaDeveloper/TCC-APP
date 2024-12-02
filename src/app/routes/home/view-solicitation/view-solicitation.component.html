@@ -12,61 +12,68 @@
     </ion-header>
 
     <ion-content>
-      <!-- Descrição da Solicitação -->
-      <ion-item *ngIf="solicitation?.description">
-        <ion-label>Descrição</ion-label>
-        <ion-text>
-          {{ solicitation?.description }}
-        </ion-text>
-      </ion-item>
+      <div style="text-align: center;" *ngIf="isLoading">
+        <ion-label>
+          <ion-spinner name="crescent"></ion-spinner>
+        </ion-label>
+      </div>
+      <section *ngIf="!isLoading">
+        <!-- Descrição da Solicitação -->
+        <ion-item *ngIf="solicitation?.description">
+          <ion-label>Descrição</ion-label>
+          <ion-text>
+            {{ solicitation?.description }}
+          </ion-text>
+        </ion-item>
 
-      <!-- Itens da Solicitação -->
-      <ion-card *ngIf="solicitation?.items?.length">
-        <ion-card-header>
-          <ion-card-title>Itens do Pedido</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-list>
-            <div *ngIf="solicitation">
-              <ion-item
-                lines="none"
-                *ngFor="let item of solicitation.items; let j = index"
-              >
-                <ion-text>
-                  {{ item?.quantity }}x <b>{{ item?.materialName }}</b>
-                </ion-text>
-              </ion-item>
-            </div>
-          </ion-list>
-        </ion-card-content>
-      </ion-card>
+        <!-- Itens da Solicitação -->
+        <ion-card *ngIf="solicitation?.items?.length">
+          <ion-card-header>
+            <ion-card-title>Itens do Pedido</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <div *ngIf="solicitation">
+                <ion-item
+                  lines="none"
+                  *ngFor="let item of solicitation.items; let j = index"
+                >
+                  <ion-text>
+                    {{ item?.quantity }}x <b>{{ item?.materialName }}</b>
+                  </ion-text>
+                </ion-item>
+              </div>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
 
-      <!-- Informações Adicionais -->
-      <ion-list>
-        <ion-item>
-          <ion-label>Solicitado por:</ion-label>
-          <ion-text>{{ solicitation?.userInstitution?.userName }}</ion-text>
-        </ion-item>
-        <ion-item>
-          <ion-label>Solicitado em:</ion-label>
-          <ion-text>{{
-            solicitation?.solicitedAt | date : "dd/MM/yyyy"
-          }}</ion-text>
-        </ion-item>
-        <ion-item>
-          <ion-label>Previsão de Devolução:</ion-label>
-          <ion-text>{{
-            solicitation?.expectReturnAt | date : "dd/MM/yyyy"
-          }}</ion-text>
-        </ion-item>
-        <ion-item>
-          <ion-label>Status:</ion-label>
-          <ion-text>{{
-            "solicitationStatus." +
-              (solicitation?.status?.toString() | uppercase) | translate
-          }}</ion-text>
-        </ion-item>
-      </ion-list>
+        <!-- Informações Adicionais -->
+        <ion-list>
+          <ion-item>
+            <ion-label>Solicitado por:</ion-label>
+            <ion-text>{{ solicitation?.userInstitution?.userName }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Solicitado em:</ion-label>
+            <ion-text>{{
+              solicitation?.solicitedAt | date : "dd/MM/yyyy"
+            }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Previsão de Devolução:</ion-label>
+            <ion-text>{{
+              solicitation?.expectReturnAt | date : "dd/MM/yyyy"
+            }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Status:</ion-label>
+            <ion-text>{{
+              "solicitationStatus." +
+                (solicitation?.status?.toString() | uppercase) | translate
+            }}</ion-text>
+          </ion-item>
+        </ion-list>
+      </section>
     </ion-content>
 
     <!-- Rodapé com Botões Condicionais -->

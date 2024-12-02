@@ -7,7 +7,7 @@ export interface IInstitution {
   id: number;
   name: string;
   accessCode: string;
-  neightboor: string;
+  neighborhood: string;
   nickname: string;
   state: string;
   streetName: string;

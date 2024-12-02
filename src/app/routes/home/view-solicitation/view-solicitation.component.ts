@@ -7,8 +7,10 @@ import {
 } from '@ionic/angular';
 import { IPayload } from 'src/services/payload/interfaces/i-payload';
 import { PayloadService } from 'src/services/payload/payload.service';
+import { UpdateSolicitationDto } from 'src/services/solicitations/dto/update-solicitation.dto';
 import { ESolicitationStatus } from 'src/services/solicitations/interfaces/enum/solicitation-status.enum';
 import { ISolicitation } from 'src/services/solicitations/interfaces/i-solicitation';
+import { SolicitationsService } from 'src/services/solicitations/solicitations.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
 
 @Component({
@@ -21,9 +23,11 @@ export class ViewSolicitationComponent extends BaseComponent implements OnInit {
   public solicitation: ISolicitation | null = null;
   public payload: IPayload | null = null;
   public eSolWaiting = ESolicitationStatus.WAITING;
+  public isLoading = false;
 
   constructor(
     private readonly payloadService: PayloadService,
+    private readonly solicitationsService: SolicitationsService,
     toastController: ToastController,
     alertController: AlertController,
     loadingController: LoadingController
@@ -43,7 +47,27 @@ export class ViewSolicitationComponent extends BaseComponent implements OnInit {
     console.log(this.solicitation?.status, this.eSolWaiting);
   }
 
-  public onApprove() {}
+  public onApprove() {
+    this.isLoading = true;
+
+    const obj: UpdateSolicitationDto = {
+      id: this.solicitation?.id as number,
+      status: ESolicitationStatus.ACCEPT,
+      movimentedAt: new Date().toISOString(),
+    }
+
+    this.solicitationsService.update(obj).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.alert(error?.message, "Atenção!");
+        this.isLoading = false;
+      }
+    })
+  }
 
   public onDecline() {}
 }

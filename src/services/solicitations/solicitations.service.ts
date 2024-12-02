@@ -15,6 +15,7 @@ import { ApiSolicitationsService } from '../../app/api/api-solicitations.service
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { ISolicitation } from './interfaces/i-solicitation';
 import { NewSolicitationDto } from './dto/new-solicitation.dto';
+import { UpdateSolicitationDto } from './dto/update-solicitation.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -98,6 +99,24 @@ export class SolicitationsService {
       map((res: IEnvelope<ISolicitation>) => {
         if (res?.item) {
           this.solicitations = [...this.solicitations, res.item];
+        }
+        return res;
+      })
+    );
+  }
+
+  public update(
+    data: UpdateSolicitationDto
+  ): Observable<IEnvelope<ISolicitation>> {
+    return this.apiSolicitationsService.update(data).pipe(
+      map((res: IEnvelope<ISolicitation>) => {
+        if (res?.item) {
+          const list = this.solicitations;
+          const i = list.findIndex((x) => (x.id = res.item.id));
+          if (i > -1) {
+            list[i] = res.item;
+            this.solicitations = list;
+          }
         }
         return res;
       })
