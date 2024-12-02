@@ -79,10 +79,10 @@
     <!-- Rodapé com Botões Condicionais -->
     <ion-footer
       *ngIf="
-        payload?.role !== eUserRole && solicitation?.status === eSolWaiting
+        payload?.role !== eUserRole
       "
     >
-      <ion-toolbar>
+      <ion-toolbar *ngIf="solicitation?.status === eSolWaiting">
         <ion-buttons slot="start">
           <ion-button color="danger" (click)="onDecline()">
             <ion-icon name="close-circle-outline" slot="start"></ion-icon>

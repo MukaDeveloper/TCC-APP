@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import {
   ToastController,
   AlertController,
@@ -20,6 +20,7 @@ import { BaseComponent } from 'src/shared/utils/base.component';
 })
 export class ViewSolicitationComponent extends BaseComponent implements OnInit {
   @ViewChild(IonModal) public modal!: IonModal;
+  @Output() public updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   public solicitation: ISolicitation | null = null;
   public payload: IPayload | null = null;
   public eSolWaiting = ESolicitationStatus.WAITING;
@@ -60,6 +61,9 @@ export class ViewSolicitationComponent extends BaseComponent implements OnInit {
       next: (res) => {
         console.log(res);
         this.isLoading = false;
+        this.toast(`A Solicitação #${res?.item?.id} foi aprovada com sucesso`, "Sucesso!", 'success');
+        this.updated.emit();
+        this.modal.dismiss();
       },
       error: (error) => {
         console.error(error);
