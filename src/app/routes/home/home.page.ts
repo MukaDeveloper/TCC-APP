@@ -102,6 +102,19 @@ export class HomePage extends BaseComponent implements OnInit {
     );
   }
 
+  public onReload() {
+    this.isLoading = true;
+    this.solicitationsService.get().subscribe({
+      next: (_) => {
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.isLoading = false;
+      }
+    })
+  }
+
   public GoToMaterials() {
     this.router.navigate([`${ERouters.app}/${ERouters.materials}`]);
   }

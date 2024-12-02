@@ -1,6 +1,18 @@
 <ion-header>
+  <ion-breadcrumbs [maxItems]="4">
+    <ion-breadcrumb>Home</ion-breadcrumb>
+  </ion-breadcrumbs>
   <ion-toolbar>
     <ion-title> Início </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onReload()">
+        <ion-icon
+          slot="icon-only"
+          name="reload-outline"
+          style="--color: var(--ion-color-dark)"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
