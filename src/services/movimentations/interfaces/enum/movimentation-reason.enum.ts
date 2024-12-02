@@ -1,15 +1,15 @@
 export enum EMovimentationReason {
-  Insertion = 1,
-  Edit = 2,
-  ReturnFromLoan = 3,
-  ReturnFromMaintenance = 4,
+  Insertion = "INSERTION",
+  Edit = "EDIT",
+  ReturnFromLoan = "RETURN_FROM_LOAN",
+  ReturnFromMaintenance = "RETURN_FROM_MAINTENANCE",
 
   // Exit reasons
-  Disposal = 5,
-  Loan = 6,
-  SentToMaintenance = 7,
-  Removed = 8,
+  Disposal = "DISPOSAL",
+  Loan = "LOAN",
+  SentToMaintenance = "SENT_TO_MAINTENANCE",
+  Removed = "REMOVED",
 
   // Other reason
-  Other = 9,
+  Other = "OTHER",
 }

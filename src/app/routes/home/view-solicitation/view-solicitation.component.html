@@ -10,8 +10,85 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
 
+    <ion-content>
+      <!-- Descrição da Solicitação -->
+      <ion-item *ngIf="solicitation?.description">
+        <ion-label>Descrição</ion-label>
+        <ion-text>
+          {{ solicitation?.description }}
+        </ion-text>
+      </ion-item>
+
+      <!-- Itens da Solicitação -->
+      <ion-card *ngIf="solicitation?.items?.length">
+        <ion-card-header>
+          <ion-card-title>Itens do Pedido</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <div *ngIf="solicitation">
+              <ion-item
+                lines="none"
+                *ngFor="let item of solicitation.items; let j = index"
+              >
+                <ion-text>
+                  {{ item?.quantity }}x <b>{{ item?.materialName }}</b>
+                </ion-text>
+              </ion-item>
+            </div>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Informações Adicionais -->
+      <ion-list>
+        <ion-item>
+          <ion-label>Solicitado por:</ion-label>
+          <ion-text>{{ solicitation?.userInstitution?.userName }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Solicitado em:</ion-label>
+          <ion-text>{{
+            solicitation?.solicitedAt | date : "dd/MM/yyyy"
+          }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Previsão de Devolução:</ion-label>
+          <ion-text>{{
+            solicitation?.expectReturnAt | date : "dd/MM/yyyy"
+          }}</ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-label>Status:</ion-label>
+          <ion-text>{{
+            "solicitationStatus." +
+              (solicitation?.status?.toString() | uppercase) | translate
+          }}</ion-text>
+        </ion-item>
+      </ion-list>
     </ion-content>
+
+    <!-- Rodapé com Botões Condicionais -->
+    <ion-footer
+      *ngIf="
+        payload?.role !== eUserRole && solicitation?.status === eSolWaiting
+      "
+    >
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button color="danger" (click)="onDecline()">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+            Recusar
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button color="success" (click)="onApprove()">
+            <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+            Aprovar
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
   </ng-template>
 </ion-modal>

@@ -62,10 +62,10 @@ export class HomePage extends BaseComponent implements OnInit {
       const solicitations = this.solicitationsService.solicitations;
       if (solicitations != this.solicitations) {
         this.loadingSwiper = true;
-        // console.log(
-        //   'Atualizando solicitações',
-        //   this.solicitationsService.solicitations
-        // );
+        console.log(
+          'Atualizando solicitações',
+          this.solicitationsService.solicitations
+        );
         setTimeout(() => {
           this.solicitations = this.solicitationsService.solicitations;
           this.cdr.detectChanges();

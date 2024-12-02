@@ -1,8 +1,8 @@
 export enum ESolicitationStatus {
-  WAITING,
-  ACCEPT,
-  DECLINED,
+  WAITING = "WAITING",
+  ACCEPT = "ACCEPT",
+  DECLINED = "DECLINED",
 
-  WITHDRAWN,
-  RETURNED,
+  WITHDRAWN = "WITHDRAWN",
+  RETURNED = "RETURNED",
 }

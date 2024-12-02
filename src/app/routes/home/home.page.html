@@ -51,29 +51,46 @@
             class="slide"
             *ngFor="let sol of solicitations; let j = index"
           >
-            <ion-card (click)="ModalViewSolicitation.onOpenModal(sol)" button>
+            <ion-card
+              id="solicitation-card"
+              (click)="ModalViewSolicitation.onOpenModal(sol)"
+              button
+            >
               <ion-card-header>
                 <ion-title>Solicitação #{{ sol.id }}</ion-title>
               </ion-card-header>
               <ion-card-content>
-                <ion-label>
-                  Solicitado por: {{ sol.userInstitution.userName }} <br />
-                  <small>{{ sol.description }}</small>
-                </ion-label>
-                <br />
-                <ion-label>
-                  <p>
-                    {{ sol.items.length }} ite{{ sol.items.length === 1 ? 'm' :
-                    'ns' }}.
-                  </p>
-                  <p>Clique para detalhes ></p>
-                </ion-label>
-                <br />
-                <ion-label [color]="resolveStatusColor(sol.status)"
-                  >{{ 'solicitationStatus.' + (sol.status.toString() |
-                  uppercase) | translate }}</ion-label
-                >
+                <div>
+                  <ion-label>
+                    <b>Solicitado por:</b> {{ sol.userInstitution.userName }}
+                  </ion-label>
+                  <br />
+                  <ion-label class="description">
+                    <b>Descrição:</b> {{ sol.description || 'Sem descrição' }}
+                  </ion-label>
+                  <ion-label>
+                    <b>Data da solicitação:</b>
+                    {{ sol.solicitedAt | date: 'dd/MM/yyyy' }}
+                  </ion-label>
+                  <br />
+                  <div style="margin-top: 8px">
+                    <ion-label *ngFor="let item of sol.items">
+                      <p>{{ item.quantity }}x {{ item.materialName }}</p>
+                    </ion-label>
+                  </div>
+                </div>
               </ion-card-content>
+              <div class="card-footer">
+                <ion-label>
+                  <b>Retorno previsto:</b>
+                  {{ sol.expectReturnAt | date: 'dd/MM/yyyy' }}
+                </ion-label>
+                <br />
+                <ion-label [color]="resolveStatusColor(sol.status)">
+                  {{ 'solicitationStatus.' +
+                  (sol.status.toString() | uppercase) | translate }}
+                </ion-label>
+              </div>
             </ion-card>
           </swiper-slide>
         </swiper-container>

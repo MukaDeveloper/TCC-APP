@@ -1,6 +1,6 @@
 export enum ECartItemStatus {
 
-  PENDING,
-  ACCEPTED,
-  DECLINED
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  DECLINED = 'DECLINED',
 }

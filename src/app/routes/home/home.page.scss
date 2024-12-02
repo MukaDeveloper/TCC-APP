@@ -1,13 +1,82 @@
-.container {
-  background-color: var(--ion-color-light);
-  margin-top: 2rem;
-}
-
 .slide {
   height: auto;
-  // max-width: 25%;
 }
 
-ion-card:hover {
+#solicitation-card {
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  border: 1px solid var(--ion-color-dark);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  padding-bottom: 60px; /* Espaço reservado para o rodapé */
+}
+
+#solicitation-card ion-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.card-footer ion-label {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.card-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 96px;
+}
+
+.card-items ion-row {
+  text-align: center;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 4px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+#solicitation-card:hover {
   --background: var(--ion-color-light-shade);
+  transform: scale(1.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  ion-content {
+    --background: var(--ion-color-light-shade);
+  }
+}
+
+ion-label {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+ion-title {
+  font-size: 16px;
 }

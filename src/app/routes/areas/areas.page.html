@@ -58,7 +58,7 @@
                   <!-- <ion-button (click)="AppEditArea.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button> -->
-                  <ion-button (click)="onDeleteArea(item)">
+                  <ion-button (click)="onDeleteArea(item); $event.stopPropagation()">
                     <ion-icon color="danger" name="trash-outline"></ion-icon>
                   </ion-button>
                 </ion-buttons>

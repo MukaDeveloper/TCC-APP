@@ -11,7 +11,7 @@ export interface ISolicitation {
   institutionId: number,
   userInstitution: any;
 
-  solicitatedAt: Date,
+  solicitedAt: Date,
   expectReturnAt: Date,
   status: ESolicitationStatus
 }

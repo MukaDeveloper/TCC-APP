@@ -77,7 +77,7 @@
                   <!-- <ion-button (click)="AppEditWarehouse.onOpenModal(item)">
                     <ion-icon name="create-outline"></ion-icon>
                   </ion-button> -->
-                  <ion-button (click)="onDeleteWarehouse(item)">
+                  <ion-button (click)="onDeleteWarehouse(item); $event.stopPropagation()">
                     <ion-icon color="danger" name="trash-outline"></ion-icon>
                   </ion-button>
                 </ion-buttons>
