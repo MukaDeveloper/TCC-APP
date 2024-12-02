@@ -14,8 +14,9 @@ export class WarehousesService {
 
   public selectedWarehouse$: BehaviorSubject<IWarehouse | null> =
     new BehaviorSubject<IWarehouse | null>(null);
-  public warehouses$: BehaviorSubject<IWarehouse[]> =
-    new BehaviorSubject<IWarehouse[]>([]);
+  public warehouses$: BehaviorSubject<IWarehouse[]> = new BehaviorSubject<
+    IWarehouse[]
+  >([]);
   public filtered$: BehaviorSubject<IWarehouse[]> = new BehaviorSubject<
     IWarehouse[]
   >([]);
@@ -107,10 +108,10 @@ export class WarehousesService {
     );
   }
 
-  public delete(warehouseId: number) {
+  public delete(warehouseId: number): Observable<string> {
     return this.apiWarehousesService
       .deleteWarehouse(warehouseId)
-      .pipe(map((res: null) => res));
+      .pipe(map((res: string) => res));
   }
 
   // #endregion Public Methods (4)

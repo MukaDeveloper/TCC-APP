@@ -49,10 +49,10 @@ export class ApiWarehousesService extends ApiBaseService {
       .pipe(catchError(HandleError.handler));
   }
 
-  public deleteWarehouse(warehouseId: number): Observable<null> {
+  public deleteWarehouse(warehouseId: number): Observable<string> {
     const url = `${this.apiUrl}/Warehouses/${warehouseId}`;
     return this.http
-      .delete<null>(url)
+      .delete<string>(url)
       .pipe(catchError(HandleError.handler));
   }
 
