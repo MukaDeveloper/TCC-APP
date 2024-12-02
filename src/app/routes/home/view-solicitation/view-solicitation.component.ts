@@ -23,8 +23,13 @@ export class ViewSolicitationComponent extends BaseComponent implements OnInit {
   @Output() public updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   public solicitation: ISolicitation | null = null;
   public payload: IPayload | null = null;
-  public eSolWaiting = ESolicitationStatus.WAITING;
   public isLoading = false;
+
+  public eSolWaiting = ESolicitationStatus.WAITING;
+  public eSolAccept = ESolicitationStatus.ACCEPT;
+  public eSolDeclined = ESolicitationStatus.DECLINED;
+  public eSolWithdrawn = ESolicitationStatus.WITHDRAWN;
+  public eSolReturned = ESolicitationStatus.RETURNED;
 
   constructor(
     private readonly payloadService: PayloadService,
@@ -48,12 +53,12 @@ export class ViewSolicitationComponent extends BaseComponent implements OnInit {
     console.log(this.solicitation?.status, this.eSolWaiting);
   }
 
-  public onApprove() {
+  public updateSolicitation(status: ESolicitationStatus) {
     this.isLoading = true;
 
     const obj: UpdateSolicitationDto = {
       id: this.solicitation?.id as number,
-      status: ESolicitationStatus.ACCEPT,
+      status: status,
       movimentedAt: new Date().toISOString(),
     }
 
@@ -61,7 +66,7 @@ export class ViewSolicitationComponent extends BaseComponent implements OnInit {
       next: (res) => {
         console.log(res);
         this.isLoading = false;
-        this.toast(`A Solicitação #${res?.item?.id} foi aprovada com sucesso`, "Sucesso!", 'success');
+        this.toast(`A Solicitação #${res?.item?.id} foi atualizada com sucesso`, "Sucesso!", 'success');
         this.updated.emit();
         this.modal.dismiss();
       },

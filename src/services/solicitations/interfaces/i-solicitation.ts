@@ -11,7 +11,13 @@ export interface ISolicitation {
   institutionId: number,
   userInstitution: any;
 
+  status: ESolicitationStatus
+
   solicitedAt: Date,
   expectReturnAt: Date,
-  status: ESolicitationStatus
+
+  approvedAt: Date,
+  declinedAt: Date,
+  borroadAt: Date,
+  returnedAt: Date
 }

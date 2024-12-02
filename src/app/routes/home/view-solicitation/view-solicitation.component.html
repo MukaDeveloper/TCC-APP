@@ -12,7 +12,7 @@
     </ion-header>
 
     <ion-content>
-      <div style="text-align: center;" *ngIf="isLoading">
+      <div style="text-align: center" *ngIf="isLoading">
         <ion-label>
           <ion-spinner name="crescent"></ion-spinner>
         </ion-label>
@@ -72,27 +72,85 @@
                 (solicitation?.status?.toString() | uppercase) | translate
             }}</ion-text>
           </ion-item>
+          <ion-item *ngIf="solicitation?.status === eSolAccept">
+            <ion-label>Aceita em:</ion-label>
+            <ion-text>{{
+              solicitation?.approvedAt | date : "dd/MM/yyyy"
+            }}</ion-text>
+          </ion-item>
+          <ion-item *ngIf="solicitation?.status === eSolDeclined">
+            <ion-label>Recusada em:</ion-label>
+            <ion-text>{{
+              solicitation?.declinedAt | date : "dd/MM/yyyy"
+            }}</ion-text>
+          </ion-item>
+          <ion-item *ngIf="solicitation?.status === eSolWithdrawn">
+            <ion-label>Retirado em:</ion-label>
+            <ion-text>{{
+              solicitation?.borroadAt | date : "dd/MM/yyyy"
+            }}</ion-text>
+          </ion-item>
+          <ion-item *ngIf="solicitation?.status === eSolReturned">
+            <ion-label>Devolvida em:</ion-label>
+            <ion-text>{{
+              solicitation?.returnedAt | date : "dd/MM/yyyy"
+            }}</ion-text>
+          </ion-item>
         </ion-list>
       </section>
     </ion-content>
 
     <!-- Rodapé com Botões Condicionais -->
-    <ion-footer
-      *ngIf="
-        payload?.role !== eUserRole
-      "
-    >
+    <ion-footer *ngIf="payload?.role !== eUserRole">
       <ion-toolbar *ngIf="solicitation?.status === eSolWaiting">
         <ion-buttons slot="start">
-          <ion-button color="danger" (click)="onDecline()">
+          <ion-button
+            color="danger"
+            fill="solid"
+            (click)="updateSolicitation(eSolDeclined)"
+          >
             <ion-icon name="close-circle-outline" slot="start"></ion-icon>
             Recusar
           </ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button color="success" (click)="onApprove()">
+          <ion-button
+            color="success"
+            fill="solid"
+            (click)="updateSolicitation(eSolAccept)"
+          >
             <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
             Aprovar
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar *ngIf="solicitation?.status === eSolAccept">
+        <ion-buttons slot="end">
+          <ion-button
+            color="medium"
+            fill="solid"
+            (click)="updateSolicitation(eSolWithdrawn)"
+          >
+            <ion-icon
+              name="arrow-forward-circle-outline"
+              slot="start"
+            ></ion-icon>
+            Retirado
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar *ngIf="solicitation?.status === eSolWithdrawn">
+        <ion-buttons slot="end">
+          <ion-button
+            color="tertiary"
+            fill="solid"
+            (click)="updateSolicitation(eSolReturned)"
+          >
+            <ion-icon
+              name="arrow-forward-circle-outline"
+              slot="start"
+            ></ion-icon>
+            Devolvido
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
