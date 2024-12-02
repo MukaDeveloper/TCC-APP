@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, OnInit } from '@angular/core';
 import {
   AlertController,
   LoadingController,
@@ -60,18 +60,16 @@ export class HomePage extends BaseComponent implements OnInit {
     effect(() => {
       // Aqui receber as atualizações de solicitations
       const solicitations = this.solicitationsService.solicitations;
-      if (solicitations != this.solicitations) {
-        this.loadingSwiper = true;
-        console.log(
-          'Atualizando solicitações',
-          this.solicitationsService.solicitations
-        );
-        setTimeout(() => {
-          this.solicitations = this.solicitationsService.solicitations;
-          this.cdr.detectChanges();
-          this.loadingSwiper = false;
-        }, 1500);
-      }
+      this.loadingSwiper = true;
+      // console.log(
+      //   'Atualizando solicitações',
+      //   this.solicitationsService.solicitations
+      // );
+      setTimeout(() => {
+        this.solicitations = this.solicitationsService.solicitations;
+        this.cdr.detectChanges();
+        this.loadingSwiper = false;
+      }, 1500);
       this.isLoading = false;
     });
   }
