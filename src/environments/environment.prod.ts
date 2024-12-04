@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: 'http://localhost:5078',
+  apiUrl: 'https://api-stocktrack-fuc3b4epc6g3byhm.brazilsouth-01.azurewebsites.net',
   production: true,
 };
