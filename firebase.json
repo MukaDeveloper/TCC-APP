@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "app-stock-track",
-    "public": "dist",
+    "public": "www",
     "ignore": [
       "firebase.json",
       "**/.*",
