@@ -1,0 +1,194 @@
+<ion-modal #ModalCart id="modal-cart">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Seu carrinho</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="ModalCart.dismiss()">
+            <ion-icon
+              slot="icon-only"
+              name="close-outline"
+              style="--color: var(--ion-color-dark)"
+            ></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div class="wrapper">
+        <div class="container">
+          <section>
+            <div class="no-cart center" *ngIf="!cart?.items?.length || !cart">
+              <ion-label>
+                Você ainda não adicionou nenhum item no carrinho.
+              </ion-label>
+              <div>
+                <ion-button
+                  color="dark"
+                  size="small"
+                  fill="clear"
+                  (click)="GoToMaterials()"
+                >
+                  <ion-icon name="add-outline"></ion-icon>
+                  <ion-label>ADICIONAR ITEM</ion-label>
+                </ion-button>
+              </div>
+            </div>
+            <ion-list *ngIf="cart?.items?.length">
+              <ion-list-header lines="none">
+                <ion-label
+                  ><h1><b> Itens do pedido </b></h1></ion-label
+                >
+                <ion-button fill="none" (click)="clearCart()">
+                  <ion-label color="danger">
+                    <small> Limpar </small>
+                  </ion-label>
+                </ion-button>
+              </ion-list-header>
+              <div *ngIf="cart">
+                <ion-item
+                  lines="none"
+                  *ngFor="let item of cart.items; let j = index"
+                >
+                  <ion-thumbnail
+                    slot="start"
+                    *ngIf="item.imageURL"
+                    size="256px"
+                  >
+                    <ion-img [src]="item.imageURL"></ion-img>
+                  </ion-thumbnail>
+                  <ion-thumbnail
+                    slot="start"
+                    *ngIf="!item.imageURL"
+                    size="256px"
+                  >
+                    <ion-img src="assets/imgs/dummy.jpg"></ion-img>
+                  </ion-thumbnail>
+                  <ion-text>
+                    <p>
+                      <b>{{ item?.name }}</b>
+                    </p>
+                  </ion-text>
+                  <ion-buttons slot="end">
+                    <ion-button
+                      fill="none"
+                      color="none"
+                      (click)="onDecrementItem(item, j)"
+                    >
+                      <ion-icon
+                        size="large"
+                        name="remove-outline"
+                        color="danger"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                    <ion-button style="width: 32px">
+                      <ion-label>{{ item?.quantity }}</ion-label>
+                    </ion-button>
+                    <ion-button
+                      [disabled]="item.quantity >= item.quantityAvailable"
+                      fill="none"
+                      color="none"
+                      (click)="onIncrementItem(item, j)"
+                    >
+                      <ion-icon
+                        size="large"
+                        name="add-outline"
+                        color="danger"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-item>
+              </div>
+
+              <div class="center">
+                <ion-button
+                  class="color-white"
+                  size="small"
+                  fill="clear"
+                  (click)="GoToMaterials()"
+                >
+                  <ion-icon name="add-outline"></ion-icon>
+                  <ion-label>ADICIONAR ITEM</ion-label>
+                </ion-button>
+              </div>
+
+              <form
+                style="margin-top: 8px"
+                [formGroup]="formGroup"
+                *ngIf="formGroup"
+              >
+                <ion-item lines="none">
+                  <ion-textarea
+                    label="Descrição"
+                    labelPlacement="fixed"
+                    formControlName="description"
+                    fill="outline"
+                    inputmode="text"
+                    shape="round"
+                    type="text"
+                    placeholder="Insira um breve resumo sobre o motivo da solicitação."
+                    autoGrow="true"
+                    maxlength="120"
+                    spellcheck="true"
+                    wrap="soft"
+                  ></ion-textarea>
+                </ion-item>
+                <br />
+                <ion-item>
+                  <ion-label>Selecione a data de devolução</ion-label>
+                  <ion-datetime-button
+                    datetime="datetime"
+                  ></ion-datetime-button>
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime
+                        id="datetime"
+                        color="secondary"
+                        presentation="date"
+                        [showDefaultButtons]="true"
+                        doneText="Selecionar"
+                        (ionChange)="onDateChange($event)"
+                        [value]="
+                          formGroup.get('expectReturnAt')?.value
+                            | date : 'yyyy-MM-ddTHH:mm:ss'
+                        "
+                        [formatOptions]="{
+                          date: {
+                            weekday: 'short',
+                            month: 'long',
+                            day: '2-digit'
+                          }
+                        }"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
+                </ion-item>
+              </form>
+            </ion-list>
+          </section>
+        </div>
+      </div>
+      <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar style="padding-right: 16px">
+        <ion-buttons slot="start">
+          <ion-button (click)="ModalCart.dismiss()">Cancelar</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="onSubmit()"
+            [disabled]="!cart?.items?.length"
+            slot="end"
+            fill="solid"
+            color="success"
+          >
+            SOLICITAR
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>

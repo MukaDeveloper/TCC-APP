@@ -12,11 +12,30 @@
         <app-sidebar [isMenuOpen]="isMenuOpen"></app-sidebar>
       </ion-content>
       <ion-footer class="background-color">
-        <ion-button (click)="onLogout()" fill="solid" color="secondary">
-          Sair
+        <ion-button
+          (click)="onLogout()"
+          fill="solid"
+          expand="block"
+          color="primary"
+        >
+          <ion-label class="color-white"
+            >Sair</ion-label
+          >
         </ion-button>
       </ion-footer>
     </ion-menu>
     <ion-router-outlet id="main"></ion-router-outlet>
   </ion-split-pane>
+  <ion-fab *ngIf="canShow" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="ModalCart.onOpenModal()">
+      <ion-icon name="cart-outline" class="color-white"></ion-icon>
+    </ion-fab-button>
+    <ion-badge
+      *ngIf="getCartItemsQuantity(cart?.items)"
+      color="danger"
+      class="badge"
+      ><b>{{ getCartItemsQuantity(cart?.items) }}</b></ion-badge
+    >
+  </ion-fab>
+  <app-modal-cart #ModalCart></app-modal-cart>
 </ion-content>

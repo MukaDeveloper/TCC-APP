@@ -1,7 +1,16 @@
 <ion-content [fullscreen]="true">
-  <section *ngIf="!isLoading">
     <div class="wrapper">
-      <ion-card>
+      <div *ngIf="isLoading">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <ion-label>
+          <ion-spinner name="circular"></ion-spinner>
+        </ion-label>
+      </div>
+      <ion-card *ngIf="!isLoading">
         <ion-card-header>
           <div class="d-flex justify-content-center">
             <img src="assets/imgs/logo.png" alt="" style="width: 250px" />
@@ -24,19 +33,20 @@
                 labelPlacement="start"
                 fill="outline"
                 placeholder="seu-email@email.com"
-                errorText="Insira um e-mail válido"
                 type="email"
                 class="custom"
                 inputmode="email"
                 shape="round"
                 autocomplete="email"
-                (keyup)="onKeyup($event.keyCode)"
+                (keyup)="onKeyEvent($event.keyCode)"
+                (keydown)="onKeyEvent($event.keyCode)"
                 email
               ></ion-input>
             </div>
             <br />
             <div class="item">
               <ion-input
+                #passwordInput
                 formControlName="password"
                 label="Senha"
                 labelPlacement="start"
@@ -44,10 +54,12 @@
                 type="password"
                 class="custom"
                 shape="round"
-                (keyup)="onKeyup($event.keyCode)"
+                clear-on-edit="false"
+                (keyup)="onKeyEvent($event.keyCode)"
+                (keydown)="onKeyEvent($event.keyCode)"
               ></ion-input>
             </div>
-            <br />
+            <!-- <br />
             <div>
               <ion-input
                 formControlName="institutionId"
@@ -60,8 +72,18 @@
                 shape="round"
                 maxlength="3"
                 minlength="1"
-                (keyup)="onKeyup($event.keyCode)"
-                ></ion-input>
+                (keyup)="onKeyEvent($event.keyCode)"
+                (keydown)="onKeyEvent($event.keyCode)"
+              ></ion-input>
+            </div> -->
+            <br />
+            <div class="checkbox-right">
+              <ion-checkbox
+                formControlName="keepIn"
+                slot="end"
+                labelPlacement="start"
+                >Manter-me conectado</ion-checkbox
+              >
             </div>
             <br />
             <ion-button
@@ -75,13 +97,20 @@
               >ACESSAR</ion-button
             >
             <div style="text-align: center">
-              <a href="" style="color: var(--ion-color-tertiary)"
-                ><small>Esqueci minha senha</small></a
+              <ion-label class="color-white">
+                Não tem registro?
+                <span (click)="goToRegister()" class="redirect" button>Cadastre-se</span></ion-label
+              >
+              <br />
+              <br />
+              <ion-label
+                class="color-white"
+                ><small (click)="forgotPassword()" class="redirect" button>Esqueci minha senha</small></ion-label
               >
             </div>
           </form>
         </ion-card-content>
       </ion-card>
     </div>
-  </section>
+  <!-- <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre> -->
 </ion-content>

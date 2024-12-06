@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LocalStorageAuthService } from '../localstorage/auth.service';
+import { LocalStorageAuthService } from '../localstorage/auth-local.service';
+import { SessionStorageAuthService } from '../localstorage/auth-session.service';
 import { IPayload } from './interfaces/i-payload';
 
 @Injectable({
@@ -18,21 +19,29 @@ export class PayloadService {
 
   // #region Constructors (1)
 
-  constructor(readonly localStorageAuthService: LocalStorageAuthService) {
+  constructor(
+    readonly sessionStorageAuthService: SessionStorageAuthService,
+    readonly localStorageAuthService: LocalStorageAuthService
+  ) {
     this.payloadSubject = new BehaviorSubject<IPayload | null>(null);
     this.payload$ = this.payloadSubject.asObservable();
   }
 
   // #endregion Constructors (1)
 
-  // #region Public Getters And Setters (2)
+  // #region Public Getters And Setters (1)
 
   public get payload(): IPayload | null {
     let payload = this.payloadSubject.value;
     if (!payload) {
-      const token = this.localStorageAuthService.val;
-      if (token) {
-        payload = this.decodeJWT(token);
+      const tokenSession = this.sessionStorageAuthService.val;
+      const tokenLocal = this.localStorageAuthService.val;
+      if (tokenSession) {
+        payload = this.decodeJWT(tokenSession);
+        this.payloadSubject.next(payload || null);
+        return payload;
+      } else if (tokenLocal) {
+        payload = this.decodeJWT(tokenLocal);
         this.payloadSubject.next(payload || null);
         return payload;
       }
@@ -41,19 +50,22 @@ export class PayloadService {
     return this.payloadSubject.value;
   }
 
-  // #endregion Public Getters And Setters (2)
+  // #endregion Public Getters And Setters (1)
 
   // #region Public Methods (1)
 
   public nextPayload(token: string | null): void {
     if (!token) {
+      this.sessionStorageAuthService.val = '';
       this.localStorageAuthService.val = '';
       this.payloadSubject.next(null);
       return;
     }
-    this.localStorageAuthService.val = token;
+    if (this.localStorageAuthService.val) {
+      this.localStorageAuthService.val = token;
+    }
+    this.sessionStorageAuthService.val = token;
     const payload = this.decodeJWT(token);
-    console.log('[NextPayload]', payload);
     this.payloadSubject.next(payload || null);
   }
 
@@ -63,9 +75,17 @@ export class PayloadService {
 
   private decodeJWT(token: string): IPayload | null {
     try {
-      const decoded = jwtDecode<IPayload>(token);
-      console.log('[DECODE]', decoded);
+      const decoded = jwtDecode<any>(token);
       if (decoded) {
+        decoded.verified = decoded.verified.toLowerCase() === 'true';
+        decoded.active = decoded.active.toLowerCase() === 'true';
+        decoded.id = parseInt(decoded.id);
+        decoded.institutionId = parseInt(decoded.institutionId);
+
+        if (decoded.exp < Math.floor(Date.now() / 1000)) {
+          return null;
+        }
+
         return decoded as IPayload;
       }
       return null;

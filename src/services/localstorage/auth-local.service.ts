@@ -16,27 +16,23 @@ export class LocalStorageAuthService {
 
   // #endregion Constructors (1)
 
-  // #region Public Accessors (1)
+  // #region Public Getters And Setters (2)
 
   public get val(): string {
-    const val = sessionStorage.getItem(this.key);
+    const val = localStorage.getItem(this.key);
     if (!val) {
       return '';
     }
     return val;
   }
 
-  // #endregion Public Accessors (1)
-
-  // #region Public Methods (1)
-
   public set val(val: string) {
     if (!val) {
-      sessionStorage.setItem(this.key, '');
+      localStorage.setItem(this.key, '');
     } else {
-      sessionStorage.setItem(this.key, val);
+      localStorage.setItem(this.key, val);
     }
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Getters And Setters (2)
 }

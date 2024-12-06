@@ -1,0 +1,19 @@
+ion-item ion-thumbnail {
+  width: 96px;
+  height: 96px;
+}
+
+ion-item ion-thumbnail ion-img,
+ion-item ion-thumbnail img {
+  border: 2px solid var(--ion-color-secondary) !important;
+  border-radius: 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: auto !important;
+  margin: 0px;
+}
+
+.lh-75 {
+  line-height: 0.75rem !important;
+}

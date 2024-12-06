@@ -1,0 +1,10 @@
+{
+  "solicitationStatus": {
+    "WAITING": "EM ESPERA",
+    "ACCEPT": "ACEITA",
+    "DECLINED": "RECUSADA",
+
+    "WITHDRAWN": "RETIRADA",
+    "RETURNED": "DEVOLVIDA"
+  }
+}

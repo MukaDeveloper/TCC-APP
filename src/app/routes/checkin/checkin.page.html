@@ -1,0 +1,57 @@
+<ion-header class="clear-borders">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only" class="color-white"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="wrapper">
+    <div *ngIf="isLoading">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <ion-label>
+        <ion-spinner name="circular"></ion-spinner>
+      </ion-label>
+    </div>
+    <section *ngIf="!isLoading">
+      <div class="d-flex justify-content-center">
+        <img src="assets/imgs/logo.png" alt="" style="width: 250px" />
+      </div>
+      <br />
+      <div style="text-align: center">
+        <ion-label *ngIf="institutions?.length" class="color-white">
+          <h1>Olá {{ payload?.name }}</h1>
+          <h2>Selecione qual instituição deseja acessar.</h2>
+        </ion-label>
+        <ion-label *ngIf="!institutions?.length" class="color-white">
+          <h1>Olá {{ payload?.name }}</h1>
+          <br />
+          <h2>Você atualmente não foi atribuído a nenhuma instutição.</h2>
+          <h2>
+            Solicite para um responsável da sua instituição para lhe adicionar.
+          </h2>
+        </ion-label>
+      </div>
+      <ion-list class="institutions-list background">
+        <ion-item
+          lines="none"
+          class="institutions-item background color-white"
+          *ngFor="let institution of institutions; let k = index"
+          (click)="onSelectInstitution(institution)"
+          detail
+        >
+          <ion-label>
+            <small>{{institution.accessCode}}</small><br />
+            {{ institution.name }}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
+  </div>
+</ion-content>

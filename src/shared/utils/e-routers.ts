@@ -1,0 +1,16 @@
+export enum ERouters {
+  app = 'app',
+  login = 'login',
+  checkin = 'checkin',
+  register = 'register',
+  confirm = 'confirm',
+  forgotPassword = 'forgot-password',
+  terms = 'terms-of-use',
+  home = 'home',
+  members = 'members',
+  events = 'events',
+  areas = 'areas',
+  warehouses = 'warehouses',
+  materials = 'materials',
+  addMaterial = 'add-material',
+}

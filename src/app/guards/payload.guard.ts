@@ -7,7 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { RoutersEnum } from 'src/shared/utils/routers-enum';
+import { ERouters } from 'src/shared/utils/e-routers';
 import { PayloadService } from '../../services/payload/payload.service';
 
 @Injectable({
@@ -33,18 +33,32 @@ export class PermissionsService {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    console.log('[PayloadGuard] PermissionsService.canActivate');
+    // // console.log('[PayloadGuard] PermissionsService.canActivate');
 
     const payload = this.payloadService.payload;
 
-    console.log('[PayloadGuard] Payload =>', payload);
     if (!payload) {
-      console.log('[PayloadGuard] BLOCKED => REDIRECT');
-      return this.router.createUrlTree([RoutersEnum.login], {
+      // console.log('[PayloadGUARD] BLOCKED => GO TO LOGIN');
+      return this.router.createUrlTree([ERouters.login], {
         queryParams: { redirected: true },
       });
     }
-    console.log('[PayloadGuard] ALLOWED');
+    
+    if (payload.verified === false) {
+      // console.log('[PayloadGUARD] BLOCKED2 => GO TO CONFIRM');
+      return this.router.createUrlTree([ERouters.confirm], {
+        queryParams: { redirected: true },
+      });
+    }
+
+    const institutionId = payload.institutionId;
+    if (!institutionId) {
+      // console.log('[PayloadGUARD] BLOCKED3 => GO TO CHECKIN');
+      return this.router.createUrlTree([ERouters.checkin], {
+        queryParams: { redirected: true },
+      });
+    }
+    // console.log('[PayloadGUARD] ALLOWED');
     return true;
   }
 

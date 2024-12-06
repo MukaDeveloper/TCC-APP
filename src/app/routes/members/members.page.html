@@ -1,0 +1,97 @@
+<ion-header class="ion-no-border">
+  <ion-breadcrumbs [maxItems]="4">
+    <ion-breadcrumb [routerLink]="homeURL">Home</ion-breadcrumb>
+    <ion-breadcrumb>Membros</ion-breadcrumb>
+  </ion-breadcrumbs>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultURL"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Membros</ion-title>
+    <ion-buttons
+      slot="end"
+      *ngIf="payload?.role !== eUser && payload?.role !== eWarehouseman"
+    >
+      <ion-chip
+        outline="true"
+        (click)="AppAddMember.modal.present()"
+        style="--color: var(--ion-color-dark)"
+      >
+        <ion-label style="--color: var(--ion-color-dark)">Adicionar</ion-label>
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-chip>
+      <ion-button (click)="onReload()">
+        <ion-icon
+          slot="icon-only"
+          name="reload-outline"
+          style="--color: var(--ion-color-dark)"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item *ngIf="isLoading">
+    <ion-label style="text-align: center"
+      ><ion-text>
+        <ion-spinner
+          name="circular"
+          style="width: 32px; height: 32px"
+        ></ion-spinner> </ion-text
+    ></ion-label>
+  </ion-item>
+  <section *ngIf="!isLoading">
+    <ion-item *ngIf="!members?.length" style="text-align: center; margin-top: 1rem;">
+      <ion-label>
+        <p>Como você conseguiu essa proeza de estar vendo essa mensagem????</p>
+      </ion-label>
+    </ion-item>
+    <ion-list *ngIf="members?.length">
+      <ion-item *ngFor="let member of members; let j = index" lines="none">
+        <ion-avatar slot="start">
+          <img [alt]="member.name" [src]="member.photoUrl" />
+        </ion-avatar>
+        <ion-text>
+          <h4 class="m-0 mb-1">{{ member.name ? member.name : 'ANÔNIMO' }}</h4>
+          <small class="m-0">{{ member.email }}</small>
+        </ion-text>
+        <ion-chip style="margin-left: 24px;" color="danger" *ngIf="!member.verified">Não verificado</ion-chip>
+        <ion-label
+          slot="end"
+          *ngIf="payload?.role !== eUser && payload?.role !== eWarehouseman"
+        >
+          <ion-toolbar>
+            <ion-buttons slot="end">
+              <ion-chip
+                [disabled]="member.id === payload?.id"
+                [outline]="true"
+                (click)="onShowChangeRole(member)"
+                [color]="onGetRoleColor(member.role)"
+                button
+              >
+                <ion-label> {{ translateRole(member.role) }} </ion-label>
+                <ion-icon name="swap-horizontal-outline"></ion-icon>
+              </ion-chip>
+              <ion-button
+                [disabled]="member.id === payload?.id || member.role === eSupport"
+                (click)="onShowRemove(member)"
+              >
+                <ion-icon
+                  name="trash-outline"
+                  color="danger"
+                  slot="icon-only"
+                ></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </section>
+  <ion-list *ngIf="!isLoading"> </ion-list>
+  <app-add-member
+    [payload]="payload"
+    #AppAddMember
+  ></app-add-member>
+</ion-content>

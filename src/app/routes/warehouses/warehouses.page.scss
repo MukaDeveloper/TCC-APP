@@ -1,16 +1,30 @@
 ion-card {
-  
+  height: 100%;
 }
 
-.add-card-content {
+ion-card-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%; /* Isso garante que o ícone esteja no centro vertical do card */
+  text-align: center;
 }
 
-.add-icon {
+.icons {
   width: 100px;
   height: 100px;
+}
+
+.card-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.card-header-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }

@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -25,98 +25,106 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+@import 'swiper/scss';
+@import 'swiper/scss/navigation';
+@import 'swiper/scss/pagination';
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-style: normal;
   font-weight: normal;
-  src: url('/assets/fonts/Poppins-Regular.ttf');
+  src: url("/assets/fonts/Poppins-Regular.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: bold;
-  src: url('/assets/fonts/Poppins-Bold.ttf');
+  src: url("/assets/fonts/Poppins-Bold.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 600;
-  src: url('/assets/fonts/Poppins-Medium.ttf');
+  src: url("/assets/fonts/Poppins-Medium.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 500;
-  src: url('/assets/fonts/Poppins-Medium.ttf');
+  src: url("/assets/fonts/Poppins-Medium.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 300;
-  src: url('/assets/fonts/Poppins-Light.ttf');
+  src: url("/assets/fonts/Poppins-Light.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 100;
-  src: url('/assets/fonts/Poppins-Thin.ttf');
+  src: url("/assets/fonts/Poppins-Thin.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 200;
-  src: url('/assets/fonts/Poppins-Thin.ttf');
+  src: url("/assets/fonts/Poppins-Thin.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 700;
-  src: url('/assets/fonts/Poppins-Black.ttf');
+  src: url("/assets/fonts/Poppins-Black.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 800;
-  src: url('/assets/fonts/Poppins-Black.ttf');
+  src: url("/assets/fonts/Poppins-Black.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-weight: 900;
-  src: url('/assets/fonts/Poppins-Black.ttf');
+  src: url("/assets/fonts/Poppins-Black.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-style: italic;
-  src: url('/assets/fonts/Poppins-Italic.ttf');
+  src: url("/assets/fonts/Poppins-Italic.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-style: italic;
   font-weight: bold;
-  src: url('/assets/fonts/Poppins-BoldItalic.ttf');
+  src: url("/assets/fonts/Poppins-BoldItalic.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-style: italic;
   font-weight: bolder;
-  src: url('/assets/fonts/Poppins-BlackItalic.ttf');
+  src: url("/assets/fonts/Poppins-BlackItalic.ttf");
 }
 
 @font-face {
-  font-family: 'Plex';
+  font-family: "Plex";
   font-style: italic;
   font-weight: lighter;
-  src: url('/assets/fonts/Poppins-LightItalic.ttf');
+  src: url("/assets/fonts/Poppins-LightItalic.ttf");
 }
 
 :root {
   --ion-text-color: #828585;
-  --ion-font-family: 'Plex';
+  --ion-font-family: "Plex";
+}
+
+.color-white {
+  --color: #fdfdfd;
+  color: #fdfdfd;
 }
 
 .d-flex {
@@ -529,4 +537,60 @@
 
 .w-60 {
   width: 60%;
+}
+
+.custom-alert {
+  .alert-wrapper {
+    .alert-button-group {
+      .alert-button {
+        color: var(--ion-color-dark) !important;
+      }
+    }
+  }
+}
+
+.custom-loading {
+  .loading-wrapper {
+    .loading-spinner {
+      ion-spinner {
+        color: var(--ion-color-dark);
+      }
+    }
+  }
+}
+
+.custom-toast {
+  .toast-wrapper {
+    .toast-message {
+      color: var(--ion-color-dark);
+    }
+  }
+}
+
+.custom-select {
+  color: var(--ion-color-dark);
+
+  .select-wrapper {
+    color: var(--ion-color-dark);
+
+    .select-message {
+      color: var(--ion-color-dark);
+    }
+  }
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -3px;
+  background-color: red;
+  color: white;
+  border-radius: 40%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  padding: 0;
 }

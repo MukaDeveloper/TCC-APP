@@ -1,0 +1,63 @@
+name: Firebase Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Install Ionic CLI
+        run: npm install -g @ionic/cli
+
+      - name: Build the project for demo
+        run: ionic build --prod
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout do código
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Configurar Node.js (Firebase CLI requer Node.js)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.20.4" # Certifique-se de usar a versão compatível
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Install Ionic CLI
+        run: npm install -g @ionic/cli
+
+      # Instalar Firebase CLI
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+        
+      - name: Authenticate with Google Cloud
+        id: auth
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: ${{ secrets.DEPLOY_TOKEN }}
+
+      # Fazer o deploy no Firebase
+      - name: Deploy to Firebase
+        run: npm run deploy

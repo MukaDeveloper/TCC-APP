@@ -1,0 +1,32 @@
+#modal-cart {
+  --height: 90%;
+}
+
+ion-thumbnail {
+  --box-shadow: none !important;
+  --border-radius: 10px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+
+  .container {
+    width: 100%;
+  }
+}
+
+.no-cart {
+  margin-top: 2rem;
+  flex-direction: column;
+}
+
+ion-toolbar {
+  padding: 8px 16px 16px 16px;
+}

@@ -1,42 +1,110 @@
-<ion-header [translucent]="true">
+<ion-header>
+  <ion-breadcrumbs [maxItems]="4">
+    <ion-breadcrumb [routerLink]="homeURL">Home</ion-breadcrumb>
+    <ion-breadcrumb>Almoxarifados</ion-breadcrumb>
+  </ion-breadcrumbs>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultURL"></ion-back-button>
+    </ion-buttons>
     <ion-title>Almoxarifados</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onReload()">
-        <ion-icon slot="icon-only" name="refresh"></ion-icon>
+        <ion-icon
+          slot="icon-only"
+          name="reload-outline"
+          style="--color: var(--ion-color-dark)"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      #searchbarInput
+      [(ngModel)]="search"
+      [disabled]="isLoading"
+      placeholder="Faça uma busca aqui..."
+      clearIcon
+      debounce="1000"
+      show-cancel-button="focus"
+      (ionInput)="onSearch()"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-item>
-    <ion-searchbar></ion-searchbar>
+  <ion-item *ngIf="isLoading">
+    <ion-label style="text-align: center"
+      ><ion-text>
+        <ion-spinner
+          name="circular"
+          style="width: 32px; height: 32px"
+        ></ion-spinner> </ion-text
+    ></ion-label>
   </ion-item>
   <ion-list *ngIf="!isLoading">
     <ion-grid>
+      <ion-row *ngIf="!filtered?.length">
+        <ion-col size="12">
+          <div style="text-align: center">
+            <ion-label>
+              <ion-text *ngIf="payload?.role === eWarehouseman"
+                >Você não tem acesso a nenhum almoxarifado!</ion-text
+              >
+              <ion-text *ngIf="areas?.length || payload?.role !== eWarehouseman"
+                >Nenhum almoxarifado registrado. Clique no botão abaixo para
+                adicionar</ion-text
+              >
+              <ion-text *ngIf="!areas?.length && payload?.role !== eWarehouseman"
+                >Para adicionar um almoxarifado, primeiro adicione uma
+                área.</ion-text
+              >
+            </ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
       <ion-row>
-        <ion-col size="3" *ngFor="let item of warehouses">
-          <ion-card (click)="goToWarehouse()" button>
-            <ion-card-header>
-              <ion-buttons slot="end">
-                <ion-button (click)="editWarehouse()">
-                  <ion-icon name="create-outline"></ion-icon>
-                </ion-button>
-                <ion-button (click)="deleteWarehouse()">
-                  <ion-icon name="trash-outline"></ion-icon>
-                </ion-button>
-              </ion-buttons>
+        <ion-col [size]="columnSize" *ngFor="let item of filtered">
+          <ion-card (click)="onEdit(item)" button>
+            <ion-card-header title="{{ item.name }}">
+              <ion-card-title class="card-header-content">
+                <div class="card-header-text">
+                  <ion-label>
+                    <ion-text>{{ item.name }}</ion-text>
+                  </ion-label>
+                </div>
+                <ion-buttons class="ion-no-padding">
+                  <!-- <ion-button (click)="AppEditWarehouse.onOpenModal(item)">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </ion-button> -->
+                  <ion-button (click)="onDeleteWarehouse(item); $event.stopPropagation()">
+                    <ion-icon color="danger" name="trash-outline"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-card-title>
             </ion-card-header>
-            <ion-card-content> {{ item.description }} </ion-card-content>
+            <ion-card-content>
+              <ion-icon name="home-outline" class="icons"></ion-icon>
+              <ion-label>{{ item.description }}</ion-label>
+              <ion-label color="dark">
+                <small>({{ item.area.name }})</small>
+              </ion-label>
+            </ion-card-content>
           </ion-card>
         </ion-col>
 
-        <ion-col size="3">
-          <ion-card (click)="addNewWarehouse()" button>
+        <ion-col [size]="columnSize" *ngIf="!search && payload?.role !== eUser && payload?.role !== eWarehouseman">
+          <ion-card
+            class="ion-padding"
+            [disabled]="!areas.length"
+            (click)="onCreateWarehouse()"
+            button
+          >
             <ion-card-content class="add-card-content">
-              <ion-icon name="add-outline" class="add-icon"></ion-icon>
-              <ion-label style="font-weight: 700;">Inserir almoxarifado</ion-label>
+              <ion-icon name="add-outline" class="icons"></ion-icon> <br />
+              <ion-label style="font-weight: 700"
+                >Inserir almoxarifado</ion-label
+              >
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -44,5 +112,16 @@
     </ion-grid>
   </ion-list>
 
-  <app-create-warehouse #AppCreateWarehouse></app-create-warehouse>
+  <app-create-warehouse
+    #AppCreateWarehouse
+    [areas]="areas"
+    [warehousemans]="warehousemans"
+    (reload)="onReload()"
+  ></app-create-warehouse>
+  <app-edit-warehouse
+    #AppEditWarehouse
+    [areas]="areas"
+    [warehousemans]="warehousemans"
+    (reload)="onReload()"
+  ></app-edit-warehouse>
 </ion-content>

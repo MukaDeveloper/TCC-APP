@@ -1,0 +1,6 @@
+export enum EUserRole {
+  USER = "USER",
+  WAREHOUSEMAN = "WAREHOUSEMAN",
+  COORDINATOR = "COORDINATOR",
+  SUPPORT = "SUPPORT",
+}

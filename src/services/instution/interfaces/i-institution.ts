@@ -1,13 +1,17 @@
 export interface IInstitution {
-  
+  // #region Properties (10)
+
+  cep: string;
+  city: string;
+  complement: string;
   id: number;
   name: string;
+  accessCode: string;
+  neighborhood: string;
   nickname: string;
+  state: string;
   streetName: string;
   streetNumber: string;
-  complement: string;
-  neightboor: string;
-  city: string;
-  state: string;
-  cep: string;
+
+  // #endregion Properties (10)
 }

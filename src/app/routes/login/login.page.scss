@@ -7,7 +7,7 @@ ion-card {
   top: 46%;
   left: 49%;
   width: 92%;
-  max-width: 400px;
+  max-width: 25rem;
   transform: translate(-50%, -50%);
   border-radius: 1rem;
   // background: var(--ion-color-light-shade);
@@ -22,7 +22,7 @@ ion-card-header {
 
 .content {
   //   padding: 20px;
-  max-width: 450px;
+  max-width: 28.125rem;
 }
 
 .wrapper {
@@ -48,7 +48,42 @@ ion-input.custom {
   color: var(--ion-color-dark);
 }
 
+.checkbox-left {
+  display: flex;
+  justify-content: left;
+}
+
+.checkbox-right {
+  display: flex;
+  justify-content: right;
+}
+
+ion-checkbox {
+  --size: 1.5rem;
+  --checkmark-color: var(--ion-color-light-fixed);
+  --checkbox-background: var(--ion-color-light-shade);
+  --checkbox-background-checked: var(--ion-color-secondary);
+}
+
+ion-checkbox::part(container) {
+  border-radius: 0.4rem;
+  border: 0.125rem solid var(--ion-color-light-fixed);
+}
+
 ion-button {
   --background: var(--ion-color-primary-tint);
   color: #ffffff;
+}
+
+.redirect {
+  text-decoration: underline;
+}
+
+.redirect:hover {
+  cursor: pointer;
+  color: #dfdfdf
+}
+
+.redirect:active {
+  color: #ffffff
 }

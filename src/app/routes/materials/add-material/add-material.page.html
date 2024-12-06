@@ -1,0 +1,244 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button
+        shape="round"
+        style="width: 48px; height: 48px"
+        (click)="onBack()"
+        fill="clear"
+      >
+        <ion-icon
+          name="arrow-back"
+          slot="icon-only"
+          style="width: 24px; height: 24px"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Adicionar Material</ion-title>
+  </ion-toolbar>
+  <!-- <ion-toolbar>
+    <ion-segment mode="md" [(ngModel)]="action">
+      <ion-segment-button type="button" value="SINGLE">
+        <ion-label>Único</ion-label>
+      </ion-segment-button>
+      <ion-segment-button type="button" value="MULTIPLE">
+        <ion-label>Em massa</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar> -->
+</ion-header>
+<ion-content>
+  <div style="text-align: center;" *ngIf="isLoading">
+    <ion-label>
+      <ion-spinner name="crescent"></ion-spinner>
+    </ion-label>
+  </div>
+  <section *ngIf="action === 'SINGLE' && !isLoading">
+    <ion-list>
+      <ion-list-header>
+        <ion-label class="ion-padding-start">
+          <h1>Cadastro de material</h1>
+        </ion-label>
+      </ion-list-header>
+      <form *ngIf="formGroup" [formGroup]="formGroup">
+        <br />
+        <ion-item class="border ion-margin-horizontal" lines="none">
+          <ion-label position="fixed" style="min-width: 112px">Tipo</ion-label>
+          <ion-select
+            aria-label=""
+            fill="none"
+            inputmode="text"
+            placeholder="Qual o tipo de solicitações?"
+            formControlName="materialType"
+            interface="popover"
+            [interfaceOptions]="customSelectOptions"
+          >
+            <ion-select-option value="LOAN">Empréstimo</ion-select-option>
+            <ion-select-option value="CONSUMPTION">Consumo</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <br />
+        <ion-item lines="none">
+          <ion-input
+            label="Nome"
+            labelPlacement="fixed"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="Ex: Notebook"
+            formControlName="name"
+          ></ion-input>
+        </ion-item>
+        <br />
+        <ion-item lines="none">
+          <ion-textarea
+            label="Descrição"
+            labelPlacement="fixed"
+            formControlName="description"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="Descrição do material"
+            autoGrow="true"
+            maxlength="120"
+            spellcheck="true"
+            wrap="soft"
+          ></ion-textarea>
+        </ion-item>
+        <br />
+        <ion-item lines="none">
+          <ion-input
+            label="Fabricante"
+            labelPlacement="fixed"
+            fill="outline"
+            inputmode="text"
+            shape="round"
+            type="text"
+            placeholder="Identificação do fabricante. Ex: Lenovo"
+            formControlName="manufactorer"
+          >
+          </ion-input>
+        </ion-item>
+        <br />
+        <ion-item class="border ion-margin-horizontal" lines="none">
+          <ion-label position="fixed" style="min-width: 112px"
+            >Medida</ion-label
+          >
+          <ion-select
+            aria-label=""
+            fill="none"
+            inputmode="text"
+            placeholder="Selecione a medida"
+            formControlName="measure"
+            interface="popover"
+            [interfaceOptions]="customSelectOptions"
+          >
+            <ion-select-option value="UN">Unidade</ion-select-option>
+            <ion-select-option value="KG">Quilo</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <br />
+        <ion-item class="border ion-margin-horizontal" lines="none">
+          <ion-label position="fixed" style="min-width: 112px"
+            >Almoxarifado</ion-label
+          >
+          <ion-select
+            aria-label=""
+            aria-labelPlacement="fixed"
+            fill="none"
+            formControlName="warehouseId"
+            placeholder="Selecione o almoxarifado"
+            [interfaceOptions]="customSelectOptions"
+            style="margin-left: 6px"
+          >
+            <ion-select-option *ngFor="let wh of warehouses" [value]="wh.id"
+              >{{ wh.name }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+        <br />
+        <div *ngIf="formGroup?.get('materialType')?.value === 'LOAN'">
+          <ion-item lines="none">
+            <ion-input
+              label="Registro"
+              labelPlacement="fixed"
+              fill="outline"
+              inputmode="text"
+              shape="round"
+              type="text"
+              placeholder="Número de registro ou patrimônio"
+              type="number"
+              inputmode="numeric"
+              formControlName="recordNumber"
+            >
+            </ion-input>
+          </ion-item>
+          <br />
+          <ion-item lines="none">
+            <ion-input
+              label="Quantidade"
+              labelPlacement="fixed"
+              fill="outline"
+              inputmode="number"
+              shape="round"
+              type="numeric"
+              placeholder="Quantidade"
+              formControlName="quantity"
+            ></ion-input>
+          </ion-item>
+          <ion-item class="ion-padding-horizontal" lines="none">
+            <ion-label>Inserir Quantidade</ion-label>
+            <ion-checkbox
+              [value]="formGroup.get('hasQuantity')?.value"
+              labelPlacement="end"
+              formControlName="hasQuantity"
+            ></ion-checkbox>
+          </ion-item>
+        </div>
+        <div *ngIf="formGroup?.get('materialType')?.value === 'CONSUMPTION'">
+          <ion-item lines="none">
+            <ion-input
+              label="Quantidade"
+              labelPlacement="fixed"
+              fill="outline"
+              inputmode="number"
+              shape="round"
+              type="numeric"
+              placeholder="Quantidade"
+              formControlName="quantity"
+            ></ion-input>
+          </ion-item>
+          <br />
+          <ion-item lines="none">
+            <ion-input
+              label="Registro"
+              labelPlacement="fixed"
+              fill="outline"
+              inputmode="text"
+              shape="round"
+              type="text"
+              placeholder="Número de registro ou patrimônio"
+              type="number"
+              inputmode="numeric"
+              formControlName="recordNumber"
+            >
+            </ion-input>
+          </ion-item>
+          <ion-item class="ion-padding-horizontal" lines="none">
+            <ion-label>Possui registro/patrimônio</ion-label>
+            <ion-checkbox
+              [value]="formGroup.get('hasRecord')?.value"
+              labelPlacement="end"
+              formControlName="hasRecord"
+            ></ion-checkbox>
+          </ion-item>
+        </div>
+      </form>
+    </ion-list>
+  </section>
+  <pre *ngIf="isDev">{{ formGroup?.value | json }}</pre>
+
+  <section *ngIf="action === 'MULTIPLE'">
+    <ion-list>
+      <ion-list-header>
+        <ion-label class="ion-padding-start">
+          <h1>Cadastro de materiais</h1>
+        </ion-label>
+      </ion-list-header>
+    </ion-list>
+  </section>
+</ion-content>
+<ion-footer *ngIf="action === 'SINGLE'">
+  <ion-toolbar style="padding-right: 16px">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!formGroup?.valid" (click)="onSubmit()" slot="end" fill="solid" color="success">
+        ADICIONAR
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,131 @@
+<ion-modal #ModalAddMember (willDismiss)="onDismiss()">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title>Adicionar Membro</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onDismiss()">
+            <ion-icon name="close" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-item lines="none" *ngIf="isLoading" style="text-align: center">
+        <ion-label>
+          <ion-spinner name="crescent"></ion-spinner>
+        </ion-label>
+      </ion-item>
+      <section lines="none" *ngIf="!isLoading">
+        <section *ngIf="!selectedMember">
+          <ion-toolbar>
+            <ion-searchbar
+              #searchbarInput
+              [(ngModel)]="search"
+              [disabled]="isLoading"
+              placeholder="Faça uma busca aqui..."
+              clearIcon
+              debounce="1000"
+              show-cancel-button="focus"
+              (ionInput)="onSearch()"
+            ></ion-searchbar>
+          </ion-toolbar>
+          <ion-list *ngIf="members.length">
+            <ion-item
+              lines="full"
+              *ngFor="let member of members; let j = index"
+              button
+              detail="true"
+              (click)="selectMember(member)"
+            >
+              <ion-avatar slot="start">
+                <img [alt]="member.name" [src]="member.photoUrl" />
+              </ion-avatar>
+              <ion-text>
+                <h4 class="m-0 mb-1">
+                  {{ member.name ? member.name : "ANÔNIMO" }}
+                </h4>
+                <small class="m-0">{{ member.email }}</small>
+              </ion-text>
+            </ion-item>
+          </ion-list>
+          <ion-item lines="none" *ngIf="!members.length" style="text-align: center;">
+            <ion-label>
+              <ion-text>
+                <p>
+                  Nenhum membro encontrado. Pesquise por outro nome ou e-mail.
+                </p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+        </section>
+        <section *ngIf="selectedMember">
+          <ion-item lines="full">
+            <ion-avatar slot="start">
+              <img
+                [alt]="selectedMember.name"
+                [src]="selectedMember.photoUrl"
+              />
+            </ion-avatar>
+            <ion-text>
+              <h4 class="m-0 mb-1">
+                {{ selectedMember.name ? selectedMember.name : "ANÔNIMO" }}
+              </h4>
+              <small class="m-0">{{ selectedMember.email }}</small>
+            </ion-text>
+            <ion-button
+              slot="end"
+              fill="clear"
+              color="danger"
+              (click)="selectMember(null)"
+            >
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <form *ngIf="formGroup" [formGroup]="formGroup">
+            <ion-item>
+              <ion-select
+                label="Cargo"
+                formControlName="userRole"
+                placeholder="Selecione o cargo do usuário"
+                [interfaceOptions]="customSelectOptions"
+              >
+                <ion-select-option
+                  *ngIf="payload?.role === eCoordinator || payload?.role === eSupport"
+                  value="COORDINATOR"
+                  >Coordenador</ion-select-option
+                >
+                <ion-select-option value="WAREHOUSEMAN"
+                  >Almoxarife</ion-select-option
+                >
+                <ion-select-option value="USER">Usuário</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </form>
+        </section>
+      </section>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button
+            class="ion-margin"
+            color="medium"
+            fill="outline"
+            (click)="onDismiss()"
+            >Cancelar
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button
+            class="ion-margin"
+            color="dark"
+            (click)="onSubmit()"
+            [disabled]="!formGroup?.valid || isLoading || !selectedMember"
+            >Salvar
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>

@@ -1,32 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { PayloadService } from 'src/services/payload/payload.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   AlertController,
+  IonInput,
   LoadingController,
   ToastController,
-  ViewDidEnter,
 } from '@ionic/angular';
+import { LocalStorageAuthService } from 'src/services/localstorage/auth-local.service';
 import { UsersService } from 'src/services/users/users.service';
 import { BaseComponent } from 'src/shared/utils/base.component';
-import { RoutersEnum } from '../../../shared/utils/routers-enum';
+import { IEnvelope } from 'src/shared/utils/envelope';
+import { CredentialsDto } from '../../../services/users/dto/credentials.dto';
+import { ERouters } from '../../../shared/utils/e-routers';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
-  // #region Properties (2)
+export class LoginPage extends BaseComponent implements OnInit {
+  // #region Properties (3)
 
   public formGroup: FormGroup | null = null;
   public isLoading: boolean = true;
+  public keepMeLogIn: boolean = false;
+  @ViewChild('passwordInput') public passwordInput!: IonInput;
 
-  // #endregion Properties (2)
+  // #endregion Properties (3)
 
   // #region Constructors (1)
 
   constructor(
+    private readonly localStorageAuthService: LocalStorageAuthService,
+    private readonly payloadService: PayloadService,
     private readonly usersService: UsersService,
     private router: Router,
     toastController: ToastController,
@@ -38,58 +46,82 @@ export class LoginPage extends BaseComponent implements OnInit, ViewDidEnter {
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (2)
+  // #region Public Methods (4)
 
   public ngOnInit() {
     this.createForm();
   }
 
-  ionViewDidEnter(): void {}
-
-  public onKeyup($e: number): void {
+  public onKeyEvent($e: number): void {
     if ($e === 13 && this.formGroup!.valid) {
       this.onSubmit();
     }
   }
 
-  public onSubmit() {
-    const loading = this.loadingShow('Autenticando...');
+  public goToRegister() {
+    this.router.navigate([ERouters.register], {
+      replaceUrl: true,
+    });
+  }
 
-    const Email = this.formGroup?.get('email')?.value;
-    const PasswordString = this.formGroup?.get('password')?.value;
-    const InstitutionId = this.formGroup?.get('institutionId')?.value;
-    if (!Email || !PasswordString || !InstitutionId) {
+  public forgotPassword() {
+    this.router.navigate([ERouters.forgotPassword], {
+      replaceUrl: true,
+    });
+  }
+
+  public onSubmit() {
+    const email = this.formGroup?.get('email')?.value;
+    const passwordString = this.formGroup?.get('password')?.value;
+    // const institutionId = this.formGroup?.get('institutionId')?.value;
+    // || !institutionId
+    if (!email || !passwordString) {
       this.alert('Preencha os campos corretamente', 'Aviso!');
-      loading.then((l) => l.dismiss());
       return;
     }
-    if (Email && PasswordString && InstitutionId) {
-      this.usersService.auth({ Email, PasswordString, InstitutionId }).subscribe({
-        next: (res) => {
-          loading.then((l) => l.dismiss());
+    // && institutionId
+    this.isLoading = true;
+    if (email && passwordString) {
+      const credentials = {
+        email,
+        passwordString,
+        // institutionId,
+      } as CredentialsDto;
+      this.usersService.auth(credentials).subscribe({
+        next: (res: IEnvelope<string>) => {
+          this.isLoading = false;
+          if (this.formGroup?.get('keepIn')?.value) {
+            this.localStorageAuthService.val = res?.item;
+          }
           this.formGroup?.reset();
-          this.router.navigate([`${RoutersEnum.app}/${RoutersEnum.home}`]);
+          this.router.navigate([ERouters.checkin], {
+            queryParams: { redirected: true },
+            replaceUrl: true,
+          });
         },
-        error: (error) => {
-          this.alert(error?.message, 'Aviso!');
-          loading.then((l) => l.dismiss());
+        error: (error: any) => {
+          this.isLoading = false;
+          this.toast(error?.message, 'Aviso!', 'secondary', 'bottom');
+          this.formGroup?.get('password')?.reset();
+          setTimeout(() => {
+            this.passwordInput.setFocus();
+          }, 50);
         },
       });
     }
   }
 
-  // #endregion Public Methods (2)
+  // #endregion Public Methods (4)
 
   // #region Private Methods (1)
 
   private createForm() {
-    const loading = this.loadingShow('Gerando formulário...');
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      institutionId: new FormControl('', [Validators.required]),
+      // institutionId: new FormControl('', [Validators.required]),
+      keepIn: new FormControl(false),
     });
-    loading.then((l) => l.dismiss());
     this.isLoading = false;
   }
 

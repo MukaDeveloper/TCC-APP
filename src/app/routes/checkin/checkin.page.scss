@@ -1,0 +1,52 @@
+ion-toolbar {
+  --background: transparent;
+  --ion-background-color: transparent;
+  --ion-toolbar-background: transparent;
+  box-shadow: none; /* Remove a sombra padrão, se houver */
+}
+
+.clear-borders {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+ion-content {
+  --background: var(--ion-color-primary);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background {
+  background-color: var(--ion-color-primary);
+  --background: var(--ion-color-primary);
+}
+
+.institutions-list {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  justify-content: center;
+}
+
+.institutions-item {
+  margin-top: 16px;
+  border: 1px dashed #fdfdfd;
+  border-radius: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.institutions-item:hover {
+  border: 1px dashed #6b5d5d;
+  cursor: pointer;
+  
+  ion-label {
+    color: #eed0d0 !important;
+  }
+}

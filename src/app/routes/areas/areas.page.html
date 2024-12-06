@@ -1,9 +1,94 @@
-<ion-header [translucent]="true">
+<ion-header>
+  <ion-breadcrumbs [maxItems]="4">
+    <ion-breadcrumb [routerLink]="homeURL">Home</ion-breadcrumb>
+    <ion-breadcrumb>Áreas</ion-breadcrumb>
+  </ion-breadcrumbs>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultURL"></ion-back-button>
+    </ion-buttons>
     <ion-title>Áreas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onReload()">
+        <ion-icon
+          slot="icon-only"
+          name="reload-outline"
+          style="--color: var(--ion-color-dark)"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <ion-item *ngIf="isLoading">
+    <ion-label style="text-align: center"
+      ><ion-text>
+        <ion-spinner
+          name="circular"
+          style="width: 32px; height: 32px"
+        ></ion-spinner> </ion-text
+    ></ion-label>
+  </ion-item>
+  <ion-list *ngIf="!isLoading">
+    <ion-grid>
+      <ion-row *ngIf="!areas?.length">
+        <ion-col size="12">
+          <div style="text-align: center">
+            <ion-label>
+              <ion-text
+                >Nenhuma área registrada. Clique no botão abaixo para
+                adicionar</ion-text
+              >
+            </ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col [size]="columnSize" *ngFor="let item of areas">
+          <ion-card (click)="AppEditArea.onOpenModal(item)" button>
+            <ion-card-header title="{{ item.name }}">
+              <ion-card-title class="card-header-content">
+                <div class="card-header-text">
+                  <ion-label>
+                    <ion-text>{{ item.name }}</ion-text>
+                  </ion-label>
+                </div>
+                <ion-buttons class="ion-no-padding">
+                  <!-- <ion-button (click)="AppEditArea.onOpenModal(item)">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </ion-button> -->
+                  <ion-button (click)="onDeleteArea(item); $event.stopPropagation()">
+                    <ion-icon color="danger" name="trash-outline"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-icon name="cube-outline" class="icons"></ion-icon> <br />
+              <ion-label>{{ item.description }}</ion-label>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col [size]="columnSize">
+          <ion-card
+            class="ion-padding"
+            (click)="AppNewArea.onOpenModal()"
+            button
+          >
+            <ion-card-content>
+              <ion-icon name="add-outline" class="icons"></ion-icon> <br />
+              <ion-label style="font-weight: 700"
+                >Adicionar nova<br />área</ion-label
+              >
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
+  <app-new-area #AppNewArea (reload)="onReload()"></app-new-area>
+  <app-edit-area #AppEditArea (reload)="onReload()"></app-edit-area>
 </ion-content>

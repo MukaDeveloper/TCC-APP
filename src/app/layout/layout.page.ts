@@ -1,68 +1,167 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PayloadService } from '../../services/payload/payload.service';
-import { RoutersEnum } from '../../shared/utils/routers-enum';
+import {
+  AlertController,
+  LoadingController,
+  ToastController,
+  ViewDidEnter,
+} from '@ionic/angular';
+import { mergeMap } from 'rxjs';
+import { AreasService } from 'src/services/areas/areas.service';
+import { BaseComponent } from 'src/shared/utils/base.component';
 import { InstitutionService } from '../../services/instution/intitution.service';
-import { WarehousesService } from '../../services/warehouses/warehouses.service';
 import { IPayload } from '../../services/payload/interfaces/i-payload';
-import { map, merge, mergeMap } from 'rxjs';
+import { PayloadService } from '../../services/payload/payload.service';
+import { ResetService } from '../../services/reset/reset.service';
+import { WarehousesService } from '../../services/warehouses/warehouses.service';
+import { ERouters } from '../../shared/utils/e-routers';
+import { IMember } from 'src/services/users/interfaces/i-member';
+import { UsersService } from 'src/services/users/users.service';
+import { CartService } from 'src/services/cart/cart.service';
+import { ICart } from 'src/services/cart/interfaces/i-cart';
+import { EUserRole } from 'src/services/payload/interfaces/enum/EUserRole';
+import { SolicitationsService } from '../../services/solicitations/solicitations.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.page.html',
   styleUrls: ['./layout.page.scss'],
 })
-export class LayoutPage implements OnInit {
-  // #region Properties (1)
+export class LayoutPage extends BaseComponent implements OnInit, ViewDidEnter {
+  // #region Properties (3)
 
   public isLoading = true;
   public isMenuOpen = false;
   public payload: IPayload | null = null;
+  public members: IMember[] = [];
+  public cart: ICart | null = null;
+  public blackList: string[] = [
+    `/${ERouters.app}/${ERouters.materials}/${ERouters.addMaterial}`,
+  ];
 
-  // #endregion Properties (1)
+  // #endregion Properties (3)
 
   // #region Constructors (1)
 
   constructor(
+    private readonly solicitationsService: SolicitationsService,
+    private readonly cartService: CartService,
+    private readonly usersService: UsersService,
+    private readonly resetService: ResetService,
     private readonly payloadService: PayloadService,
     private readonly institutionService: InstitutionService,
+    private readonly areasService: AreasService,
     private readonly warehousesService: WarehousesService,
-    private router: Router,
-  ) {}
+    public router: Router,
+    toastController: ToastController,
+    alertController: AlertController,
+    loadingController: LoadingController
+  ) {
+    super(toastController, alertController, loadingController);
+
+    effect(() => {
+      this.cart = this.cartService.cart;
+    });
+  }
 
   // #endregion Constructors (1)
 
-  // #region Public Methods (1)
-
-  onSplitPaneVisible(event: any) {
-    this.isMenuOpen = event.detail.visible;
+  public get canShow(): boolean {
+    if (this.blackList.includes(this.router.url)) {
+      return false;
+    }
+    return true;
   }
 
-  public ngOnInit() {
-    this.isLoading = false;
+  // #region Public Methods (4)
+
+  public ionViewDidEnter(): void {
     this.onPayload();
   }
 
+  public ngOnInit() {
+    this.subs.push(
+      this.payloadService.payload$.subscribe((res) => (this.payload = res)),
+      this.usersService.members$.subscribe((res) => (this.members = res))
+    );
+  }
+
   public onLogout() {
+    this.resetService.resetAll();
     this.payloadService.nextPayload(null);
-    this.router.navigate([RoutersEnum.login], {
+    this.solicitationsService.stopFetching();
+    this.router.navigate([ERouters.login], {
+      replaceUrl: true,
       queryParams: { redirected: true },
     });
   }
 
-  private onPayload() {
-    console.log('Fazendo requisição de instituição e armazéns');
-    this.institutionService
-      .getById(this.payload?.institutionId as number)
-      .pipe(
-        mergeMap(() => this.warehousesService.getAll()),
-      )
-      .subscribe({
-        next: (res) => {},
-        error: (err) => {},
-      });
-    this.isLoading = false;
+  public onSplitPaneVisible(event: any) {
+    this.isMenuOpen = event.detail.visible;
   }
 
-  // #endregion Public Methods (1)
+  // #endregion Public Methods (4)
+
+  // #region Private Methods (1)
+
+  private onPayload() {
+    if (!this.institutionService.institution) {
+      this.institutionService.getCurrent().subscribe({
+        next: (res) => {
+          this.isLoading = false;
+
+          let cart = this.cartService.getCart();
+
+          if (cart) {
+            if (cart?.userId !== this.payload?.id) {
+              cart = null;
+            }
+
+            if (cart?.institutionId !== res.item.id) {
+              cart = null;
+            }
+          }
+
+          // console.log('onPayload => getCart', cart);
+          this.cartService.cart = cart;
+        },
+        error: (err) => {
+          this.isLoading = false;
+        },
+      });
+    } else {
+      let cart = this.cartService.getCart();
+
+      if (cart) {
+        if (cart?.userId !== this.payload?.id) {
+          cart = null;
+        }
+
+        if (cart?.institutionId !== this.institutionService.institution.id) {
+          cart = null;
+        }
+      }
+
+      this.cartService.cart = cart;
+    }
+
+    const solicitations = this.solicitationsService.solicitations;
+    if (!solicitations.length) {
+      // console.log('onPayload => startFetch');
+      this.solicitationsService.startFetch();
+    }
+
+    if (this.payload?.role !== EUserRole.USER) {
+      this.warehousesService.getAll().subscribe();
+      if (this.payload?.role !== EUserRole.WAREHOUSEMAN) {
+        this.areasService.getAll().subscribe();
+
+        if (!this.members?.length) {
+          this.usersService.getAllFromInstitution().subscribe();
+        }
+      }
+    }
+  }
+
+  // #endregion Private Methods (1)
 }

@@ -1,0 +1,23 @@
+ion-segment-button {
+  --color-checked: var(--ion-color-dark);
+}
+
+.border {
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 32px;
+  padding: 4px 16px;
+  margin-right: 16px !important;
+}
+
+.border:hover {
+  border: 1px solid var(--ion-color-dark);
+}
+
+.border ion-select {
+  width: 100%; /* Ocupa a largura total do item */
+  margin-right: 16px; /* Aplica um margin extra à direita */
+}
+
+ion-checkbox {
+  --checkbox-background-checked: var(--ion-color-dark);
+}
