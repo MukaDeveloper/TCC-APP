@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "ionic build --prod && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {
