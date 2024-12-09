@@ -107,16 +107,13 @@ export class WarehousesPage
             text: 'Sim',
             handler: () => {
               this.warehousesService.delete(wh.id).subscribe({
-                next: (res) => {
-                  if (res) {
-                    this.toast(
-                      'Almoxarifado excluído com sucesso!',
-                      'Sucesso',
-                      'success',
-                      'bottom'
-                    );
-                    this.onReload();
-                  }
+                next: (_) => {
+                  this.toast(
+                    'Almoxarifado excluído com sucesso!',
+                    'Sucesso',
+                    'success',
+                    'bottom'
+                  );
                 },
                 error: (err: any) => {
                   console.error(err);

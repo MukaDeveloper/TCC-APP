@@ -109,9 +109,27 @@ export class WarehousesService {
   }
 
   public delete(warehouseId: number): Observable<string> {
-    return this.apiWarehousesService
-      .deleteWarehouse(warehouseId)
-      .pipe(map((res: string) => res));
+    return this.apiWarehousesService.deleteWarehouse(warehouseId).pipe(
+      map((res: string) => {
+        const filteredIndex = this.filtered$.value.findIndex(
+          (w) => w.id === warehouseId
+        );
+        if (filteredIndex >= 0) {
+          this.filtered$.value.splice(filteredIndex, 1);
+          this.filtered$.next([...this.filtered$.value]);
+        }
+
+        const warehousesIndex = this.warehouses$.value.findIndex(
+          (w) => w.id === warehouseId
+        );
+        if (warehousesIndex >= 0) {
+          this.warehouses$.value.splice(warehousesIndex, 1);
+          this.warehouses$.next([...this.warehouses$.value]);
+        }
+
+        return res;
+      })
+    );
   }
 
   // #endregion Public Methods (4)

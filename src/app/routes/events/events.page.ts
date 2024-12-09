@@ -104,16 +104,12 @@ export class EventsPage extends BaseComponent implements OnInit, ViewDidEnter {
         return 'USUÁRIO';
       case EMovimentationType.AREA:
         return 'ÁREA';
-      case EMovimentationType.GENERAL:
-        return 'NÃO MAPEADA';
       case EMovimentationType.WAREHOUSE:
         return 'ALMOXARIFADO';
       case EMovimentationType.MATERIAL:
         return 'MATERIAL';
-      case EMovimentationType.LOAN:
-        return 'EMPRÉSTIMO';
-      case EMovimentationType.MAINTENANCE:
-        return 'MANUTENÇÃO';
+      case EMovimentationType.SOLICITATION:
+        return 'SOLICITAÇÃO';
     }
   }
 
