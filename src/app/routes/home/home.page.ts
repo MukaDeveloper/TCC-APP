@@ -3,6 +3,7 @@ import {
   AlertController,
   LoadingController,
   ToastController,
+  ViewDidEnter,
 } from '@ionic/angular';
 import { IInstitution } from 'src/services/instution/interfaces/i-institution';
 import { IWarehouse } from 'src/services/warehouses/interfaces/i-warehouse';
@@ -23,7 +24,7 @@ import { ISolicitation } from 'src/services/solicitations/interfaces/i-solicitat
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage extends BaseComponent implements OnInit {
+export class HomePage extends BaseComponent implements OnInit, ViewDidEnter {
   // #region Properties (4)
 
   public institution: IInstitution | null = null;
@@ -72,17 +73,26 @@ export class HomePage extends BaseComponent implements OnInit {
       }
     });
   }
+  ionViewDidEnter(): void {
+    if (this.solicitations) {
+      this.onReloadSwiper(this.solicitations);
+      return;
+    }
+
+    
+  }
 
   // #endregion Constructors (1)
 
-  public get slideSize(): number {
+  public get slideSize() {
+    let slidesPerView = '3.5';
     if (window.innerWidth <= 950 && window.innerWidth > 798) {
-      return 2.5;
+      slidesPerView = '2.5';
     }
     if (window.innerWidth <= 798) {
-      return 1.5;
+      slidesPerView = '1.5';
     }
-    return 3.5;
+    return slidesPerView;
   }
 
   // #region Public Methods (1)
@@ -101,15 +111,7 @@ export class HomePage extends BaseComponent implements OnInit {
 
   public onReload() {
     this.isLoading = true;
-    this.solicitationsService.get().subscribe({
-      next: (res) => {
-        this.onReloadSwiper(res.items);
-      },
-      error: (error) => {
-        console.error(error);
-        this.isLoading = false;
-      },
-    });
+    this.onGetColls();
   }
 
   public GoToMaterials() {
@@ -131,14 +133,26 @@ export class HomePage extends BaseComponent implements OnInit {
     }
   }
 
+  private onGetColls() {
+    this.solicitationsService.get().subscribe({
+      next: (res) => {
+        this.onReloadSwiper(res.items);
+      },
+      error: (error) => {
+        console.error(error);
+        this.isLoading = false;
+      },
+    });
+  }
+
   private onReloadSwiper(newValue: ISolicitation[]) {
     this.loadingSwiper = true;
+    this.isLoading = false;
+    this.solicitations = this.reorderSolicitations(newValue);
     setTimeout(() => {
-      this.solicitations = this.reorderSolicitations(newValue);
       this.loadingSwiper = false;
       this.cdr.detectChanges();
     }, 1500);
-    this.isLoading = false;
   }
 
   private reorderSolicitations(

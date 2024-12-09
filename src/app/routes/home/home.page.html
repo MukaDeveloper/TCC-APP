@@ -41,18 +41,18 @@
         <p>Carregando solicitações</p>
         <ion-spinner name="crescent"></ion-spinner>
       </ion-label>
-      <ion-label *ngIf="!solicitations?.length && !loadingSwiper"
+      <ion-label *ngIf="!solicitations?.length && !isLoading && !loadingSwiper"
         >Nenhuma solicitação a ser exibida.</ion-label
       >
-      <div *ngIf="solicitations?.length && !loadingSwiper">
+      <div *ngIf="solicitations?.length && !isLoading && !loadingSwiper">
         <ion-label *ngIf="!loadingSwiper"
           >Exibindo {{ solicitations.length }} solicitaç{{ solicitations.length
           == 1 ? 'ão' : 'ões' }}</ion-label
         >
         <br />
         <swiper-container
-          *ngIf="!loadingSwiper"
-          slides-per-view="3.5"
+          *ngIf="!loadingSwiper && !isLoading"
+          [slidesPerView]="slideSize"
           space-between="10"
           pagination="false"
           navigation="false"
