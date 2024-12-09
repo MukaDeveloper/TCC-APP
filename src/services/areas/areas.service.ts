@@ -46,9 +46,16 @@ export class AreasService {
   }
 
   public delete(areaId: number) {
-    return this.apiAreasService
-      .deleteArea(areaId)
-      .pipe(map((res: null) => res));
+    return this.apiAreasService.deleteArea(areaId).pipe(
+      map((res: null) => {
+        const areaIndex = this.areas$.value.findIndex((a) => a.id === areaId);
+        if (areaIndex >= 0) {
+          this.areas$.value.splice(areaIndex, 1);
+          this.areas$.next([...this.areas$.value]);
+        }
+        return res;
+      })
+    );
   }
 
   public getAll(): Observable<IEnvelopeArray<IArea>> {

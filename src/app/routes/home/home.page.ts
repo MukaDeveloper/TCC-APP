@@ -32,6 +32,13 @@ export class HomePage extends BaseComponent implements OnInit {
   public warehouses: IWarehouse[] = [];
   public solicitations: ISolicitation[] = [];
   public loadingSwiper = true;
+  public statusOrder: Record<ESolicitationStatus, number> = {
+    [ESolicitationStatus.WAITING]: 0,
+    [ESolicitationStatus.ACCEPT]: 1,
+    [ESolicitationStatus.DECLINED]: 2,
+    [ESolicitationStatus.WITHDRAWN]: 3,
+    [ESolicitationStatus.RETURNED]: 4,
+  };
 
   // #endregion Properties (4)
 
@@ -60,17 +67,9 @@ export class HomePage extends BaseComponent implements OnInit {
     effect(() => {
       // Aqui receber as atualizações de solicitations
       const solicitations = this.solicitationsService.solicitations;
-      this.loadingSwiper = true;
-      // console.log(
-      //   'Atualizando solicitações',
-      //   this.solicitationsService.solicitations
-      // );
-      setTimeout(() => {
-        this.solicitations = this.solicitationsService.solicitations;
-        this.cdr.detectChanges();
-        this.loadingSwiper = false;
-      }, 1500);
-      this.isLoading = false;
+      if (solicitations) {
+        this.onReloadSwiper(solicitations);
+      }
     });
   }
 
@@ -103,14 +102,14 @@ export class HomePage extends BaseComponent implements OnInit {
   public onReload() {
     this.isLoading = true;
     this.solicitationsService.get().subscribe({
-      next: (_) => {
-        this.isLoading = false;
+      next: (res) => {
+        this.onReloadSwiper(res.items);
       },
       error: (error) => {
         console.error(error);
         this.isLoading = false;
-      }
-    })
+      },
+    });
   }
 
   public GoToMaterials() {
@@ -130,6 +129,28 @@ export class HomePage extends BaseComponent implements OnInit {
       case ESolicitationStatus.RETURNED:
         return 'success';
     }
+  }
+
+  private onReloadSwiper(newValue: ISolicitation[]) {
+    this.loadingSwiper = true;
+    setTimeout(() => {
+      this.solicitations = this.reorderSolicitations(newValue);
+      this.loadingSwiper = false;
+      this.cdr.detectChanges();
+    }, 1500);
+    this.isLoading = false;
+  }
+
+  private reorderSolicitations(
+    solicitations: ISolicitation[]
+  ): ISolicitation[] {
+    const dateFilter = solicitations.sort(
+      (a, b) =>
+        new Date(a.solicitedAt).getTime() - new Date(b.solicitedAt).getTime()
+    );
+    return dateFilter.sort(
+      (a, b) => this.statusOrder[a.status] - this.statusOrder[b.status]
+    );
   }
 
   // #endregion Public Methods (1)

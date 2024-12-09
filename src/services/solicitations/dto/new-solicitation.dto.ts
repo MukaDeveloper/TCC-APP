@@ -1,3 +1,5 @@
+import { SolicitationMaterialsDto } from "./solicitation-materials.dto";
+
 export class NewSolicitationDto
 {
     public description: string = '';
@@ -5,8 +7,3 @@ export class NewSolicitationDto
     public expectReturnAt: string | Date | number = new Date();
 }
 
-export class SolicitationMaterialsDto
-{
-    public quantity: number = 0;
-    public materialId: number = 0;
-}

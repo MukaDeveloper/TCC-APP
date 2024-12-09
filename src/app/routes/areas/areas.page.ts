@@ -82,8 +82,7 @@ export class AreasPage extends BaseComponent implements OnInit, ViewDidEnter {
             handler: () => {
               this.areasService.delete(area.id).subscribe({
                 next: (_) => {
-                  this.toast('Área excluída com sucesso!', 'Sucesso');
-                  this.onReload();
+                  this.toast('Área excluída com sucesso!', 'Sucesso', 'success');
                 },
                 error: (err) => {
                   this.alert(err?.message, 'Atenção!');

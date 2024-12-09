@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   ToastController,
   AlertController,
@@ -7,6 +13,7 @@ import {
 } from '@ionic/angular';
 import { IPayload } from 'src/services/payload/interfaces/i-payload';
 import { PayloadService } from 'src/services/payload/payload.service';
+import { SolicitationMaterialsDto } from 'src/services/solicitations/dto/solicitation-materials.dto';
 import { UpdateSolicitationDto } from 'src/services/solicitations/dto/update-solicitation.dto';
 import { ESolicitationStatus } from 'src/services/solicitations/interfaces/enum/solicitation-status.enum';
 import { ISolicitation } from 'src/services/solicitations/interfaces/i-solicitation';
@@ -50,32 +57,45 @@ export class ViewSolicitationComponent extends BaseComponent implements OnInit {
   public onOpenModal(solicitation: ISolicitation) {
     this.solicitation = solicitation;
     this.modal.present();
-    console.log(this.solicitation?.status, this.eSolWaiting);
   }
 
   public updateSolicitation(status: ESolicitationStatus) {
     this.isLoading = true;
 
+    const items =
+      this.solicitation?.items.map(
+        (item) =>
+          ({
+            materialId: item.materialId,
+            quantity: item.quantity,
+          } as SolicitationMaterialsDto)
+      ) || [];
+
     const obj: UpdateSolicitationDto = {
       id: this.solicitation?.id as number,
+      items,
       status: status,
       movimentedAt: new Date().toISOString(),
-    }
+    };
 
     this.solicitationsService.update(obj).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         this.isLoading = false;
-        this.toast(`A Solicitação #${res?.item?.id} foi atualizada com sucesso`, "Sucesso!", 'success');
+        this.toast(
+          `A Solicitação #${res?.item?.id} foi atualizada com sucesso`,
+          'Sucesso!',
+          'success'
+        );
         this.updated.emit();
         this.modal.dismiss();
       },
       error: (error) => {
         console.error(error);
-        this.alert(error?.message, "Atenção!");
+        this.alert(error?.message, 'Atenção!');
         this.isLoading = false;
-      }
-    })
+      },
+    });
   }
 
   public onDecline() {}

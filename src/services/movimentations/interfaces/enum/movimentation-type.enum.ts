@@ -4,7 +4,5 @@ export enum EMovimentationType
     AREA,
     WAREHOUSE,
     MATERIAL,
-    LOAN,
-    MAINTENANCE,
-    GENERAL,
+    SOLICITATION,
 }
